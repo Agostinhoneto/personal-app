@@ -10,3 +10,9 @@ vendor
 storage
 bootstrap/cache
 tests
+.docker
+docker
+vendor
+.git
+.docker/mysql
+.docker/mysql/data

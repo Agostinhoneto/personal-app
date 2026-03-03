@@ -28,8 +28,19 @@ docker-compose up -d
 ```bash
 docker-compose exec app php artisan migrate
 ```
+4. **Inicie o servidor Vite (JS/CSS)**
 
-4. **Acesse a aplicação:**
+Enquanto o container `app` já serve Laravel, há um novo serviço `node` que roda o `npm run dev`. Basta subir o compose e ele fará `npm install` e iniciará o Vite automaticamente:
+
+```bash
+docker-compose up -d
+```
+
+Se precisar atras:
+
+```bash
+docker-compose up -d node
+```4. **Acesse a aplicação:**
 
 A aplicação estará disponível em `http://localhost:8000`
 
@@ -39,8 +50,13 @@ A aplicação estará disponível em `http://localhost:8000`
 ```bash
 docker-compose logs -f app
 docker-compose logs -f mysql
+docker-compose logs -f node
 ```
 
+**Ver status de Node/Vite:**
+```bash
+docker-compose ps
+```
 **Parar os containers:**
 ```bash
 docker-compose down

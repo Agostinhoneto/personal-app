@@ -1,36 +1,37 @@
 FROM php:8.4-fpm
 
-
 # 2. Instalar Node.js 20.x (atualizado para resolver o erro EBADENGINE)
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs \
     && npm install -g npm@latest \
     && rm -rf /var/lib/apt/lists/*
 
-# Install system dependencies
+# 1. Instalação segura de dependências
 RUN apt-get update && apt-get install -y \
-    git \
-    curl \
+    libfreetype6-dev \
+    libjpeg62-turbo-dev \
     libpng-dev \
+    libwebp-dev \
+    zlib1g-dev \
+    libzip-dev \
     libonig-dev \
     libxml2-dev \
-    zip \
-    unzip \
-    sqlite3 \
-    libsqlite3-dev \
-    mariadb-client \
+    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Install PHP extensions
-RUN docker-php-ext-install \
-    pdo \
-    pdo_mysql \
-    mbstring \
-    exif \
-    pcntl \
-    bcmath \
-    gd \
-    xml
+# 2. Instalação passo-a-passo das extensões
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
+    && docker-php-ext-install gd
+
+RUN docker-php-ext-install pdo_mysql
+RUN docker-php-ext-install mbstring
+RUN docker-php-ext-install exif
+RUN docker-php-ext-install pcntl
+RUN docker-php-ext-install bcmath
+RUN docker-php-ext-install zip
+RUN docker-php-ext-install opcache
+RUN docker-php-ext-install sockets
+
 
 # 4. Instalação do Composer
 COPY --from=composer:2.6 /usr/bin/composer /usr/bin/composer

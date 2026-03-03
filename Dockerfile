@@ -43,13 +43,14 @@ RUN composer install --no-interaction --prefer-dist
 # Set permissions
 RUN chown -R www-data:www-data /app && chmod -R 755 /app
 
-# Install Node dependencies if needed
-RUN if [ -f package.json ]; then \
-    apt-get update && apt-get install -y nodejs npm && \
-    npm install && \
-    npm run build && \
-    rm -rf /var/lib/apt/lists/*; \
-    fi
+# Install Node.js and npm
+RUN apt-get update && apt-get install -y nodejs npm && rm -rf /var/lib/apt/lists/*
 
-# Run migrations
+# Install NPM dependencies
+RUN npm install
+
+# Build assets
+RUN npm run build
+
+# Run migrations and start server
 CMD php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8000

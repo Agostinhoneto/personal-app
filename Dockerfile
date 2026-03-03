@@ -1,5 +1,12 @@
 FROM php:8.4-fpm
 
+
+# 2. Instalar Node.js 20.x (atualizado para resolver o erro EBADENGINE)
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs \
+    && npm install -g npm@latest \
+    && rm -rf /var/lib/apt/lists/*
+
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     git \
@@ -25,32 +32,30 @@ RUN docker-php-ext-install \
     gd \
     xml
 
-# Install Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+# 4. Instalação do Composer
+COPY --from=composer:2.6 /usr/bin/composer /usr/bin/composer
 
-# Set working directory
-WORKDIR /app
+WORKDIR /var/www
 
-# Copy application
+RUN usermod -u 1000 www-data
+
 COPY . .
 
-# Create required directories
-RUN mkdir -p bootstrap/cache storage/framework/sessions storage/framework/views storage/framework/cache storage/logs
+# Criar diretórios necessários e ajustar permissões
+RUN mkdir -p storage/framework/cache \
+    && mkdir -p storage/framework/sessions \
+    && mkdir -p storage/framework/views \
+    && mkdir -p storage/logs \
+    && mkdir -p bootstrap/cache \
+    && chown -R www-data:www-data /var/www/storage \
+    && chown -R www-data:www-data /var/www/bootstrap/cache \
+    && chmod -R 775 /var/www/storage \
+    && chmod -R 775 /var/www/bootstrap/cache
 
-# Install dependencies
-RUN composer install --no-interaction --prefer-dist
-
-# Set permissions
-RUN chown -R www-data:www-data /app && chmod -R 755 /app
-
-# Install Node.js and npm
-RUN apt-get update && apt-get install -y nodejs npm && rm -rf /var/lib/apt/lists/*
-
-# Install NPM dependencies
+# Copiar package.json e instalar dependências
+COPY package.json vite.config.js ./
 RUN npm install
 
-# Build assets
-RUN npm run build
+COPY . .
 
-# Run migrations and start server
-CMD php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8000
+CMD ["php-fpm"]

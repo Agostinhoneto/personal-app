@@ -1,60 +1,252 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Personal App
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Uma aplicação Laravel moderna com Docker, MySQL e suporte a processamento de filas.
 
-## About Laravel
+## 🚀 Começando
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Pré-requisitos
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Docker
+- Docker Compose
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Instalação Rápida
 
-## Learning Laravel
+1. **Clone o repositório**
+```bash
+git clone <seu-repositorio>
+cd personal-app
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+2. **Inicie os containers**
+```bash
+docker compose up -d
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+3. **Execute as migrations**
+```bash
+docker compose exec app php artisan migrate
+```
 
-## Laravel Sponsors
+4. **Acesse a aplicação**
+```
+http://localhost:8000
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 📋 Configuração do Ambiente
 
-### Premium Partners
+O arquivo `.env` é automaticamente configurado com:
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+```env
+DB_HOST=mysql
+DB_PORT=3306
+DB_DATABASE=personal_app
+DB_USERNAME=personal_app
+DB_PASSWORD=password
+```
 
-## Contributing
+## 🐳 Serviços Docker
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### MySQL 8.0
+- **Porta**: 3306
+- **Usuário**: personal_app
+- **Senha**: password
+- **Banco**: personal_app
+- **Volume**: Persistente
 
-## Code of Conduct
+### Laravel Application
+- **Porta**: 8000
+- **PHP**: 8.4-FPM
+- **Servidor**: Artisan serve
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 📁 Estrutura do Projeto
 
-## Security Vulnerabilities
+```
+personal-app/
+├── app/                 # Código da aplicação
+│   ├── Http/           # Controllers e Middlewares
+│   │   └── Controllers/
+│   └── Models/         # Modelos Eloquent
+├── bootstrap/          # Arquivo de inicialização
+├── config/             # Configurações
+├── database/           # Migrations, Factories e Seeders
+│   ├── factories/
+│   ├── migrations/
+│   └── seeders/
+├── public/             # Arquivos públicos
+├── resources/          # Views, CSS e JavaScript
+│   ├── css/
+│   ├── js/
+│   └── views/
+├── routes/             # Definição de rotas
+├── storage/            # Cache, logs e uploads
+├── tests/              # Testes unitários e funcionais
+├── vendor/             # Dependências (Composer)
+├── docker/             # Configuração do MySQL
+├── docker-compose.yml  # Orquestração dos containers
+├── Dockerfile          # Imagem Docker
+└── .env                # Variáveis de ambiente
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 🛠 Comandos Úteis
 
-## License
+### Gerenciar Containers
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-# personal-app
+```bash
+# Iniciar
+docker compose up -d
+
+# Parar
+docker compose down
+
+# Ver logs
+docker compose logs -f app
+docker compose logs -f mysql
+
+# Remover volumes (limpar banco de dados)
+docker compose down -v
+
+# Rebuild
+docker compose up -d --build
+```
+
+### Artisan Commands
+
+```bash
+# Executar migrations
+docker compose exec app php artisan migrate
+
+# Criar migration
+docker compose exec app php artisan make:migration <nome>
+
+# Criar model
+docker compose exec app php artisan make:model <nome>
+
+# Criar controller
+docker compose exec app php artisan make:controller <nome>
+
+# Executar seeders
+docker compose exec app php artisan db:seed
+
+# Cache clear
+docker compose exec app php artisan cache:clear
+docker compose exec app php artisan config:clear
+```
+
+### Composer
+
+```bash
+# Instalar pacote
+docker compose exec app composer require <pacote>
+
+# Remover pacote
+docker compose exec app composer remove <pacote>
+
+# Atualizar dependências
+docker compose exec app composer update
+```
+
+### Database
+
+```bash
+# Acessar MySQL
+docker compose exec mysql mysql -u personal_app -ppassword personal_app
+
+# Fazer backup
+docker compose exec mysql mysqldump -u personal_app -ppassword personal_app > backup.sql
+
+# Restaurar backup
+docker compose exec -T mysql mysql -u personal_app -ppassword personal_app < backup.sql
+```
+
+## 🧪 Testes
+
+```bash
+# Rodar testes com Pest
+docker compose exec app ./vendor/bin/pest
+
+# Rodar testes específicos
+docker compose exec app ./vendor/bin/pest tests/Feature/ExampleTest.php
+
+# Com coverage
+docker compose exec app ./vendor/bin/pest --coverage
+```
+
+## 📦 Dependências Principais
+
+- **Laravel 12.x** - Framework PHP
+- **PHP 8.4** - Linguagem de programação
+- **MySQL 8.0** - Banco de dados
+- **Pest** - Framework de testes
+- **Composer** - Gerenciador de pacotes PHP
+
+## 🔧 Troubleshooting
+
+### Porta já em uso
+
+Se as portas 3306 ou 8000 estiverem em uso, edite `docker-compose.yml`:
+
+```yaml
+ports:
+  - "3307:3306"  # Mude para uma porta diferente
+  - "8001:8000"  # Mude para uma porta diferente
+```
+
+### Erro de permissão
+
+```bash
+# Corrigir permissões
+docker compose exec app chown -R www-data:www-data /app
+docker compose exec app chmod -R 755 /app
+```
+
+### Banco de dados não conecta
+
+```bash
+# Remover e reconstruir
+docker compose down -v
+docker compose up -d
+docker compose exec app php artisan migrate
+```
+
+### Cache de build
+
+```bash
+# Limpar cache Docker
+docker compose build --no-cache
+
+# Reconstruir sem usar cache
+docker compose up -d --build --no-cache
+```
+
+## 📚 Recursos
+
+- [Documentação Laravel](https://laravel.com/docs)
+- [Docker Docs](https://docs.docker.com)
+- [MySQL Docs](https://dev.mysql.com/doc)
+- [Pest Documentation](https://pestphp.com)
+
+## 📝 Notas
+
+- O arquivo `.env` contém informações sensíveis - não commit em repositórios públicos
+- Os volumes do Docker persistem os dados do banco mesmo após `docker down`
+- Use `docker compose logs` para debug
+- As migrations são automáticas ao subir os containers
+
+## 🤝 Contribuindo
+
+1. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
+2. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
+3. Push para a branch (`git push origin feature/AmazingFeature`)
+4. Abra um Pull Request
+
+## 📄 Licença
+
+Este projeto está licenciado sob a MIT License - veja o arquivo LICENSE para mais detalhes.
+
+## ✨ Desenvolvedor
+
+Criado com ❤️ por [Seu Nome]
+
+---
+
+**Última atualização**: 2 de Março de 2026

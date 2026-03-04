@@ -74,33 +74,51 @@
                     <h3 class="text-4xl font-black mb-3 tracking-tight">Welcome Back</h3>
                     <p class="text-slate-500 dark:text-slate-400">Log in to your personal trainer dashboard to manage your clients.</p>
                 </div>
-                <form class="space-y-6">
+                <form class="space-y-6" method="POST" action="{{ route('login') }}">
+                    @csrf
+                    
+                    @if ($errors->any())
+                        <div class="bg-red-500/10 border-2 border-red-500/50 rounded-xl p-4">
+                            <div class="flex items-start gap-3">
+                                <span class="material-symbols-outlined text-red-500">error</span>
+                                <div class="flex-1">
+                                    <p class="font-semibold text-red-500 mb-1">Unable to sign in</p>
+                                    <ul class="text-sm text-red-400 space-y-1">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                    
                     <div>
                         <label class="block text-sm font-semibold mb-2 text-slate-700 dark:text-slate-300">Email Address</label>
                         <div class="relative group">
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-primary transition-colors">
                                 <span class="material-symbols-outlined text-xl">mail</span>
                             </div>
-                            <input class="w-full bg-slate-100 dark:bg-slate-800/50 border-2 border-transparent focus:border-primary/50 focus:ring-0 rounded-xl py-4 pl-12 pr-4 text-slate-900 dark:text-white transition-all placeholder:text-slate-500" placeholder="coach@fitassist.com" type="email" />
+                            <input name="email" class="w-full bg-slate-100 dark:bg-slate-800/50 border-2 border-transparent focus:border-primary/50 focus:ring-0 rounded-xl py-4 pl-12 pr-4 text-slate-900 dark:text-white transition-all placeholder:text-slate-500" placeholder="coach@fitassist.com" type="email" value="{{ old('email') }}" required autofocus />
                         </div>
                     </div>
                     <div>
                         <div class="flex justify-between items-center mb-2">
                             <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300">Password</label>
-                            <a class="text-xs font-bold text-primary hover:underline uppercase tracking-wider" href="#">Forgot Password?</a>
+                            <a class="text-xs font-bold text-primary hover:underline uppercase tracking-wider" href="{{ route('password.request') }}">Forgot Password?</a>
                         </div>
                         <div class="relative group">
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-primary transition-colors">
                                 <span class="material-symbols-outlined text-xl">lock</span>
                             </div>
-                            <input class="w-full bg-slate-100 dark:bg-slate-800/50 border-2 border-transparent focus:border-primary/50 focus:ring-0 rounded-xl py-4 pl-12 pr-12 text-slate-900 dark:text-white transition-all placeholder:text-slate-500" placeholder="••••••••" type="password" />
+                            <input name="password" class="w-full bg-slate-100 dark:bg-slate-800/50 border-2 border-transparent focus:border-primary/50 focus:ring-0 rounded-xl py-4 pl-12 pr-12 text-slate-900 dark:text-white transition-all placeholder:text-slate-500" placeholder="••••••••" type="password" required />
                             <button class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-200" type="button">
                                 <span class="material-symbols-outlined text-xl">visibility</span>
                             </button>
                         </div>
                     </div>
                     <div class="flex items-center">
-                        <input class="w-4 h-4 rounded border-slate-300 dark:border-slate-700 text-primary focus:ring-primary bg-transparent" id="remember" type="checkbox" />
+                        <input name="remember" class="w-4 h-4 rounded border-slate-300 dark:border-slate-700 text-primary focus:ring-primary bg-transparent" id="remember" type="checkbox" />
                         <label class="ml-2 text-sm text-slate-600 dark:text-slate-400" for="remember">Keep me logged in for 30 days</label>
                     </div>
                     <button class="w-full bg-primary hover:bg-primary/90 text-background-dark font-black py-4 rounded-xl transition-all shadow-[0_0_20px_rgba(13,242,13,0.3)] hover:shadow-[0_0_30px_rgba(13,242,13,0.5)] transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2 text-lg uppercase tracking-tight" type="submit">
@@ -127,7 +145,7 @@
                     </div>
                     <p class="text-sm text-slate-500">
                         Don't have an account?
-                        <a class="text-primary font-bold hover:underline" href="#">Start your free trial</a>
+                        <a class="text-primary font-bold hover:underline" href="{{ route('register') }}">Start your free trial</a>
                     </p>
                 </div>
             </div>

@@ -50,6 +50,46 @@
             </div>
         </div>
 
+        <!-- Client Activity -->
+        <div class="bg-slate-100 dark:bg-slate-900 rounded-xl p-6">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl font-bold">Client Activity</h2>
+                <a href="{{ route('alunos.index') }}" class="text-primary hover:underline font-semibold text-sm flex items-center gap-1">
+                    View All Activity
+                    <span class="material-icons text-sm">arrow_forward</span>
+                </a>
+            </div>
+            <div class="space-y-4">
+                <div class="flex items-start gap-4 p-4 bg-slate-50 dark:bg-slate-800 rounded-xl">
+                    <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
+                        <span class="material-icons text-primary">fitness_center</span>
+                    </div>
+                    <div class="flex-1">
+                        <p class="font-medium text-slate-900 dark:text-slate-100">John Doe completed a workout session.</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Today, 10:30 AM</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4 p-4 bg-slate-50 dark:bg-slate-800 rounded-xl">
+                    <div class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center flex-shrink-0">
+                        <span class="material-icons text-blue-500">monitoring</span>
+                    </div>
+                    <div class="flex-1">
+                        <p class="font-medium text-slate-900 dark:text-slate-100">Sarah Jenkins completed a physical assessment.</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Yesterday, 3:45 PM</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4 p-4 bg-slate-50 dark:bg-slate-800 rounded-xl">
+                    <div class="w-10 h-10 rounded-full bg-orange-500/20 flex items-center justify-center flex-shrink-0">
+                        <span class="material-icons text-orange-500">restaurant</span>
+                    </div>
+                    <div class="flex-1">
+                        <p class="font-medium text-slate-900 dark:text-slate-100">Marcus Thorne started a new meal plan.</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">2 days ago</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Recent Students -->
         <div class="bg-slate-100 dark:bg-slate-900 rounded-xl p-6">
             <div class="flex items-center justify-between mb-6">

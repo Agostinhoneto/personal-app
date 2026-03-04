@@ -10,7 +10,7 @@ class AlunoController extends Controller
     public function index()
     {
         $alunos = Aluno::with(['usuario', 'personal.usuario'])->paginate(15);
-        return response()->json($alunos);
+        return view('alunos.index', compact('alunos'));      
     }
 
     public function store(Request $request)

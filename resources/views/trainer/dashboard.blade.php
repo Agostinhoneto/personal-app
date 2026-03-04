@@ -190,7 +190,7 @@
                                     </p>
                                 </div>
                             </div>
-                            <a href="" class="w-full mt-6 py-2 border border-primary/20 rounded-lg text-primary text-sm font-bold hover:bg-primary/5 transition-colors block text-center">View All Activity</a>
+                            <a href="{{ route('alunos.index') }}" class="w-full mt-6 py-2 border border-primary/20 rounded-lg text-primary text-sm font-bold hover:bg-primary/5 transition-colors block text-center">View All Activity</a>
                         </div>
                     </div>
                 </div>

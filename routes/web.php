@@ -3,6 +3,14 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Trainer\DashboardController;
+use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\PersonalController;
+use App\Http\Controllers\AlunoController;
+use App\Http\Controllers\AvaliacaoController;
+use App\Http\Controllers\TreinoController;
+use App\Http\Controllers\ExercicioController;
+use App\Http\Controllers\PlanoAlimentarController;
+use App\Http\Controllers\MensagemController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,7 +63,83 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     /*
     |--------------------------------------------------------------------------
-    | Funcionalidades do Dashboard
+    | Gestão de Alunos
+    |--------------------------------------------------------------------------
+    */
+
+    Route::resource('alunos', AlunoController::class);
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Gestão de Personais
+    |--------------------------------------------------------------------------
+    */
+
+    Route::resource('personais', PersonalController::class);
+    Route::get('personais/{personal}/alunos', [PersonalController::class, 'alunos'])
+        ->name('personais.alunos');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Gestão de Usuários
+    |--------------------------------------------------------------------------
+    */
+
+    Route::resource('usuarios', UsuarioController::class);
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Avaliações Físicas
+    |--------------------------------------------------------------------------
+    */
+
+    Route::resource('avaliacoes', AvaliacaoController::class);
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Treinos
+    |--------------------------------------------------------------------------
+    */
+
+    Route::resource('treinos', TreinoController::class);
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Exercícios
+    |--------------------------------------------------------------------------
+    */
+
+    Route::resource('exercicios', ExercicioController::class);
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Planos Alimentares
+    |--------------------------------------------------------------------------
+    */
+
+    Route::resource('planos-alimentares', PlanoAlimentarController::class);
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Mensagens
+    |--------------------------------------------------------------------------
+    */
+
+    Route::resource('mensagens', MensagemController::class)->only(['index', 'show', 'store', 'destroy']);
+    Route::patch('mensagens/{mensagem}/marcar-lida', [MensagemController::class, 'marcarComoLida'])
+        ->name('mensagens.marcar-lida');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Funcionalidades do Dashboard (Legacy - Manter por compatibilidade)
     |--------------------------------------------------------------------------
     */
 
@@ -74,7 +158,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     /*
     |--------------------------------------------------------------------------
-    | Workout Plans
+    | Workout Plans (Legacy - Redirecionar para nova rota)
     |--------------------------------------------------------------------------
     */
 
@@ -83,9 +167,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->group(function () {
 
             Route::get('/create', function () {
-                return redirect()
-                    ->route('dashboard')
-                    ->with('info', 'Create workout plan feature coming soon');
+                return redirect()->route('treinos.create');
             })->name('create');
 
         });
@@ -93,7 +175,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     /*
     |--------------------------------------------------------------------------
-    | Clients
+    | Clients (Legacy - Redirecionar para nova rota)
     |--------------------------------------------------------------------------
     */
 
@@ -102,9 +184,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->group(function () {
 
             Route::get('/', function () {
-                return redirect()
-                    ->route('dashboard')
-                    ->with('info', 'Clients list coming soon');
+                return redirect()->route('alunos.index');
             })->name('index');
 
         });
@@ -134,9 +214,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->group(function () {
 
             Route::get('/', function () {
-                return redirect()
-                    ->route('dashboard')
-                    ->with('info', 'Notifications center coming soon');
+                return redirect()->route('mensagens.index');
             })->name('index');
 
         });

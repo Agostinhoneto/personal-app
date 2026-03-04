@@ -12,11 +12,11 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // Dados simulados - depois substituir por dados reais do banco
         $data = [
             'totalClients' => 42,
             'activeSessions' => 128,
             'avgCompletion' => 94.2,
+
             'todaySessions' => [
                 [
                     'time' => '08:00 AM',
@@ -37,6 +37,7 @@ class DashboardController extends Controller
                     'status' => 'upcoming'
                 ]
             ],
+
             'newClients' => [
                 [
                     'name' => 'Jessica Lee',
@@ -49,6 +50,7 @@ class DashboardController extends Controller
                     'avatar' => 'https://example.com/avatar2.jpg'
                 ]
             ],
+
             'activities' => [
                 [
                     'client' => 'Alex Morgan',
@@ -73,7 +75,6 @@ class DashboardController extends Controller
 
         return view('trainer.dashboard', $data);
     }
-
 
     public function trainer()
     {
@@ -182,13 +183,13 @@ class DashboardController extends Controller
             'activity_all' => route('activity.index')
         ];
 
-        return view('dashboard.trainer', compact(
-            'trainer',
-            'metrics',
-            'todaySchedule',
-            'newClientAlerts',
-            'clientActivities',
-            'links'
-        ));
+        return view('dashboard.trainer', [
+            'trainer' => $trainer,
+            'metrics' => $metrics,
+            'todaySchedule' => $todaySchedule,
+            'newClientAlerts' => $newClientAlerts,
+            'clientActivities' => $clientActivities,
+            'links' => $links
+        ]);
     }
 }

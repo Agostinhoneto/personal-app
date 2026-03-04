@@ -72,6 +72,10 @@
                         </a>
                     </div>
                     <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary" data-alt="Portrait of a professional fitness trainer" style="background-image: url('');"></div>
+                    <form method="POST" action="{{ route('logout') }}" class="ml-4">
+                        @csrf
+                        <button type="submit" class="text-sm text-slate-600 dark:text-primary hover:underline">Sair</button>
+                    </form>
                 </div>
             </header>
             <main class="px-6 lg:px-40 py-8 max-w-[1440px] mx-auto w-full">

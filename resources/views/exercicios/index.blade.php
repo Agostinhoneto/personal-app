@@ -5,9 +5,10 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>FitAssist - Biblioteca de Exercícios</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
     <script id="tailwind-config">
         tailwind.config = {
@@ -32,141 +33,344 @@
             },
         }
     </script>
-    <style>
-        .form-select {
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%230df20d' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-            background-position: right 0.5rem center;
-            background-repeat: no-repeat;
-            background-size: 1.5em 1.5em;
-            padding-right: 2.5rem;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-        }
-    </style>
 </head>
 
-<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
-    <div class="relative flex flex-col min-h-screen w-full overflow-x-hidden">
-        <header class="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-background-dark/50 backdrop-blur-md sticky top-0 z-50">
-            <div class="flex items-center gap-3">
-                <div class="flex items-center justify-center w-10 h-10 bg-primary/20 rounded-lg">
-                    <span class="material-symbols-outlined text-primary">exercise</span>
+<body class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar Navigation -->
+        <aside class="w-64 flex flex-col border-r border-primary/10 bg-background-light dark:bg-background-dark">
+            <div class="p-6 flex items-center gap-3">
+                <div class="size-10 rounded-full bg-primary flex items-center justify-center text-background-dark font-bold text-xl overflow-hidden">
+                    <img class="w-full h-full object-cover" data-alt="Logotipo FitAssist" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYOOfIfQF9_J-imv3Uld4pkAM_-p0X1wiLPNnxTeqzth7z0LED_FJzaMdxrLBEOapTVZaSaij43EQcD0KpD63SgA_LOJcGBkIFP9D8KeYf3XcUr5JD6xUp2Lm8JJuI48R75G6bs2y0PhQQho1_Mj1QOmq8rgM9re_fz1xtrYgf-dzWoA5GtGIXGQ2N1yxumtW3HqwDXT6hK5YKNrxWYStdxLpCOvdvko7qI-mRQL16KEru8kxQJyRheYcHY3lYACZxVl4rDfYrmGm7" />
                 </div>
-                <h2 class="text-xl font-bold tracking-tight text-slate-100 uppercase">Fit<span class="text-primary">Assist</span></h2>
+                <div>
+                    <h1 class="text-base font-bold leading-none">FitAssist</h1>
+                    <p class="text-xs text-primary/70">Premium Trainer</p>
+                </div>
             </div>
-            <div class="flex items-center gap-4">
-                <button class="p-2 text-slate-400 hover:text-primary transition-colors">
-                    <span class="material-symbols-outlined">notifications</span>
+            <nav class="flex-1 px-4 py-4 space-y-1">
+                <a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors" href="#">
+                    <span class="material-symbols-outlined">dashboard</span>
+                    <span class="text-sm font-medium">Dashboard</span>
+                </a>
+                <a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors" href="#">
+                    <span class="material-symbols-outlined">group</span>
+                    <span class="text-sm font-medium">Alunos</span>
+                </a>
+                <a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors" href="#">
+                    <span class="material-symbols-outlined">fitness_center</span>
+                    <span class="text-sm font-medium">Treinos</span>
+                </a>
+                <a class="flex items-center gap-3 px-3 py-2 bg-primary/10 text-primary rounded-lg" href="#">
+                    <span class="material-symbols-outlined">menu_book</span>
+                    <span class="text-sm font-medium">Biblioteca</span>
+                </a>
+                <a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors mt-auto" href="#">
+                    <span class="material-symbols-outlined">settings</span>
+                    <span class="text-sm font-medium">Configurações</span>
+                </a>
+            </nav>
+            <div class="p-4 border-t border-primary/10">
+                <div class="flex items-center gap-3 p-2">
+                    <div class="size-8 rounded-full bg-primary/20 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-primary text-sm">person</span>
+                    </div>
+                    <div class="flex-1 overflow-hidden">
+                        <p class="text-xs font-bold truncate">Ricardo Silva</p>
+                        <p class="text-[10px] text-slate-500 truncate">Sair da conta</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        <!-- Main Content Area -->
+        <main class="flex-1 flex flex-col overflow-y-auto">
+            <!-- Header Section -->
+            <header class="p-8 border-b border-primary/10 flex flex-wrap items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-3xl font-black tracking-tight">Biblioteca de Exercícios</h2>
+                    <p class="text-slate-500 dark:text-slate-400 mt-1">Gerencie seu catálogo de movimentos e técnicas.</p>
+                </div>
+                <button class="bg-primary hover:bg-primary/90 text-background-dark font-bold py-2.5 px-6 rounded-lg flex items-center gap-2 transition-all">
+                    <span class="material-symbols-outlined">add</span>
+                    Adicionar Exercício
                 </button>
-                <div class="w-8 h-8 rounded-full bg-primary/20 border border-primary/40 flex items-center justify-center">
-                    <span class="material-symbols-outlined text-sm text-primary">person</span>
-                </div>
-            </div>
-        </header>
-        <main class="flex-1 max-w-5xl mx-auto w-full p-6 lg:p-10">
-            <div class="flex flex-col gap-8">
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <div>
-                        <h1 class="text-3xl font-bold text-slate-100 tracking-tight">Cadastrar Novo Exercício</h1>
-                        <p class="text-slate-400 mt-1">Preencha os detalhes para adicionar um novo exercício à biblioteca.</p>
+            </header>
+            <!-- Filters Section -->
+            <section class="p-8 bg-slate-50/50 dark:bg-background-dark/50 space-y-6">
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="relative flex-1">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+                        <input class="w-full pl-10 pr-4 py-3 bg-white dark:bg-primary/5 border border-slate-200 dark:border-primary/20 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-sm transition-all" placeholder="Pesquisar exercícios..." type="text" />
+                    </div>
+                    <div class="flex gap-2">
+                        <button class="flex items-center gap-2 px-4 py-3 bg-white dark:bg-primary/10 border border-slate-200 dark:border-primary/20 rounded-xl text-sm font-medium hover:border-primary transition-all">
+                            <span class="material-symbols-outlined text-primary">filter_list</span>
+                            Filtros Avançados
+                        </button>
                     </div>
                 </div>
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <div class="lg:col-span-2 flex flex-col gap-6">
-                        <div class="bg-white/5 border border-white/10 rounded-xl p-6 shadow-xl">
-                            <h3 class="text-lg font-semibold mb-6 flex items-center gap-2">
-                                <span class="material-symbols-outlined text-primary">description</span> Informações Básicas
-                            </h3>
-                            <div class="space-y-6">
-                                <div class="flex flex-col gap-2">
-                                    <label class="text-sm font-medium text-slate-300">Nome do Exercício</label>
-                                    <input class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-slate-100 placeholder:text-slate-600" placeholder="Ex: Supino Reto com Halteres" type="text" />
+                <div class="flex flex-wrap items-center gap-3">
+                    <span class="text-xs font-bold uppercase tracking-wider text-slate-400 mr-2">Grupos Musculares:</span>
+                    <button class="px-4 py-1.5 rounded-full bg-primary text-background-dark text-xs font-bold">Todos</button>
+                    <button class="px-4 py-1.5 rounded-full bg-slate-200 dark:bg-primary/5 hover:bg-primary/20 text-slate-600 dark:text-slate-300 text-xs font-medium transition-colors">Peito</button>
+                    <button class="px-4 py-1.5 rounded-full bg-slate-200 dark:bg-primary/5 hover:bg-primary/20 text-slate-600 dark:text-slate-300 text-xs font-medium transition-colors">Costas</button>
+                    <button class="px-4 py-1.5 rounded-full bg-slate-200 dark:bg-primary/5 hover:bg-primary/20 text-slate-600 dark:text-slate-300 text-xs font-medium transition-colors">Pernas</button>
+                    <button class="px-4 py-1.5 rounded-full bg-slate-200 dark:bg-primary/5 hover:bg-primary/20 text-slate-600 dark:text-slate-300 text-xs font-medium transition-colors">Ombros</button>
+                    <button class="px-4 py-1.5 rounded-full bg-slate-200 dark:bg-primary/5 hover:bg-primary/20 text-slate-600 dark:text-slate-300 text-xs font-medium transition-colors">Braços</button>
+                    <button class="px-4 py-1.5 rounded-full bg-slate-200 dark:bg-primary/5 hover:bg-primary/20 text-slate-600 dark:text-slate-300 text-xs font-medium transition-colors">Core</button>
+                </div>
+                <div class="flex flex-wrap items-center gap-3">
+                    <span class="text-xs font-bold uppercase tracking-wider text-slate-400 mr-2">Dificuldade:</span>
+                    <div class="flex p-1 bg-slate-200 dark:bg-primary/5 rounded-lg">
+                        <button class="px-4 py-1 rounded-md text-xs font-bold bg-white dark:bg-background-dark shadow-sm">Iniciante</button>
+                        <button class="px-4 py-1 rounded-md text-xs font-medium text-slate-500">Intermediário</button>
+                        <button class="px-4 py-1 rounded-md text-xs font-medium text-slate-500">Avançado</button>
+                    </div>
+                </div>
+            </section>
+            <!-- Grid of Cards -->
+            <section class="px-8 py-4 flex-1">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <!-- Exercise Card 1 -->
+                    <div class="group bg-white dark:bg-primary/5 border border-slate-200 dark:border-primary/10 rounded-2xl overflow-hidden hover:border-primary/50 transition-all flex flex-col">
+                        <div class="aspect-video relative overflow-hidden">
+                            <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Atleta realizando supino reto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCdht_DNaPuPF6iflrpGYJnQD3zRsjN_NwBnYFDbY943E_DJJi5_M3QE65-W-0lagHBZijCDkoWzRXpDCjTQ5qNRphcB2w4CgzwHAhL2z68v2oo8tLzySZvhs99zNPSoz2cYRtR277R_fNIzKdR-o7WHWAh9wwGjXVRgIdbEMfqIQD9OKPH4PF9vzTqk7AEj8MEZh3K5yt-v7NVbUgJG6K0ABpFyZ-DXI_qBnXQlAoCvFOR2zeZha5sY3vMSB7Bs7Q5L3z-xRrRSBmc" />
+                            <div class="absolute top-2 right-2 flex gap-1">
+                                <span class="bg-background-dark/80 backdrop-blur-md text-primary px-2 py-1 rounded text-[10px] font-bold uppercase">Peito</span>
+                            </div>
+                        </div>
+                        <div class="p-4 flex-1 flex flex-col">
+                            <h3 class="font-bold text-lg mb-1">Supino Reto</h3>
+                            <div class="flex items-center gap-1.5 mb-4">
+                                <span class="material-symbols-outlined text-primary text-sm">signal_cellular_alt</span>
+                                <span class="text-xs text-slate-500">Iniciante</span>
+                            </div>
+                            <div class="mt-auto flex items-center justify-between pt-4 border-t border-slate-100 dark:border-primary/10">
+                                <div class="flex gap-2">
+                                    <button class="p-2 rounded-lg bg-slate-100 dark:bg-primary/10 hover:bg-primary/20 text-slate-600 dark:text-primary transition-colors">
+                                        <span class="material-symbols-outlined text-sm">edit</span>
+                                    </button>
+                                    <button class="p-2 rounded-lg bg-red-100 dark:bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-400 transition-colors">
+                                        <span class="material-symbols-outlined text-sm">delete</span>
+                                    </button>
                                 </div>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div class="flex flex-col gap-2">
-                                        <label class="text-sm font-medium text-slate-300">Grupo Muscular Alvo</label>
-                                        <select class="form-select w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-slate-100">
-                                            <option class="bg-background-dark" disabled="" selected="" value="">Selecione o músculo</option>
-                                            <option class="bg-background-dark" value="peito">Peito</option>
-                                            <option class="bg-background-dark" value="costas">Costas</option>
-                                            <option class="bg-background-dark" value="pernas">Pernas</option>
-                                            <option class="bg-background-dark" value="ombros">Ombros</option>
-                                            <option class="bg-background-dark" value="braços">Braços</option>
-                                        </select>
-                                    </div>
-                                    <div class="flex flex-col gap-2">
-                                        <label class="text-sm font-medium text-slate-300">Equipamento Necessário</label>
-                                        <select class="form-select w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-slate-100">
-                                            <option class="bg-background-dark" disabled="" selected="" value="">Selecione o equipamento</option>
-                                            <option class="bg-background-dark" value="halteres">Halteres</option>
-                                            <option class="bg-background-dark" value="barra">Barra</option>
-                                            <option class="bg-background-dark" value="maquina">Máquina</option>
-                                            <option class="bg-background-dark" value="polia">Polia</option>
-                                            <option class="bg-background-dark" value="nenhum">Peso do Corpo</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="flex flex-col gap-2">
-                                    <label class="text-sm font-medium text-slate-300">Nível de Dificuldade</label>
-                                    <div class="flex gap-4">
-                                        <label class="flex-1 cursor-pointer">
-                                            <input class="hidden peer" name="difficulty" type="radio" value="beginner" />
-                                            <div class="flex items-center justify-center p-3 rounded-lg border border-white/10 bg-white/5 peer-checked:bg-primary/20 peer-checked:border-primary peer-checked:text-primary transition-all text-slate-400">Iniciante</div>
-                                        </label>
-                                        <label class="flex-1 cursor-pointer">
-                                            <input checked="" class="hidden peer" name="difficulty" type="radio" value="intermediate" />
-                                            <div class="flex items-center justify-center p-3 rounded-lg border border-white/10 bg-white/5 peer-checked:bg-primary/20 peer-checked:border-primary peer-checked:text-primary transition-all text-slate-400">Intermediário</div>
-                                        </label>
-                                        <label class="flex-1 cursor-pointer">
-                                            <input class="hidden peer" name="difficulty" type="radio" value="advanced" />
-                                            <div class="flex items-center justify-center p-3 rounded-lg border border-white/10 bg-white/5 peer-checked:bg-primary/20 peer-checked:border-primary peer-checked:text-primary transition-all text-slate-400">Avançado</div>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="flex flex-col gap-2">
-                                    <label class="text-sm font-medium text-slate-300">Instruções e Dicas de Execução</label>
-                                    <textarea class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-slate-100 placeholder:text-slate-600 resize-none" placeholder="Descreva o passo a passo da execução correta..." rows="6"></textarea>
-                                </div>
+                                <button class="text-xs font-bold text-primary flex items-center gap-1 hover:underline">
+                                    Ver Detalhes
+                                    <span class="material-symbols-outlined text-xs">arrow_forward</span>
+                                </button>
                             </div>
                         </div>
                     </div>
-                    <div class="flex flex-col gap-6">
-                        <div class="bg-white/5 border border-white/10 rounded-xl p-6 shadow-xl">
-                            <h3 class="text-lg font-semibold mb-6 flex items-center gap-2">
-                                <span class="material-symbols-outlined text-primary">video_library</span> Mídia
-                            </h3>
-                            <div class="flex flex-col gap-4">
-                                <div class="aspect-video w-full bg-background-dark border-2 border-dashed border-white/10 rounded-lg flex flex-col items-center justify-center gap-3 group hover:border-primary/50 cursor-pointer transition-colors" data-alt="Placeholder for exercise video or image preview">
-                                    <span class="material-symbols-outlined text-4xl text-slate-600 group-hover:text-primary">upload_file</span>
-                                    <div class="text-center">
-                                        <p class="text-sm font-medium text-slate-400 group-hover:text-slate-200">Upload de vídeo ou foto</p>
-                                        <p class="text-xs text-slate-600">MP4, GIF ou JPG (Máx 20MB)</p>
-                                    </div>
-                                </div>
-                                <div class="p-4 bg-primary/5 border border-primary/20 rounded-lg">
-                                    <p class="text-xs text-primary/80 flex gap-2">
-                                        <span class="material-symbols-outlined text-[16px]">info</span>
-                                        Vídeos curtos ajudam os usuários a entenderem melhor a técnica.
-                                    </p>
-                                </div>
+                    <!-- Exercise Card 2 -->
+                    <div class="group bg-white dark:bg-primary/5 border border-slate-200 dark:border-primary/10 rounded-2xl overflow-hidden hover:border-primary/50 transition-all flex flex-col">
+                        <div class="aspect-video relative overflow-hidden">
+                            <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Atleta realizando agachamento" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAKBv8xm5mzc4EdFEsSq4UhX-o-jDxd6VbdCOd9tNgO2U-RCN9CDMAqfzH0VljeQ1Oj40sYzou-6v8KaebhJ2Tcw49cyW9AdfM-P-mbB07YCSwUMIBUbiAk99xR5XvVR44bYL6g4ggHrnRL8EmZz3RYF7vNIFv5yROavzIOtp3URyaM-0lm-t0afYiYz9FkLaK5sHA5rBeL9b-xODPP03htwhCrY9mdARFZEYXG5LUytZLCG8G6JfEiybKZLg5omTwW6_nvDc3XzxY" />
+                            <div class="absolute top-2 right-2 flex gap-1">
+                                <span class="bg-background-dark/80 backdrop-blur-md text-primary px-2 py-1 rounded text-[10px] font-bold uppercase">Pernas</span>
                             </div>
                         </div>
-                        <div class="flex flex-col gap-3">
-                            <button class="w-full py-4 bg-primary text-background-dark font-bold rounded-lg hover:shadow-[0_0_20px_rgba(13,242,13,0.4)] transition-all flex items-center justify-center gap-2">
-                                <span class="material-symbols-outlined">save</span> Salvar Exercício
-                            </button>
-                            <button class="w-full py-4 bg-white/5 text-slate-300 font-semibold rounded-lg hover:bg-white/10 transition-all border border-white/10">
-                                Cancelar
-                            </button>
+                        <div class="p-4 flex-1 flex flex-col">
+                            <h3 class="font-bold text-lg mb-1">Agachamento Livre</h3>
+                            <div class="flex items-center gap-1.5 mb-4">
+                                <span class="material-symbols-outlined text-primary text-sm">signal_cellular_alt_2_bar</span>
+                                <span class="text-xs text-slate-500">Intermediário</span>
+                            </div>
+                            <div class="mt-auto flex items-center justify-between pt-4 border-t border-slate-100 dark:border-primary/10">
+                                <div class="flex gap-2">
+                                    <button class="p-2 rounded-lg bg-slate-100 dark:bg-primary/10 hover:bg-primary/20 text-slate-600 dark:text-primary transition-colors">
+                                        <span class="material-symbols-outlined text-sm">edit</span>
+                                    </button>
+                                    <button class="p-2 rounded-lg bg-red-100 dark:bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-400 transition-colors">
+                                        <span class="material-symbols-outlined text-sm">delete</span>
+                                    </button>
+                                </div>
+                                <button class="text-xs font-bold text-primary flex items-center gap-1 hover:underline">
+                                    Ver Detalhes
+                                    <span class="material-symbols-outlined text-xs">arrow_forward</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
+                    <!-- Exercise Card 3 -->
+                    <div class="group bg-white dark:bg-primary/5 border border-slate-200 dark:border-primary/10 rounded-2xl overflow-hidden hover:border-primary/50 transition-all flex flex-col">
+                        <div class="aspect-video relative overflow-hidden">
+                            <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Atleta fazendo levantamento terra" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4pYyXv_wQn5Yft-2vbbFsT8ytI2SaB3xPs8ybLPabq5mSGhFuZ7DXCZNQRUl6xCX3LeBnieoE_6aW7BemHNW1KyhaN01vJMmdHIGwbal7iHpuo587VY21xRq9ltcnFqDNIMVk6Q8J1glP_Orl8UuJfRGZUosPl_Ws1fvGroQJ9vrkEvK0iAqTmQ3g-ejLyca1psXhy_KAcQDTeFOIZlF27ZDTq6EEIOBDMyWQUplyNgaJuoBt2XNUv6iPW6zZ5kCMoiLNEft6Zo2m" />
+                            <div class="absolute top-2 right-2 flex gap-1">
+                                <span class="bg-background-dark/80 backdrop-blur-md text-primary px-2 py-1 rounded text-[10px] font-bold uppercase">Costas</span>
+                            </div>
+                        </div>
+                        <div class="p-4 flex-1 flex flex-col">
+                            <h3 class="font-bold text-lg mb-1">Levantamento Terra</h3>
+                            <div class="flex items-center gap-1.5 mb-4">
+                                <span class="material-symbols-outlined text-primary text-sm">signal_cellular_alt</span>
+                                <span class="text-xs text-slate-500">Avançado</span>
+                            </div>
+                            <div class="mt-auto flex items-center justify-between pt-4 border-t border-slate-100 dark:border-primary/10">
+                                <div class="flex gap-2">
+                                    <button class="p-2 rounded-lg bg-slate-100 dark:bg-primary/10 hover:bg-primary/20 text-slate-600 dark:text-primary transition-colors">
+                                        <span class="material-symbols-outlined text-sm">edit</span>
+                                    </button>
+                                    <button class="p-2 rounded-lg bg-red-100 dark:bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-400 transition-colors">
+                                        <span class="material-symbols-outlined text-sm">delete</span>
+                                    </button>
+                                </div>
+                                <button class="text-xs font-bold text-primary flex items-center gap-1 hover:underline">
+                                    Ver Detalhes
+                                    <span class="material-symbols-outlined text-xs">arrow_forward</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Exercise Card 4 -->
+                    <div class="group bg-white dark:bg-primary/5 border border-slate-200 dark:border-primary/10 rounded-2xl overflow-hidden hover:border-primary/50 transition-all flex flex-col">
+                        <div class="aspect-video relative overflow-hidden">
+                            <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Atleta fazendo flexão de braço" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKWLupylaqOHH9IL26PUDV4mzsm71f24__WChGq4ogetfCx4H6nd7cYTqpRQJMQ1I58MQ1Rt1TedoxY-6v-YNseM9IpUws_xflz4I_1YlLfl60LHUhyALfrlFWPBz8sbL-mveiHEf5GZ6DUMY2WZvYlU6b8edEnbUCzwzVqT33bYdAbWWUbTffZCx47WiMwcWytTX2ZBuU1PZvXo4YaSVLEVrs2oe96_8eBRzDYmFRmXYtwExoXvTh-1ijOAAZ3TNxZOqqONGTU6iM" />
+                            <div class="absolute top-2 right-2 flex gap-1">
+                                <span class="bg-background-dark/80 backdrop-blur-md text-primary px-2 py-1 rounded text-[10px] font-bold uppercase">Peito</span>
+                            </div>
+                        </div>
+                        <div class="p-4 flex-1 flex flex-col">
+                            <h3 class="font-bold text-lg mb-1">Flexão de Braço</h3>
+                            <div class="flex items-center gap-1.5 mb-4">
+                                <span class="material-symbols-outlined text-primary text-sm">signal_cellular_alt</span>
+                                <span class="text-xs text-slate-500">Iniciante</span>
+                            </div>
+                            <div class="mt-auto flex items-center justify-between pt-4 border-t border-slate-100 dark:border-primary/10">
+                                <div class="flex gap-2">
+                                    <button class="p-2 rounded-lg bg-slate-100 dark:bg-primary/10 hover:bg-primary/20 text-slate-600 dark:text-primary transition-colors">
+                                        <span class="material-symbols-outlined text-sm">edit</span>
+                                    </button>
+                                    <button class="p-2 rounded-lg bg-red-100 dark:bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-400 transition-colors">
+                                        <span class="material-symbols-outlined text-sm">delete</span>
+                                    </button>
+                                </div>
+                                <button class="text-xs font-bold text-primary flex items-center gap-1 hover:underline">
+                                    Ver Detalhes
+                                    <span class="material-symbols-outlined text-xs">arrow_forward</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Exercise Card 5 -->
+                    <div class="group bg-white dark:bg-primary/5 border border-slate-200 dark:border-primary/10 rounded-2xl overflow-hidden hover:border-primary/50 transition-all flex flex-col">
+                        <div class="aspect-video relative overflow-hidden">
+                            <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Atleta fazendo barra fixa" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7tMANLkR5Nfvz4sQk-Td7QTL7zuqDfseRfiYWIjWkPFdfRiELUeaG9fnB6EF6kxP_mXpPtiq0XZvRry7sz5HFFnF0Uo-whHZ0IzBj8FQrf3_ckgVxDth9I7w2Jzp0PUz5vekR2QIrv9eu9iX-XGkQlpocjv5EeBZL94ot70f-dEmd5b7w__iP18__P8fW7ej-XoPmpBY5cdqLw9bNle_6C9FWRLrla-Qb-FBt7CHs8u_CsOz9LZSzMUHL-t1G0iWbRxphmKn-Ju6G" />
+                            <div class="absolute top-2 right-2 flex gap-1">
+                                <span class="bg-background-dark/80 backdrop-blur-md text-primary px-2 py-1 rounded text-[10px] font-bold uppercase">Costas</span>
+                            </div>
+                        </div>
+                        <div class="p-4 flex-1 flex flex-col">
+                            <h3 class="font-bold text-lg mb-1">Barra Fixa</h3>
+                            <div class="flex items-center gap-1.5 mb-4">
+                                <span class="material-symbols-outlined text-primary text-sm">signal_cellular_alt</span>
+                                <span class="text-xs text-slate-500">Intermediário</span>
+                            </div>
+                            <div class="mt-auto flex items-center justify-between pt-4 border-t border-slate-100 dark:border-primary/10">
+                                <div class="flex gap-2">
+                                    <button class="p-2 rounded-lg bg-slate-100 dark:bg-primary/10 hover:bg-primary/20 text-slate-600 dark:text-primary transition-colors">
+                                        <span class="material-symbols-outlined text-sm">edit</span>
+                                    </button>
+                                    <button class="p-2 rounded-lg bg-red-100 dark:bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-400 transition-colors">
+                                        <span class="material-symbols-outlined text-sm">delete</span>
+                                    </button>
+                                </div>
+                                <button class="text-xs font-bold text-primary flex items-center gap-1 hover:underline">
+                                    Ver Detalhes
+                                    <span class="material-symbols-outlined text-xs">arrow_forward</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Exercise Card 6 -->
+                    <div class="group bg-white dark:bg-primary/5 border border-slate-200 dark:border-primary/10 rounded-2xl overflow-hidden hover:border-primary/50 transition-all flex flex-col">
+                        <div class="aspect-video relative overflow-hidden">
+                            <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Atleta fazendo rosca direta" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUcHIHcZKVdGvhxGPt_N5T05lcRUhwnFwjW_Pqho7udEbM3_CrZFgTPcWO0RScEQnpvNpcFJT9z5i1FUMJNn5UddDankLvkHnhrjTT7a6ZGgFiMX1Kmjhq0thhEml3e07deJuf2BpdzUzfBThjI34Sjalhb31RhUvhei5N-hDXgaOEB5B4Flkdi8pK88UpJChd79CqETbxQeLsy0-HsO7B89SKd44ydqscIfqOzz8oi0ZG0K5QjGeL0zx9_ps0aGUOj5JeURUr76F8" />
+                            <div class="absolute top-2 right-2 flex gap-1">
+                                <span class="bg-background-dark/80 backdrop-blur-md text-primary px-2 py-1 rounded text-[10px] font-bold uppercase">Braços</span>
+                            </div>
+                        </div>
+                        <div class="p-4 flex-1 flex flex-col">
+                            <h3 class="font-bold text-lg mb-1">Rosca Direta W</h3>
+                            <div class="flex items-center gap-1.5 mb-4">
+                                <span class="material-symbols-outlined text-primary text-sm">signal_cellular_alt</span>
+                                <span class="text-xs text-slate-500">Iniciante</span>
+                            </div>
+                            <div class="mt-auto flex items-center justify-between pt-4 border-t border-slate-100 dark:border-primary/10">
+                                <div class="flex gap-2">
+                                    <button class="p-2 rounded-lg bg-slate-100 dark:bg-primary/10 hover:bg-primary/20 text-slate-600 dark:text-primary transition-colors">
+                                        <span class="material-symbols-outlined text-sm">edit</span>
+                                    </button>
+                                    <button class="p-2 rounded-lg bg-red-100 dark:bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-400 transition-colors">
+                                        <span class="material-symbols-outlined text-sm">delete</span>
+                                    </button>
+                                </div>
+                                <button class="text-xs font-bold text-primary flex items-center gap-1 hover:underline">
+                                    Ver Detalhes
+                                    <span class="material-symbols-outlined text-xs">arrow_forward</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Exercise Card 7 -->
+                    <div class="group bg-white dark:bg-primary/5 border border-slate-200 dark:border-primary/10 rounded-2xl overflow-hidden hover:border-primary/50 transition-all flex flex-col">
+                        <div class="aspect-video relative overflow-hidden">
+                            <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Atleta fazendo prancha" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVYAfd4hHn70pMFsQJ9awhM7RJMK7az6dBZ6a6CcesPEfrDa1Fkj2Bx8W5KPDTz_XN53ddT1XW60tUP8xNU3OL3wD1OtcbrK0WRpHRsAbEZlM4LJVy1mYNYb-STt06ft1AMoVJafeISyTBxivdnqsUCHy1P2uOiP4C8ZRRtyMMjnCSAJqUBQ4m2zE8wcu--nlSfojKDS3Gi7cOd5odYxUDGLTD2Ina321RcRvP5afPKUFM8QZWNDgZBk5OfiIZ8MSiAljQXESjqVoA" />
+                            <div class="absolute top-2 right-2 flex gap-1">
+                                <span class="bg-background-dark/80 backdrop-blur-md text-primary px-2 py-1 rounded text-[10px] font-bold uppercase">Core</span>
+                            </div>
+                        </div>
+                        <div class="p-4 flex-1 flex flex-col">
+                            <h3 class="font-bold text-lg mb-1">Prancha Abdominal</h3>
+                            <div class="flex items-center gap-1.5 mb-4">
+                                <span class="material-symbols-outlined text-primary text-sm">signal_cellular_alt</span>
+                                <span class="text-xs text-slate-500">Iniciante</span>
+                            </div>
+                            <div class="mt-auto flex items-center justify-between pt-4 border-t border-slate-100 dark:border-primary/10">
+                                <div class="flex gap-2">
+                                    <button class="p-2 rounded-lg bg-slate-100 dark:bg-primary/10 hover:bg-primary/20 text-slate-600 dark:text-primary transition-colors">
+                                        <span class="material-symbols-outlined text-sm">edit</span>
+                                    </button>
+                                    <button class="p-2 rounded-lg bg-red-100 dark:bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-400 transition-colors">
+                                        <span class="material-symbols-outlined text-sm">delete</span>
+                                    </button>
+                                </div>
+                                <button class="text-xs font-bold text-primary flex items-center gap-1 hover:underline">
+                                    Ver Detalhes
+                                    <span class="material-symbols-outlined text-xs">arrow_forward</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Exercise Card 8 (Add New Placeholder) -->
+                    <div class="border-2 border-dashed border-primary/20 rounded-2xl flex flex-col items-center justify-center p-8 hover:border-primary/60 transition-all cursor-pointer bg-primary/5">
+                        <div class="size-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                            <span class="material-symbols-outlined text-primary">add_circle</span>
+                        </div>
+                        <p class="font-bold text-center">Novo Exercício</p>
+                        <p class="text-xs text-slate-500 text-center mt-1">Crie um movimento personalizado para seus alunos.</p>
+                    </div>
                 </div>
-            </div>
+            </section>
+            <!-- Pagination Section -->
+            <footer class="p-8 border-t border-primary/10 bg-background-light dark:bg-background-dark/80 backdrop-blur-lg mt-auto">
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <p class="text-sm text-slate-500">Mostrando <span class="font-bold text-slate-900 dark:text-slate-100">7</span> de <span class="font-bold text-slate-900 dark:text-slate-100">124</span> exercícios</p>
+                    <div class="flex items-center gap-2">
+                        <button class="p-2 rounded-lg border border-slate-200 dark:border-primary/20 hover:bg-primary/10 disabled:opacity-50 disabled:cursor-not-allowed">
+                            <span class="material-symbols-outlined text-sm">chevron_left</span>
+                        </button>
+                        <button class="size-9 rounded-lg bg-primary text-background-dark font-bold text-sm shadow-lg shadow-primary/20">1</button>
+                        <button class="size-9 rounded-lg border border-slate-200 dark:border-primary/20 hover:bg-primary/10 text-sm font-medium">2</button>
+                        <button class="size-9 rounded-lg border border-slate-200 dark:border-primary/20 hover:bg-primary/10 text-sm font-medium">3</button>
+                        <span class="px-2 text-slate-400">...</span>
+                        <button class="size-9 rounded-lg border border-slate-200 dark:border-primary/20 hover:bg-primary/10 text-sm font-medium">12</button>
+                        <button class="p-2 rounded-lg border border-slate-200 dark:border-primary/20 hover:bg-primary/10">
+                            <span class="material-symbols-outlined text-sm">chevron_right</span>
+                        </button>
+                    </div>
+                </div>
+            </footer>
         </main>
-        <footer class="mt-auto py-8 px-6 border-t border-white/5 text-center">
-            <p class="text-slate-600 text-sm">© 2024 FitAssist Platform. Todos os direitos reservados.</p>
-        </footer>
     </div>
 </body>
 

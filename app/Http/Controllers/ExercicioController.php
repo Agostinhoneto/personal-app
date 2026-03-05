@@ -20,7 +20,7 @@ class ExercicioController extends Controller
         }
 
         $exercicios = $query->paginate(15);
-        return redirect()->route('exercicios.index')->with('error', 'Personal não encontrado');
+        return view('exercicios.index', compact('exercicios'));
         
     }
 

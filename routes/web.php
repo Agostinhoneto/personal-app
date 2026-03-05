@@ -51,6 +51,8 @@ Route::view('/community', 'community')->name('community');
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
+    Route::resource('treinos', TreinoController::class);
+    
     /*
     |--------------------------------------------------------------------------
     | Dashboard

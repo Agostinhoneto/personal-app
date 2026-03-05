@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Aluno;
+use App\Models\Exercicio;
+use App\Models\Personal;
 use App\Models\Treino;
 use Illuminate\Http\Request;
 
@@ -23,6 +26,21 @@ class TreinoController extends Controller
         return response()->json($treinos);
     }
 
+    public function create()
+    {
+        // Retornar dados necessários para criar um treino (ex: lista de alunos, personal, exercícios)
+        $alunos = Aluno::with('usuario')->get();
+        $personais = Personal::with('usuario')->get();
+        $exercicios = Exercicio::with('categoria')->get();
+
+        $data = [
+            'alunos' => $alunos,
+            'personais' => $personais,
+            'exercicios' => $exercicios,
+        ];
+        return view('trainer.create', $data);
+    }
+    
     public function store(Request $request)
     {
         $validated = $request->validate([

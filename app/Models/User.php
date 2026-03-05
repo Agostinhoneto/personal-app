@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class User extends Authenticatable
 {
@@ -13,14 +14,25 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'usuarios';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'nome',
         'email',
         'password',
+        'tipo',
+        'telefone',
+        'foto',
+        'status',
     ];
 
     /**
@@ -43,6 +55,43 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'status' => 'boolean',
         ];
+    }
+
+    /**
+     * Get the password attribute name for authentication.
+     *
+     * @return string
+     */
+    public function getAuthPassword()
+    {
+        return $this->password;
+    }
+
+    /**
+     * Get the name attribute.
+     *
+     * @return string
+     */
+    public function getNameAttribute()
+    {
+        return $this->nome;
+    }
+
+    /**
+     * Get the personal profile.
+     */
+    public function personal(): HasOne
+    {
+        return $this->hasOne(Personal::class, 'usuario_id');
+    }
+
+    /**
+     * Get the aluno profile.
+     */
+    public function aluno(): HasOne
+    {
+        return $this->hasOne(Aluno::class, 'usuario_id');
     }
 }

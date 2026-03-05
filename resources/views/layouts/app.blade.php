@@ -49,21 +49,30 @@
                                 Dashboard
                             </a>
                             
+                            @if(Auth::user()->tipo === 'personal')
+                                <a href="{{ route('alunos.index') }}" class="text-slate-600 dark:text-slate-300 hover:text-primary transition-colors">
+                                    Alunos
+                                </a>
+                                <a href="{{ route('treinos.index') }}" class="text-slate-600 dark:text-slate-300 hover:text-primary transition-colors">
+                                    Treinos
+                                </a>
+                            @endif
+                            
                             <!-- Settings Dropdown -->
                             <div class="relative" x-data="{ open: false }">
                                 <button @click="open = !open" class="flex items-center gap-2 text-slate-600 dark:text-slate-300 hover:text-primary">
-                                    <span>{{ Auth::user()->name }}</span>
+                                    <span>{{ Auth::user()->nome }}</span>
                                     <span class="material-symbols-outlined">arrow_drop_down</span>
                                 </button>
                                 
-                                <div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 w-48 bg-white dark:bg-background-dark rounded-lg shadow-lg border border-primary/10">
+                                <div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 w-48 bg-white dark:bg-background-dark rounded-lg shadow-lg border border-primary/10 z-50">
                                     <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-primary/10">
-                                        Profile
+                                        Perfil
                                     </a>
                                     <form method="POST" action="{{ route('logout') }}">
                                         @csrf
                                         <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-primary/10">
-                                            Logout
+                                            Sair
                                         </button>
                                     </form>
                                 </div>

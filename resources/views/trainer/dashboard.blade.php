@@ -82,23 +82,23 @@
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
                     <div class="flex flex-col gap-1">
                         <h1 class="text-slate-900 dark:text-slate-100 text-4xl font-black leading-tight tracking-tight">Trainer Dashboard</h1>
-                        <p class="text-slate-500 dark:text-primary/60 text-base">Welcome back, . You have  sessions today.</p>
+                        <p class="text-slate-500 dark:text-primary/60 text-base">Bem vindo, {{ $userName }}. Você tem {{ $sessionsToday }} sessões hoje.</p>
                     </div>
-                    <a href="" class="bg-primary text-background-dark px-6 py-2.5 rounded-lg font-bold flex items-center gap-2 hover:opacity-90 transition-opacity">
+                    <a href="{{ route('treinos.create') }}" class="bg-primary text-background-dark px-6 py-2.5 rounded-lg font-bold flex items-center gap-2 hover:opacity-90 transition-opacity">
                         <span class="material-symbols-outlined">add</span>
-                        New Workout Plan
+                        Novo Plano de Treino
                     </a>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
                     <div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-primary/5 border border-slate-200 dark:border-primary/10 shadow-sm">
                         <div class="flex justify-between items-start">
                             <p class="text-slate-500 dark:text-primary/70 text-sm font-semibold uppercase tracking-wider">Total Clients</p>
-                            <span class="material-symbols-outlined text-primary">groups</span>
+                            <span class="material-symbols-outlined text-primary">Grupos</span>
                         </div>
-                        <p class="text-slate-900 dark:text-slate-100 text-3xl font-black"></p>
+                        <p class="text-slate-900 dark:text-slate-100 text-3xl font-black">{{ $totalClients }}</p>
                         <div class="flex items-center gap-1 text-primary text-sm font-bold">
                             <span class="material-symbols-outlined text-sm">trending_up</span>
-                            <span>+ this month</span>
+                            <span>+{{ $newClientsMonth }} Mês Atual</span>
                         </div>
                     </div>
                     <div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-primary/5 border border-slate-200 dark:border-primary/10 shadow-sm">
@@ -106,7 +106,7 @@
                             <p class="text-slate-500 dark:text-primary/70 text-sm font-semibold uppercase tracking-wider">Active Sessions</p>
                             <span class="material-symbols-outlined text-primary">fitness_center</span>
                         </div>
-                        <p class="text-slate-900 dark:text-slate-100 text-3xl font-black"></p>
+                        <p class="text-slate-900 dark:text-slate-100 text-3xl font-black">{{ $activeSessions }}</p>
                         <div class="flex items-center gap-1 text-red-500 text-sm font-bold">
                             <span class="material-symbols-outlined text-sm">trending_down</span>
                             <span>% from last week</span>
@@ -117,10 +117,10 @@
                             <p class="text-slate-500 dark:text-primary/70 text-sm font-semibold uppercase tracking-wider">Avg. Completion</p>
                             <span class="material-symbols-outlined text-primary">analytics</span>
                         </div>
-                        <p class="text-slate-900 dark:text-slate-100 text-3xl font-black">%</p>
+                        <p class="text-slate-900 dark:text-slate-100 text-3xl font-black">{{ $avgCompletion }}</p>
                         <div class="flex items-center gap-1 text-primary text-sm font-bold">
                             <span class="material-symbols-outlined text-sm">check_circle</span>
-                            <span>Above target</span>
+                            <span>Avaliações este mês</span>
                         </div>
                     </div>
                 </div>
@@ -132,22 +132,26 @@
                                 <a href="" class="text-primary text-sm font-bold hover:underline">View Calendar</a>
                             </div>
                             <div class="flex flex-col divide-y divide-slate-200 dark:divide-primary/10">
+                                @forelse($todaySessions as $session)
                                 <div class="p-4 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-primary/10 transition-colors">
                                     <div class="flex items-center gap-4">
                                         <div class="text-primary flex items-center justify-center rounded-lg bg-primary/20 shrink-0 size-12">
-                                            <span class="material-symbols-outlined"></span>
+                                            <span class="material-symbols-outlined">fitness_center</span>
                                         </div>
                                         <div>
-                                            <p class="text-slate-900 dark:text-slate-100 font-bold"></p>
-                                            <p class="text-slate-500 dark:text-primary/60 text-sm"></p>
+                                            <p class="text-slate-900 dark:text-slate-100 font-bold">{{ $session['title'] }}</p>
+                                            <p class="text-slate-500 dark:text-primary/60 text-sm">{{ $session['client'] }} - {{ $session['time'] }}</p>
                                         </div>
                                     </div>
                                     <div class="flex gap-2">
-                                        <button class="bg-primary text-background-dark px-4 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider">Start</button>
-                                        <button class="bg-slate-200 dark:bg-slate-800 text-slate-500 dark:text-slate-400 px-4 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider" disabled>Upcoming</button>
-                                        <button class="bg-slate-100 dark:bg-white/10 text-slate-600 dark:text-slate-300 px-3 py-1.5 rounded-lg text-xs font-bold">Details</button>
+                                        <a href="{{ route('treinos.index') }}" class="bg-slate-100 dark:bg-white/10 text-slate-600 dark:text-slate-300 px-3 py-1.5 rounded-lg text-xs font-bold">Details</a>
                                     </div>
                                 </div>
+                                @empty
+                                <div class="p-8 text-center text-slate-500 dark:text-primary/60">
+                                    Nenhum treino agendado para hoje
+                                </div>
+                                @endforelse
                             </div>
                         </div>
                         <div class="bg-primary/10 border border-primary/20 rounded-xl p-6 flex items-center gap-6">
@@ -156,7 +160,7 @@
                             </div>
                             <div class="flex-1">
                                 <h3 class="text-slate-900 dark:text-slate-100 text-lg font-bold">Weekly Performance Summary</h3>
-                                <p class="text-slate-600 dark:text-primary/70 text-sm">Your clients have burned a total of  kcal this week! Keep pushing the limits.</p>
+                                <p class="text-slate-600 dark:text-primary/70 text-sm">Você tem {{ $totalClients }} alunos ativos. Continue com o ótimo trabalho!</p>
                             </div>
                             <a href="" class="bg-primary text-background-dark px-4 py-2 rounded-lg font-bold text-sm whitespace-nowrap">Generate Report</a>
                         </div>
@@ -165,30 +169,42 @@
                         <div class="bg-white dark:bg-primary/5 border border-slate-200 dark:border-primary/10 rounded-xl p-6">
                             <h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold mb-4">New Client Alerts</h2>
                             <div class="flex flex-col gap-4">
+                                @forelse($newClients as $client)
                                 <div class="flex items-center gap-3 p-3 rounded-lg bg-slate-50 dark:bg-primary/10 border-l-4 border-primary">
-                                    <div class="size-10 rounded-full overflow-hidden flex-shrink-0">
-                                        <img class="w-full h-full object-cover" data-alt="Client profile picture" src="" />
+                                    <div class="size-10 rounded-full overflow-hidden flex-shrink-0 bg-primary/20 flex items-center justify-center">
+                                        @if($client['avatar'])
+                                        <img class="w-full h-full object-cover" alt="{{ $client['name'] }}" src="{{ $client['avatar'] }}" />
+                                        @else
+                                        <span class="material-symbols-outlined text-primary">person</span>
+                                        @endif
                                     </div>
                                     <div class="flex-1 min-w-0">
-                                        <p class="text-slate-900 dark:text-slate-100 font-bold text-sm truncate"></p>
-                                        <p class="text-slate-500 dark:text-primary/60 text-xs"></p>
+                                        <p class="text-slate-900 dark:text-slate-100 font-bold text-sm truncate">{{ $client['name'] }}</p>
+                                        <p class="text-slate-500 dark:text-primary/60 text-xs">{{ $client['message'] }}</p>
                                     </div>
-                                    <button class="text-primary hover:text-white transition-colors">
-                                        <span class="material-symbols-outlined">send</span>
-                                    </button>
+                                    <a href="{{ route('alunos.index') }}" class="text-primary hover:text-white transition-colors">
+                                        <span class="material-symbols-outlined">arrow_forward</span>
+                                    </a>
                                 </div>
+                                @empty
+                                <p class="text-center text-slate-500 dark:text-primary/60">Nenhum aluno novo recentemente</p>
+                                @endforelse
                             </div>
                         </div>
                         <div class="bg-white dark:bg-primary/5 border border-slate-200 dark:border-primary/10 rounded-xl p-6">
                             <h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold mb-4">Client Activity</h2>
                             <div class="space-y-4">
+                                @forelse($activities as $activity)
                                 <div class="flex items-start gap-3">
                                     <div class="size-2 rounded-full bg-primary mt-2"></div>
                                     <p class="text-sm text-slate-600 dark:text-slate-300">
-                                        <span class="font-bold text-slate-900 dark:text-white">John Doe</span> completed a workout session.
-                                        <span class="block text-xs text-slate-400 dark:text-primary/40 mt-1">Today, 10:30 AM</span>
+                                        <span class="font-bold text-slate-900 dark:text-white">{{ $activity['client'] }}</span> {{ $activity['activity'] }}
+                                        <span class="block text-xs text-slate-400 dark:text-primary/40 mt-1">{{ $activity['time'] }}</span>
                                     </p>
                                 </div>
+                                @empty
+                                <p class="text-center text-slate-500 dark:text-primary/60">Nenhuma atividade recente</p>
+                                @endforelse
                             </div>
                             <a href="{{ route('alunos.index') }}" class="w-full mt-6 py-2 border border-primary/20 rounded-lg text-primary text-sm font-bold hover:bg-primary/5 transition-colors block text-center">View All Activity</a>
                         </div>

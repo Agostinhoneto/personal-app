@@ -19,14 +19,14 @@ class UsuarioController extends Controller
         $validated = $request->validate([
             'nome' => 'required|string|max:100',
             'email' => 'required|email|unique:usuarios,email',
-            'senha' => 'required|string|min:6',
+            'password' => 'required|string|min:6',
             'tipo' => 'required|in:admin,personal,aluno',
             'telefone' => 'nullable|string|max:20',
             'foto' => 'nullable|string|max:255',
             'status' => 'boolean',
         ]);
 
-        $validated['senha'] = Hash::make($validated['senha']);
+        $validated['password'] = Hash::make($validated['password']);
 
         $usuario = Usuario::create($validated);
         return response()->json($usuario, 201);
@@ -43,15 +43,15 @@ class UsuarioController extends Controller
         $validated = $request->validate([
             'nome' => 'sometimes|string|max:100',
             'email' => 'sometimes|email|unique:usuarios,email,' . $usuario->id,
-            'senha' => 'sometimes|string|min:6',
+            'password' => 'sometimes|string|min:6',
             'tipo' => 'sometimes|in:admin,personal,aluno',
             'telefone' => 'nullable|string|max:20',
             'foto' => 'nullable|string|max:255',
             'status' => 'boolean',
         ]);
 
-        if (isset($validated['senha'])) {
-            $validated['senha'] = Hash::make($validated['senha']);
+        if (isset($validated['password'])) {
+            $validated['password'] = Hash::make($validated['password']);
         }
 
         $usuario->update($validated);

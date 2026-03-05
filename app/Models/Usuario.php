@@ -14,7 +14,7 @@ class Usuario extends Model
     protected $fillable = [
         'nome',
         'email',
-        'senha',
+        'password',
         'tipo',
         'telefone',
         'foto',
@@ -22,7 +22,7 @@ class Usuario extends Model
     ];
 
     protected $hidden = [
-        'senha',
+        'password',
     ];
 
     protected $casts = [

@@ -3,14 +3,14 @@
 @section('title', 'Dashboard - FitAssist')
 
 @section('content')
-<div class="space-y-8">
+<div class="space-y-8 px-6 py-8 max-w-7xl mx-auto">
     <!-- Header -->
     <div>
         <h1 class="text-4xl font-black mb-2">Dashboard</h1>
-        <p class="text-slate-500 dark:text-slate-400">Bem-vindo de volta, {{ auth()->user()->name }}!</p>
+        <p class="text-slate-500 dark:text-slate-400">Bem-vindo de volta, {{ Auth::user()->nome }}!</p>
     </div>
 
-    @if(auth()->user()->tipo === 'personal')
+    @if(Auth::user()->tipo === 'personal')
         <!-- Stats Cards -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div class="bg-slate-100 dark:bg-slate-900 rounded-xl p-6 border-2 border-transparent hover:border-primary/30 transition-colors">

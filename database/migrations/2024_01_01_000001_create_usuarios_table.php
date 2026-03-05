@@ -15,11 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('nome', 100);
             $table->string('email', 100)->unique();
-            $table->string('senha', 255);
+            $table->string('password', 255);
             $table->enum('tipo', ['admin', 'personal', 'aluno']);
             $table->string('telefone', 20)->nullable();
             $table->string('foto', 255)->nullable();
             $table->boolean('status')->default(true);
+            $table->rememberToken();
             $table->timestamps();
         });
     }

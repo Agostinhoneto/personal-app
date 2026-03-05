@@ -84,7 +84,7 @@
                         <h1 class="text-slate-900 dark:text-slate-100 text-4xl font-black leading-tight tracking-tight">Trainer Dashboard</h1>
                         <p class="text-slate-500 dark:text-primary/60 text-base">Bem vindo, {{ $userName }}. Você tem {{ $sessionsToday }} sessões hoje.</p>
                     </div>
-                    <a href="{{ route('treinos.create') }}" class="bg-primary text-background-dark px-6 py-2.5 rounded-lg font-bold flex items-center gap-2 hover:opacity-90 transition-opacity">
+                    <a href="{{ route('treinos.index') }}" class="bg-primary text-background-dark px-6 py-2.5 rounded-lg font-bold flex items-center gap-2 hover:opacity-90 transition-opacity">
                         <span class="material-symbols-outlined">add</span>
                         Novo Plano de Treino
                     </a>

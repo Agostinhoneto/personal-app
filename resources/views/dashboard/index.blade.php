@@ -53,9 +53,9 @@
         <!-- Client Activity -->
         <div class="bg-slate-100 dark:bg-slate-900 rounded-xl p-6">
             <div class="flex items-center justify-between mb-6">
-                <h2 class="text-2xl font-bold">Client Activity</h2>
+                <h2 class="text-2xl font-bold">Clientes Ativos</h2>
                 <a href="{{ route('alunos.index') }}" class="text-primary hover:underline font-semibold text-sm flex items-center gap-1">
-                    View All Activity
+                    Ver Todos
                     <span class="material-icons text-sm">arrow_forward</span>
                 </a>
             </div>

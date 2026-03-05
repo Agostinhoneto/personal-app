@@ -23,7 +23,7 @@ class TreinoController extends Controller
         }
 
         $treinos = $query->orderBy('data_inicio', 'desc')->paginate(15);
-        return response()->json($treinos);
+        return view('treinos.index', compact('treinos'));
     }
 
     public function create()

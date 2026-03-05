@@ -1,93 +1,248 @@
-@extends('layouts.app')
+<!DOCTYPE html>
 
-@section('title', 'Treinos')
+<html class="dark" lang="pt-br">
 
-@section('content')
-<div class="space-y-6">
-    <!-- Header -->
-    <div class="flex items-center justify-between">
-        <div>
-            <h1 class="text-4xl font-black mb-2">Treinos</h1>
-            <p class="text-slate-500 dark:text-slate-400">Gerencie os treinos dos seus alunos</p>
-        </div>
-        @if(auth()->user()->tipo === 'personal')
-            <a href="{{ route('treinos.create') }}" class="px-6 py-3 bg-primary text-background-dark font-bold rounded-xl hover:bg-primary/90 transition-colors flex items-center gap-2">
-                <span class="material-symbols-outlined">add</span>
-                Novo Treino
-            </a>
-        @endif
-    </div>
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>FitAssist - Meus Treinos</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0df20d",
+                        "background-light": "#f5f8f5",
+                        "background-dark": "#102210",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
 
-    <!-- Filters -->
-    <div class="bg-slate-100 dark:bg-slate-900 rounded-xl p-6">
-        <form method="GET" class="flex gap-4">
-            <input type="text" name="search" placeholder="Buscar treino..." value="{{ request('search') }}" 
-                class="flex-1 bg-slate-50 dark:bg-slate-800 border-2 border-transparent focus:border-primary/50 rounded-xl px-4 py-3">
-            <select name="status" class="bg-slate-50 dark:bg-slate-800 border-2 border-transparent focus:border-primary/50 rounded-xl px-4 py-3">
-                <option value="">Todos Status</option>
-                <option value="ativo" {{ request('status') === 'ativo' ? 'selected' : '' }}>Ativo</option>
-                <option value="inativo" {{ request('status') === 'inativo' ? 'selected' : '' }}>Inativo</option>
-                <option value="concluido" {{ request('status') === 'concluido' ? 'selected' : '' }}>Concluído</option>
-            </select>
-            <button type="submit" class="px-6 py-3 bg-primary text-background-dark font-bold rounded-xl hover:bg-primary/90 transition-colors">
-                Filtrar
-            </button>
-        </form>
-    </div>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
 
-    <!-- Treinos Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        @forelse($treinos as $treino)
-            <div class="bg-slate-100 dark:bg-slate-900 rounded-xl p-6 hover:border-2 hover:border-primary/30 transition-all">
-                <div class="flex items-start justify-between mb-4">
-                    <div class="flex items-center gap-3">
-                        <span class="material-symbols-outlined text-primary text-3xl">assignment</span>
-                        <div>
-                            <h3 class="font-bold text-lg">{{ $treino->nome }}</h3>
-                            <p class="text-sm text-slate-500 dark:text-slate-400">{{ $treino->aluno->usuario->nome }}</p>
-                        </div>
-                    </div>
-                    <span class="px-3 py-1 rounded-full text-xs font-bold 
-                        {{ $treino->status === 'ativo' ? 'bg-primary/10 text-primary' : 
-                           ($treino->status === 'concluido' ? 'bg-blue-500/10 text-blue-500' : 'bg-slate-500/10 text-slate-500') }}">
-                        {{ ucfirst($treino->status) }}
-                    </span>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100">
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <aside class="w-64 border-r border-primary/10 bg-background-light dark:bg-background-dark flex flex-col shrink-0">
+            <div class="p-6 flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-background-dark">
+                    <span class="material-symbols-outlined font-bold">fitness_center</span>
                 </div>
-
-                <div class="space-y-2 mb-4">
-                    <div class="flex items-center gap-2 text-sm">
-                        <span class="material-symbols-outlined text-primary text-base">calendar_today</span>
-                        <span>{{ $treino->data_inicio->format('d/m/Y') }} - {{ $treino->data_fim ? $treino->data_fim->format('d/m/Y') : 'Atual' }}</span>
-                    </div>
-                    @if($treino->objetivo)
-                        <div class="flex items-center gap-2 text-sm">
-                            <span class="material-symbols-outlined text-primary text-base">flag</span>
-                            <span>{{ Str::limit($treino->objetivo, 30) }}</span>
-                        </div>
-                    @endif
-                    <div class="flex items-center gap-2 text-sm">
-                        <span class="material-symbols-outlined text-primary text-base">fitness_center</span>
-                        <span>{{ $treino->exercicios->count() }} exercícios</span>
-                    </div>
+                <div>
+                    <h1 class="text-lg font-bold leading-tight">FitAssist</h1>
+                    <p class="text-xs text-primary/70">Personal Trainer</p>
                 </div>
-
-                <a href="{{ route('treinos.show', $treino) }}" class="block w-full text-center px-4 py-2 bg-primary text-background-dark font-bold rounded-xl hover:bg-primary/90 transition-colors">
-                    Ver Treino
+            </div>
+            <nav class="flex-1 px-4 py-4 space-y-2">
+                <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary transition-colors" href="#">
+                    <span class="material-symbols-outlined">dashboard</span>
+                    <span class="text-sm font-medium">Dashboard</span>
                 </a>
+                <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary transition-colors" href="#">
+                    <span class="material-symbols-outlined">group</span>
+                    <span class="text-sm font-medium">Alunos</span>
+                </a>
+                <a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/20 text-primary border border-primary/20" href="#">
+                    <span class="material-symbols-outlined">exercise</span>
+                    <span class="text-sm font-medium">Meus Treinos</span>
+                </a>
+                <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary transition-colors" href="#">
+                    <span class="material-symbols-outlined">menu_book</span>
+                    <span class="text-sm font-medium">Biblioteca</span>
+                </a>
+                <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary transition-colors" href="#">
+                    <span class="material-symbols-outlined">settings</span>
+                    <span class="text-sm font-medium">Configurações</span>
+                </a>
+            </nav>
+            <div class="p-4 mt-auto border-t border-primary/10">
+                <div class="flex items-center gap-3 px-2">
+                    <div class="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-sm">person</span>
+                    </div>
+                    <div class="flex-1 overflow-hidden">
+                        <p class="text-sm font-medium truncate">Prof. Ricardo</p>
+                        <p class="text-xs text-slate-500 truncate">Sair da conta</p>
+                    </div>
+                </div>
             </div>
-        @empty
-            <div class="col-span-full text-center py-12">
-                <span class="material-symbols-outlined text-slate-400 text-6xl mb-4">assignment</span>
-                <p class="text-slate-500 dark:text-slate-400 text-lg">Nenhum treino encontrado</p>
-            </div>
-        @endforelse
+        </aside>
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col overflow-y-auto">
+            <!-- Header -->
+            <header class="px-8 pt-8 pb-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h2 class="text-3xl font-black tracking-tight uppercase italic">Meus Treinos</h2>
+                    <p class="text-slate-500 dark:text-slate-400">Gerencie e crie rotinas personalizadas para seus alunos.</p>
+                </div>
+                <button class="bg-primary hover:bg-primary/90 text-background-dark font-bold px-6 py-2.5 rounded-lg flex items-center gap-2 transition-transform active:scale-95 shadow-lg shadow-primary/20">
+                    <span class="material-symbols-outlined">add</span>
+                    <span>Criar Novo Treino</span>
+                </button>
+            </header>
+            <!-- Search and Filters -->
+            <section class="px-8 py-4 space-y-4">
+                <div class="flex flex-col lg:flex-row gap-4">
+                    <div class="relative flex-1">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+                        <input class="w-full bg-slate-100 dark:bg-primary/5 border-none focus:ring-2 focus:ring-primary rounded-lg pl-10 pr-4 py-2.5 text-sm" placeholder="Buscar treinos..." type="text" />
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <div class="group relative">
+                            <button class="flex items-center gap-2 px-4 py-2.5 bg-slate-100 dark:bg-primary/5 rounded-lg text-sm font-medium hover:bg-slate-200 dark:hover:bg-primary/10 border border-transparent dark:border-primary/10">
+                                <span>Nível</span>
+                                <span class="material-symbols-outlined text-xs">keyboard_arrow_down</span>
+                            </button>
+                        </div>
+                        <div class="group relative">
+                            <button class="flex items-center gap-2 px-4 py-2.5 bg-slate-100 dark:bg-primary/5 rounded-lg text-sm font-medium hover:bg-slate-200 dark:hover:bg-primary/10 border border-transparent dark:border-primary/10">
+                                <span>Divisão</span>
+                                <span class="material-symbols-outlined text-xs">keyboard_arrow_down</span>
+                            </button>
+                        </div>
+                        <button class="flex items-center gap-2 px-4 py-2.5 bg-slate-200 dark:bg-primary/20 rounded-lg text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-primary">
+                            Limpar Filtros
+                        </button>
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <span class="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold border border-primary/30 flex items-center gap-1">Iniciante <span class="material-symbols-outlined text-[14px] cursor-pointer">close</span></span>
+                    <span class="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold border border-primary/30 flex items-center gap-1">ABC <span class="material-symbols-outlined text-[14px] cursor-pointer">close</span></span>
+                </div>
+            </section>
+            <!-- Workout Grid -->
+            <section class="px-8 py-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                <!-- Card 1 -->
+                <div class="bg-slate-50 dark:bg-[#162a16] border border-slate-200 dark:border-primary/10 rounded-xl overflow-hidden flex flex-col group hover:shadow-2xl hover:shadow-primary/5 transition-all">
+                    <div class="h-48 bg-slate-200 dark:bg-slate-800 relative overflow-hidden">
+                        <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 opacity-80" data-alt="Strong athlete performing a heavy chest press" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtfBS09ttZdN79lw_iZY655RIDcIVs_FSg3rPiQ5nZeKAEMizE2Zh2pDRaXu7so8QCw3Yh55zUa_lGa-1rgvERw1P99Bxn9xXyO3pWTLFRecWET6eF81EJy6N7pEytEdmVPEQFbc_VEos7cIB1eqzZ59JpkYTQMw8ssiGLWBEgyYqhS6qiR1XIh7Yc0qULxHza8tidC7ujVA2rdkjJLYWTQHpV2DGHbZHngo7WUFCdX_-Wk5fbDrSR2ChKkfZgW-5zQJB55DHh3-qv" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-background-dark/80 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 right-4 flex justify-between items-center">
+                            <span class="bg-primary/90 text-background-dark text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded">Intermediário</span>
+                            <span class="text-white text-xs font-medium flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[16px]">format_list_bulleted</span> 8 Exercícios
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <h3 class="text-lg font-bold mb-2 group-hover:text-primary transition-colors">Hipertrofia - Peito e Tríceps</h3>
+                        <div class="flex flex-wrap gap-1.5 mb-6">
+                            <span class="px-2 py-0.5 bg-slate-200 dark:bg-slate-800 rounded text-[10px] font-medium uppercase text-slate-600 dark:text-slate-400">Peitoral</span>
+                            <span class="px-2 py-0.5 bg-slate-200 dark:bg-slate-800 rounded text-[10px] font-medium uppercase text-slate-600 dark:text-slate-400">Tríceps</span>
+                            <span class="px-2 py-0.5 bg-slate-200 dark:bg-slate-800 rounded text-[10px] font-medium uppercase text-slate-600 dark:text-slate-400">Deltoides</span>
+                        </div>
+                        <div class="mt-auto grid grid-cols-2 gap-2">
+                            <button class="flex-1 bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 text-xs font-bold py-2 rounded-lg transition-colors">
+                                EDITAR
+                            </button>
+                            <button class="flex-1 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-bold py-2 rounded-lg transition-colors">
+                                DETALHES
+                            </button>
+                            <button class="col-span-2 border border-red-500/30 text-red-500 hover:bg-red-500/10 text-[10px] font-bold py-1.5 rounded-lg transition-colors mt-2 flex items-center justify-center gap-1">
+                                <span class="material-symbols-outlined text-[14px]">delete</span> EXCLUIR TREINO
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 2 -->
+                <div class="bg-slate-50 dark:bg-[#162a16] border border-slate-200 dark:border-primary/10 rounded-xl overflow-hidden flex flex-col group hover:shadow-2xl hover:shadow-primary/5 transition-all">
+                    <div class="h-48 bg-slate-200 dark:bg-slate-800 relative overflow-hidden">
+                        <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 opacity-80" data-alt="Person doing a barbell squat in a gym" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvlJEkAWf3d2NDVZ4T7wy5jh_cx9xtHpQ6N25vTzi3vXwSH7VX3hpfO3evNrw9mdx5msJ38QB__YzxA1j4Qn9ryB-m7Cl-5ytjM1BxWnmv7mLF7d5xv8L0veDseOP-R2UaWgtZN77cLlxMKIszWtqZsTJoRsbLE1SfBdnCZzfFPJADIliIFRF-ZMDTM6dhcMixIDUGbSXAFGxhPbuGE1zYGUfKYM-HEakq7xDttdytAWYzzieilxfAKLXfZJY0m71DDbQY1RCD9UKq" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-background-dark/80 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 right-4 flex justify-between items-center">
+                            <span class="bg-primary/90 text-background-dark text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded">Avançado</span>
+                            <span class="text-white text-xs font-medium flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[16px]">format_list_bulleted</span> 10 Exercícios
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <h3 class="text-lg font-bold mb-2 group-hover:text-primary transition-colors">Pernas - Foco em Quadríceps</h3>
+                        <div class="flex flex-wrap gap-1.5 mb-6">
+                            <span class="px-2 py-0.5 bg-slate-200 dark:bg-slate-800 rounded text-[10px] font-medium uppercase text-slate-600 dark:text-slate-400">Quadríceps</span>
+                            <span class="px-2 py-0.5 bg-slate-200 dark:bg-slate-800 rounded text-[10px] font-medium uppercase text-slate-600 dark:text-slate-400">Glúteos</span>
+                        </div>
+                        <div class="mt-auto grid grid-cols-2 gap-2">
+                            <button class="flex-1 bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 text-xs font-bold py-2 rounded-lg transition-colors">
+                                EDITAR
+                            </button>
+                            <button class="flex-1 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-bold py-2 rounded-lg transition-colors">
+                                DETALHES
+                            </button>
+                            <button class="col-span-2 border border-red-500/30 text-red-500 hover:bg-red-500/10 text-[10px] font-bold py-1.5 rounded-lg transition-colors mt-2 flex items-center justify-center gap-1">
+                                <span class="material-symbols-outlined text-[14px]">delete</span> EXCLUIR TREINO
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 3 -->
+                <div class="bg-slate-50 dark:bg-[#162a16] border border-slate-200 dark:border-primary/10 rounded-xl overflow-hidden flex flex-col group hover:shadow-2xl hover:shadow-primary/5 transition-all">
+                    <div class="h-48 bg-slate-200 dark:bg-slate-800 relative overflow-hidden">
+                        <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 opacity-80" data-alt="Muscular back during a pull up exercise" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfLc3LQQvOXckki5-owJkfq2EevhUci8hqVKjBGz75tzU3nKvdLQH-ZRCRVYaRdm75kV8NggbxTp4fV8HlQYpDIgsTzWK0lSbH6Cm_8gDlgWcxNbyNHXEp4AgRRc-V0K-qewwBwd9N1wmcF33P7To8JVa9rzGGjZlF7mvJ1dVe-X1m9lF5v1poNP7pNXLR7yE2O0OuE9p_B3zusqlUlFh1ILsft2z_AK5neTdcDA4fq2gegPOL2MX2AwMyOCGQGA6ig9EPKRT1fiOD" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-background-dark/80 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 right-4 flex justify-between items-center">
+                            <span class="bg-primary/90 text-background-dark text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded">Iniciante</span>
+                            <span class="text-white text-xs font-medium flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[16px]">format_list_bulleted</span> 6 Exercícios
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <h3 class="text-lg font-bold mb-2 group-hover:text-primary transition-colors">Dorsais e Bíceps</h3>
+                        <div class="flex flex-wrap gap-1.5 mb-6">
+                            <span class="px-2 py-0.5 bg-slate-200 dark:bg-slate-800 rounded text-[10px] font-medium uppercase text-slate-600 dark:text-slate-400">Costas</span>
+                            <span class="px-2 py-0.5 bg-slate-200 dark:bg-slate-800 rounded text-[10px] font-medium uppercase text-slate-600 dark:text-slate-400">Bíceps</span>
+                        </div>
+                        <div class="mt-auto grid grid-cols-2 gap-2">
+                            <button class="flex-1 bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 text-xs font-bold py-2 rounded-lg transition-colors">
+                                EDITAR
+                            </button>
+                            <button class="flex-1 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-bold py-2 rounded-lg transition-colors">
+                                DETALHES
+                            </button>
+                            <button class="col-span-2 border border-red-500/30 text-red-500 hover:bg-red-500/10 text-[10px] font-bold py-1.5 rounded-lg transition-colors mt-2 flex items-center justify-center gap-1">
+                                <span class="material-symbols-outlined text-[14px]">delete</span> EXCLUIR TREINO
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Add New Placeholder Card -->
+                <div class="border-2 border-dashed border-primary/20 rounded-xl flex flex-col items-center justify-center p-8 gap-4 hover:border-primary/40 hover:bg-primary/5 transition-all cursor-pointer">
+                    <div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+                        <span class="material-symbols-outlined text-3xl">add</span>
+                    </div>
+                    <div class="text-center">
+                        <p class="font-bold">Criar Nova Rotina</p>
+                        <p class="text-xs text-slate-500">Adicione um novo plano de treino para seus alunos</p>
+                    </div>
+                </div>
+            </section>
+        </main>
     </div>
+</body>
 
-    <!-- Pagination -->
-    @if($treinos->hasPages())
-        <div class="flex justify-center">
-            {{ $treinos->links() }}
-        </div>
-    @endif
-</div>
-@endsection
+</html>

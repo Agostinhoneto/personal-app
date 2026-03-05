@@ -99,10 +99,12 @@
                     <h2 class="text-3xl font-black tracking-tight uppercase italic">Meus Treinos</h2>
                     <p class="text-slate-500 dark:text-slate-400">Gerencie e crie rotinas personalizadas para seus alunos.</p>
                 </div>
-                <button class="bg-primary hover:bg-primary/90 text-background-dark font-bold px-6 py-2.5 rounded-lg flex items-center gap-2 transition-transform active:scale-95 shadow-lg shadow-primary/20">
-                    <span class="material-symbols-outlined">add</span>
-                    <span>Criar Novo Treino</span>
-                </button>
+                <a href="/treinos/create">
+                    <button class="bg-primary hover:bg-primary/90 text-background-dark font-bold px-6 py-2.5 rounded-lg flex items-center gap-2 transition-transform active:scale-95 shadow-lg shadow-primary/20">
+                        <span class="material-symbols-outlined">add</span>
+                        <span>Criar Novo Treino</span>
+                    </button>
+                </a>
             </header>
             <!-- Search and Filters -->
             <section class="px-8 py-4 space-y-4">

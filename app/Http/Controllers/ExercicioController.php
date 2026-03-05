@@ -20,8 +20,14 @@ class ExercicioController extends Controller
         }
 
         $exercicios = $query->paginate(15);
-        return response()->json($exercicios);
+        return redirect()->route('exercicios.index')->with('error', 'Personal não encontrado');
+        
     }
+
+    public function create()
+    {
+        return view('exercicios.create');
+    }   
 
     public function store(Request $request)
     {

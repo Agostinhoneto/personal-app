@@ -92,7 +92,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
                     <div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-primary/5 border border-slate-200 dark:border-primary/10 shadow-sm">
                         <div class="flex justify-between items-start">
-                            <p class="text-slate-500 dark:text-primary/70 text-sm font-semibold uppercase tracking-wider">Total Clients</p>
+                            <p class="text-slate-500 dark:text-primary/70 text-sm font-semibold uppercase tracking-wider">Total de Clientes</p>
                             <span class="material-symbols-outlined text-primary">Grupos</span>
                         </div>
                         <p class="text-slate-900 dark:text-slate-100 text-3xl font-black">{{ $totalClients }}</p>
@@ -103,19 +103,19 @@
                     </div>
                     <div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-primary/5 border border-slate-200 dark:border-primary/10 shadow-sm">
                         <div class="flex justify-between items-start">
-                            <p class="text-slate-500 dark:text-primary/70 text-sm font-semibold uppercase tracking-wider">Active Sessions</p>
+                            <p class="text-slate-500 dark:text-primary/70 text-sm font-semibold uppercase tracking-wider">Sessões Ativas</p>
                             <span class="material-symbols-outlined text-primary">fitness_center</span>
                         </div>
                         <p class="text-slate-900 dark:text-slate-100 text-3xl font-black">{{ $activeSessions }}</p>
                         <div class="flex items-center gap-1 text-red-500 text-sm font-bold">
                             <span class="material-symbols-outlined text-sm">trending_down</span>
-                            <span>% from last week</span>
+                            <span>% da semana passada</span>
                         </div>
                     </div>
                     <div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-primary/5 border border-slate-200 dark:border-primary/10 shadow-sm">
                         <div class="flex justify-between items-start">
-                            <p class="text-slate-500 dark:text-primary/70 text-sm font-semibold uppercase tracking-wider">Avg. Completion</p>
-                            <span class="material-symbols-outlined text-primary">analytics</span>
+                            <p class="text-slate-500 dark:text-primary/70 text-sm font-semibold uppercase tracking-wider">Conclusão Média</p>
+                            <span class="material-symbols-outlined text-primary">análises</span>
                         </div>
                         <p class="text-slate-900 dark:text-slate-100 text-3xl font-black">{{ $avgCompletion }}</p>
                         <div class="flex items-center gap-1 text-primary text-sm font-bold">
@@ -128,8 +128,8 @@
                     <div class="lg:col-span-8 flex flex-col gap-6">
                         <div class="flex flex-col bg-white dark:bg-primary/5 border border-slate-200 dark:border-primary/10 rounded-xl overflow-hidden">
                             <div class="p-6 border-b border-slate-200 dark:border-primary/10 flex justify-between items-center">
-                                <h2 class="text-slate-900 dark:text-slate-100 text-xl font-bold">Today's Schedule</h2>
-                                <a href="" class="text-primary text-sm font-bold hover:underline">View Calendar</a>
+                                <h2 class="text-slate-900 dark:text-slate-100 text-xl font-bold">Programação de hoje</h2>
+                                <a href="" class="text-primary text-sm font-bold hover:underline">Ver Calendário</a>
                             </div>
                             <div class="flex flex-col divide-y divide-slate-200 dark:divide-primary/10">
                                 @forelse($todaySessions as $session)
@@ -159,10 +159,10 @@
                                 <span class="material-symbols-outlined text-3xl font-bold">bolt</span>
                             </div>
                             <div class="flex-1">
-                                <h3 class="text-slate-900 dark:text-slate-100 text-lg font-bold">Weekly Performance Summary</h3>
+                                <h3 class="text-slate-900 dark:text-slate-100 text-lg font-bold">Resumo Semanal de Desempenho</h3>
                                 <p class="text-slate-600 dark:text-primary/70 text-sm">Você tem {{ $totalClients }} alunos ativos. Continue com o ótimo trabalho!</p>
                             </div>
-                            <a href="" class="bg-primary text-background-dark px-4 py-2 rounded-lg font-bold text-sm whitespace-nowrap">Generate Report</a>
+                            <a href="" class="bg-primary text-background-dark px-4 py-2 rounded-lg font-bold text-sm whitespace-nowrap">Gerar Relatório</a>
                         </div>
                     </div>
                     <div class="lg:col-span-4 flex flex-col gap-6">

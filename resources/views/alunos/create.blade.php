@@ -59,24 +59,8 @@
                 </div>
                 <h2 class="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100">FitAssist</h2>
             </div>
-            <nav class="flex-1 px-4 space-y-2 mt-4">
-                <a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors" href="#">
-                    <span class="material-symbols-outlined">grid_view</span>
-                    <span class="font-medium text-sm">Dashboard</span>
-                </a>
-                <a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors" href="#">
-                    <span class="material-symbols-outlined">fitness_center</span>
-                    <span class="font-medium text-sm">Treinos</span>
-                </a>
-                <a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors" href="#">
-                    <span class="material-symbols-outlined">menu_book</span>
-                    <span class="font-medium text-sm">Biblioteca</span>
-                </a>
-                <a class="flex items-center gap-3 px-3 py-2 bg-primary/20 text-primary rounded-lg transition-colors" href="#">
-                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">group</span>
-                    <span class="font-medium text-sm">Alunos</span>
-                </a>
-            </nav>
+                   @include('components.sidebar')
+
             <div class="p-4 border-t border-primary/10">
                 <div class="flex items-center gap-3 p-2">
                     <div class="size-10 rounded-full bg-primary/30 flex items-center justify-center overflow-hidden border border-primary/50">

@@ -1,10 +1,11 @@
-<html lang="pt-BR">
+<!DOCTYPE html>
+<html class="dark" lang="pt-br">
 
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
     <script id="tailwind-config">
         tailwind.config = {
@@ -12,199 +13,219 @@
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#22C55E", // Bright Neon Green
-                        "primary-hover": "#16a34a",
-                        "deep-bg": "#050805", // Very dark green-black
-                        "surface-dark": "#0A100A", // Slightly lighter sidebar/cards
-                        "card-bg": "#0D140D",
-                        "border-green": "#162216",
-                        "accent-green": "#22C55E",
+                        "primary": "#0df20d",
+                        "background-light": "#f5f8f5",
+                        "background-dark": "#102210",
                     },
                     fontFamily: {
-                        "display": ["Inter", "sans-serif"]
+                        "display": ["Inter"]
                     },
                     borderRadius: {
-                        "DEFAULT": "0.375rem",
+                        "DEFAULT": "0.25rem",
                         "lg": "0.5rem",
                         "xl": "0.75rem",
-                        "2xl": "1rem",
                         "full": "9999px"
                     },
                 },
             },
         }
     </script>
-    <style type="text/tailwindcss">
-        body { font-family: 'Inter', sans-serif; }
-        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-        .sidebar-active { 
-            background: linear-gradient(90deg, rgba(34, 197, 94, 0.15) 0%, rgba(34, 197, 94, 0) 100%); 
-            color: #22C55E;
-            border-left: 3px solid #22C55E;
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
         }
-        input, select, textarea {
-            background-color: #0D140D !important;
-            border-color: #162216 !important;
-            color: #e2e8f0 !important;
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
-        input:focus, select:focus, textarea:focus {
-            border-color: #22C55E !important;
-            ring-color: #22C55E !important;
-            outline: none !important;
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
         }
-        ::placeholder {
-            color: #4b5563 !important;
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
     </style>
 </head>
 
-<body class="bg-deep-bg text-slate-200 font-display">
-    <div class="flex min-h-screen">
-        <aside class="w-64 bg-surface-dark flex flex-col fixed h-full border-r border-border-green">
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 antialiased min-h-screen">
+    <div class="flex h-screen overflow-hidden">
+        <aside class="w-64 border-r border-primary/10 bg-background-light dark:bg-background-dark flex flex-col hidden lg:flex">
             <div class="p-6 flex items-center gap-3">
-                <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-deep-bg shadow-[0_0_15px_rgba(34,197,94,0.3)]">
-                    <span class="material-symbols-outlined font-bold">fitness_center</span>
+                <div class="size-8 bg-primary rounded flex items-center justify-center text-background-dark">
+                    <span class="material-symbols-outlined font-bold">exercise</span>
                 </div>
-                <div>
-                    <h1 class="font-black text-xl leading-none text-white tracking-tighter">FitAssist</h1>
-                </div>
+                <h2 class="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100">FitAssist</h2>
             </div>
-            <nav class="flex-1 px-4 py-4 space-y-1">
-                <a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-primary transition-colors" href="#">
-                    <span class="material-symbols-outlined">dashboard</span>
-                    <span class="text-sm font-semibold">Dashboard</span>
+            <nav class="flex-1 px-4 space-y-2 mt-4">
+                <a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors" href="#">
+                    <span class="material-symbols-outlined">grid_view</span>
+                    <span class="font-medium text-sm">Dashboard</span>
                 </a>
-                <a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-primary transition-colors" href="#">
-                    <span class="material-symbols-outlined">exercise</span>
-                    <span class="text-sm font-semibold">Treinos</span>
+                <a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors" href="#">
+                    <span class="material-symbols-outlined">fitness_center</span>
+                    <span class="font-medium text-sm">Treinos</span>
                 </a>
-                <a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-primary transition-colors" href="#">
-                    <span class="material-symbols-outlined">library_books</span>
-                    <span class="text-sm font-semibold">Biblioteca</span>
+                <a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors" href="#">
+                    <span class="material-symbols-outlined">menu_book</span>
+                    <span class="font-medium text-sm">Biblioteca</span>
                 </a>
-                <a class="flex items-center gap-3 px-4 py-3 sidebar-active transition-colors" href="#">
-                    <span class="material-symbols-outlined">group</span>
-                    <span class="text-sm font-semibold">Alunos</span>
+                <a class="flex items-center gap-3 px-3 py-2 bg-primary/20 text-primary rounded-lg transition-colors" href="#">
+                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">group</span>
+                    <span class="font-medium text-sm">Alunos</span>
                 </a>
             </nav>
-            <div class="p-4 border-t border-border-green">
+            <div class="p-4 border-t border-primary/10">
                 <div class="flex items-center gap-3 p-2">
-                    <div class="w-10 h-10 rounded-full border border-primary/30 p-0.5 overflow-hidden">
-                        <img class="w-full h-full object-cover rounded-full" data-alt="Profile picture of the current user" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyi66WWCRotdv98CAMICNdpI3ZTxrSzxr26zwW0im8mEUukKe_UvY5pzgEOLMdlx4LxTMPpEJxtwj8v8IfsnXUddzWlHOYFNSkKsq5ek_3jzga9MwvZf5kp2v77_nHEPSMObkSXIvzR0thW2RV7AxJtFjyKTL41x-ePfFXq1RWGdiLi1zofAABXA5chH5pdWZGZ_idxWU7rzx85aLHzIQboTLEDthRgbXvy05uzcbtvRtelhh1cbNXkqsrboLeAjnToZb7zs8fpcmJ" />
+                    <div class="size-10 rounded-full bg-primary/30 flex items-center justify-center overflow-hidden border border-primary/50">
+                        <img class="w-full h-full object-cover" data-alt="Profile photo of a professional gym trainer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTerw4bBXGYk7KIxnKBtfcgc8RGhdu7r1bzX2RQGHGUNRqPlVQFFGOGh0jwy2jNCRLDoJJ3lu0rb0EKXfPM40q2Oauz80tyxAjMwZ7XYs_oAbOkCltDcA3X_MpSUuP5CwT4egofPShZyOXaolUGdyyUK08r47oZd987fsDLrOnsmeeQSAGjXVY1UuASVvC9T3KYOnPAvs0R5j5QlKkt3wMTZzjcRWknGuUo_akXXQmv35jAiXImLKM9Yq8Xoxk4MhtvP7FZjUfn-C7" />
                     </div>
-                    <div class="flex-1 min-w-0">
-                        <p class="text-sm font-bold truncate text-white">Marcos Silva</p>
-                        <p class="text-xs text-slate-500 truncate">Personal Trainer</p>
+                    <div>
+                        <p class="text-xs font-bold text-slate-900 dark:text-slate-100">Marcos Silva</p>
+                        <p class="text-[10px] opacity-60 text-slate-600 dark:text-slate-400">Personal Trainer</p>
                     </div>
                 </div>
             </div>
         </aside>
-        <main class="flex-1 ml-64">
-            <header class="h-16 border-b border-border-green bg-surface-dark/95 backdrop-blur-md flex items-center justify-between px-8 sticky top-0 z-10">
-                <h2 class="text-lg font-bold text-white">Criar Novo Aluno</h2>
+        <main class="flex-1 flex flex-col overflow-hidden">
+            <header class="h-16 border-b border-primary/10 flex items-center justify-between px-8 bg-background-light dark:bg-background-dark shrink-0">
                 <div class="flex items-center gap-4">
-                    <button class="p-2.5 text-slate-400 hover:bg-white/5 rounded-lg relative">
-                        <span class="material-symbols-outlined">notifications</span>
-                        <span class="absolute top-2.5 right-2.5 w-2 h-2 bg-primary rounded-full border-2 border-surface-dark"></span>
+                    <button class="lg:hidden text-slate-900 dark:text-slate-100">
+                        <span class="material-symbols-outlined">menu</span>
                     </button>
-                    <button class="px-5 py-2 bg-primary text-deep-bg font-bold rounded-lg hover:bg-primary-hover transition-all shadow-[0_0_20px_rgba(34,197,94,0.2)]">
+                    <h1 class="text-lg font-semibold tracking-tight">Criar Novo Aluno</h1>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button class="size-10 flex items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 hover:text-primary transition-colors">
+                        <span class="material-symbols-outlined">notifications</span>
+                    </button>
+                    <button class="bg-primary hover:bg-primary/90 text-background-dark px-6 py-2 rounded-lg font-bold text-sm transition-all shadow-lg shadow-primary/10">
                         Salvar Aluno
                     </button>
                 </div>
             </header>
-            <div class="p-8 max-w-5xl mx-auto space-y-8">
-                <div class="flex flex-col items-center sm:flex-row gap-8 bg-card-bg p-8 rounded-2xl border border-border-green">
-                    <div class="relative group">
-                        <div class="w-32 h-32 rounded-full border-2 border-dashed border-primary/40 flex flex-col items-center justify-center bg-deep-bg text-primary/60 transition-all hover:border-primary cursor-pointer overflow-hidden">
-                            <span class="material-symbols-outlined text-4xl mb-1">add_a_photo</span>
-                            <span class="text-[10px] font-bold uppercase tracking-widest">Upload</span>
+            <div class="flex-1 overflow-y-auto bg-slate-50 dark:bg-[#0a150a] p-4 lg:p-8">
+                <div class="max-w-5xl mx-auto">
+                    <form class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                        <div class="lg:col-span-8 space-y-6">
+                            <div class="bg-background-light dark:bg-background-dark border border-primary/10 rounded-xl p-6 shadow-sm flex flex-col md:flex-row items-center gap-6">
+                                <div class="relative group">
+                                    <div class="size-28 rounded-full bg-slate-200 dark:bg-slate-800 border-2 border-dashed border-primary/30 flex items-center justify-center overflow-hidden">
+                                        <span class="material-symbols-outlined text-4xl opacity-20">person</span>
+                                    </div>
+                                    <button class="absolute bottom-0 right-0 size-8 bg-primary rounded-full flex items-center justify-center text-background-dark shadow-lg border-2 border-background-dark hover:scale-105 transition-transform" type="button">
+                                        <span class="material-symbols-outlined text-sm">add_a_photo</span>
+                                    </button>
+                                </div>
+                                <div class="text-center md:text-left">
+                                    <h3 class="font-bold text-lg">Foto do Aluno</h3>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Clique no ícone para fazer upload de uma imagem (PNG, JPG).</p>
+                                </div>
+                            </div>
+                            <section class="bg-background-light dark:bg-background-dark border border-primary/10 rounded-xl p-6 shadow-sm">
+                                <h2 class="text-sm font-bold uppercase tracking-wider text-primary mb-6 flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-sm">badge</span> INFORMAÇÕES BÁSICAS
+                                </h2>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="col-span-1 md:col-span-2">
+                                        <label class="block text-xs font-medium mb-2 opacity-70 uppercase tracking-tight">Nome Completo</label>
+                                        <input class="w-full bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-primary/10 rounded-lg px-4 py-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none text-sm transition-all" placeholder="Digite o nome do aluno" type="text" />
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-medium mb-2 opacity-70 uppercase tracking-tight">E-mail</label>
+                                        <input class="w-full bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-primary/10 rounded-lg px-4 py-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none text-sm transition-all" placeholder="exemplo@email.com" type="email" />
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-medium mb-2 opacity-70 uppercase tracking-tight">CPF</label>
+                                        <input class="w-full bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-primary/10 rounded-lg px-4 py-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none text-sm transition-all" placeholder="000.000.000-00" type="text" />
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-medium mb-2 opacity-70 uppercase tracking-tight">Gênero</label>
+                                        <select class="w-full bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-primary/10 rounded-lg px-4 py-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none text-sm appearance-none transition-all">
+                                            <option disabled="" selected="" value="">Selecione</option>
+                                            <option>Masculino</option>
+                                            <option>Feminino</option>
+                                            <option>Prefiro não dizer</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-medium mb-2 opacity-70 uppercase tracking-tight">Data de Nascimento</label>
+                                        <input class="w-full bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-primary/10 rounded-lg px-4 py-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none text-sm transition-all" type="date" />
+                                    </div>
+                                </div>
+                            </section>
+                            <section class="bg-background-light dark:bg-background-dark border border-primary/10 rounded-xl p-6 shadow-sm">
+                                <h2 class="text-sm font-bold uppercase tracking-wider text-primary mb-6 flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-sm">straighten</span> MEDIDAS INICIAIS
+                                </h2>
+                                <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+                                    <div>
+                                        <label class="block text-xs font-medium mb-2 opacity-70 uppercase tracking-tight">Peso (kg)</label>
+                                        <input class="w-full bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-primary/10 rounded-lg px-4 py-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none text-sm transition-all" placeholder="0.0" step="0.1" type="number" />
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-medium mb-2 opacity-70 uppercase tracking-tight">Altura (cm)</label>
+                                        <input class="w-full bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-primary/10 rounded-lg px-4 py-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none text-sm transition-all" placeholder="0" type="number" />
+                                    </div>
+                                    <div class="col-span-2 md:col-span-1">
+                                        <label class="block text-xs font-medium mb-2 opacity-70 uppercase tracking-tight">Gordura Corporal (%)</label>
+                                        <input class="w-full bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-primary/10 rounded-lg px-4 py-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none text-sm transition-all" placeholder="0.0" step="0.1" type="number" />
+                                    </div>
+                                </div>
+                            </section>
                         </div>
-                    </div>
-                    <div class="flex-1">
-                        <h3 class="text-xl font-bold text-white mb-2">Foto do Aluno</h3>
-                        <p class="text-slate-500 text-sm mb-5 leading-relaxed">Carregue uma imagem clara do aluno para facilitar a identificação. Formatos aceitos: JPG, PNG até 2MB.</p>
-                        <button class="px-6 py-2.5 bg-white/5 border border-white/10 text-white rounded-lg text-sm font-bold hover:bg-white/10 transition-colors">
-                            Selecionar Imagem
-                        </button>
-                    </div>
-                </div>
-                <form class="space-y-8">
-                    <section class="bg-card-bg p-8 rounded-2xl border border-primary/20 shadow-lg relative overflow-hidden">
-                        <div class="absolute top-0 left-0 w-1 h-full bg-primary"></div>
-                        <div class="flex items-center gap-3 mb-8">
-                            <span class="material-symbols-outlined text-primary">info</span>
-                            <h3 class="text-sm font-black uppercase tracking-widest text-primary">Informações Básicas</h3>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            <div class="space-y-3">
-                                <label class="text-xs font-bold uppercase tracking-widest text-slate-500">Nome Completo</label>
-                                <input class="w-full px-4 py-3 rounded-xl focus:ring-1" placeholder="Ex: João da Silva" type="text" />
-                            </div>
-                            <div class="space-y-3">
-                                <label class="text-xs font-bold uppercase tracking-widest text-slate-500">CPF</label>
-                                <input class="w-full px-4 py-3 rounded-xl focus:ring-1" placeholder="000.000.000-00" type="text" />
-                            </div>
-                            <div class="md:col-span-2 space-y-3">
-                                <label class="text-xs font-bold uppercase tracking-widest text-slate-500">Objetivo Principal</label>
-                                <input class="w-full px-4 py-3 rounded-xl focus:ring-1" placeholder="Ex: Hipertrofia de membros superiores e perda de gordura" type="text" />
-                            </div>
-                        </div>
-                    </section>
-                    <section class="bg-card-bg p-8 rounded-2xl border border-border-green shadow-lg">
-                        <div class="flex items-center gap-3 mb-8">
-                            <span class="material-symbols-outlined text-primary">contact_phone</span>
-                            <h3 class="text-sm font-black uppercase tracking-widest text-white">Dados de Contato</h3>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            <div class="space-y-3">
-                                <label class="text-xs font-bold uppercase tracking-widest text-slate-500">E-mail</label>
-                                <input class="w-full px-4 py-3 rounded-xl focus:ring-1" placeholder="aluno@email.com" type="email" />
-                            </div>
-                            <div class="space-y-3">
-                                <label class="text-xs font-bold uppercase tracking-widest text-slate-500">WhatsApp</label>
-                                <input class="w-full px-4 py-3 rounded-xl focus:ring-1" placeholder="(00) 0 0000-0000" type="tel" />
-                            </div>
-                        </div>
-                    </section>
-                    <section class="bg-card-bg p-8 rounded-2xl border border-border-green shadow-lg">
-                        <div class="flex items-center gap-3 mb-8">
-                            <span class="material-symbols-outlined text-primary">payments</span>
-                            <h3 class="text-sm font-black uppercase tracking-widest text-white">Plano / Assinatura</h3>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                            <div class="space-y-3">
-                                <label class="text-xs font-bold uppercase tracking-widest text-slate-500">Plano</label>
-                                <select class="w-full px-4 py-3 rounded-xl focus:ring-1 appearance-none">
-                                    <option value="">Selecione um plano</option>
-                                    <option value="mensal">Mensal</option>
-                                    <option value="trimestral">Trimestral</option>
-                                    <option value="anual">Anual</option>
-                                    <option value="personal">Personal VIP</option>
-                                </select>
-                            </div>
-                            <div class="space-y-3">
-                                <label class="text-xs font-bold uppercase tracking-widest text-slate-500">Vencimento</label>
-                                <input class="w-full px-4 py-3 rounded-xl focus:ring-1" type="date" />
-                            </div>
-                            <div class="space-y-3">
-                                <label class="text-xs font-bold uppercase tracking-widest text-slate-500">Status</label>
-                                <div class="flex items-center gap-2 h-[50px]">
-                                    <span class="px-3 py-1 bg-primary/20 text-primary text-[10px] font-black uppercase tracking-widest rounded-full">Ativo</span>
-                                    <span class="text-slate-600 text-[10px] font-bold">MUDAR STATUS</span>
+                        <div class="lg:col-span-4 space-y-6">
+                            <section class="bg-background-light dark:bg-background-dark border border-primary/10 rounded-xl p-6 shadow-sm sticky top-8">
+                                <h2 class="text-sm font-bold uppercase tracking-wider text-primary mb-6 flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-sm">payments</span> PLANO E ASSINATURA
+                                </h2>
+                                <div class="space-y-6">
+                                    <div>
+                                        <label class="block text-xs font-medium mb-2 opacity-70 uppercase tracking-tight">Tipo de Plano</label>
+                                        <select class="w-full bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-primary/10 rounded-lg px-4 py-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none text-sm appearance-none transition-all">
+                                            <option>Mensal Individual</option>
+                                            <option>Trimestral Silver</option>
+                                            <option>Semestral Gold</option>
+                                            <option>Anual Black VIP</option>
+                                        </select>
+                                    </div>
+                                    <div class="p-4 bg-primary/5 rounded-lg border border-primary/10">
+                                        <div class="flex justify-between items-center mb-2">
+                                            <span class="text-xs font-medium opacity-60">Status do Pagamento</span>
+                                            <span class="text-[10px] font-bold px-2 py-0.5 bg-yellow-500/20 text-yellow-500 rounded uppercase">Pendente</span>
+                                        </div>
+                                        <p class="text-sm font-bold">R$ 149,90 / mês</p>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-medium mb-2 opacity-70 uppercase tracking-tight">Observações Administrativas</label>
+                                        <textarea class="w-full bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-primary/10 rounded-lg px-4 py-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none text-xs transition-all h-24 resize-none" placeholder="Notas sobre restrições médicas, convênios ou condições especiais..."></textarea>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <div class="flex items-center gap-2">
+                                            <input class="rounded bg-slate-900 border-primary/20 text-primary focus:ring-primary/50" id="terms" type="checkbox" />
+                                            <label class="text-[10px] text-slate-500" for="terms">Enviar convite de acesso por e-mail automaticamente</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <div class="p-4 rounded-xl border border-dashed border-primary/20 flex items-start gap-3">
+                                <span class="material-symbols-outlined text-primary">help_outline</span>
+                                <div>
+                                    <h4 class="text-xs font-bold uppercase">Precisa de ajuda?</h4>
+                                    <p class="text-[10px] opacity-60 mt-1">O aluno receberá um link para baixar o app e configurar a senha após o cadastro.</p>
                                 </div>
                             </div>
                         </div>
-                    </section>
-                    <div class="flex items-center justify-end gap-6 pt-4 pb-12">
-                        <button class="text-sm font-bold text-slate-500 hover:text-white transition-colors" type="button">
-                            Descartar Alterações
-                        </button>
-                        <button class="px-12 py-3.5 bg-primary text-deep-bg font-black rounded-xl shadow-[0_0_30px_rgba(34,197,94,0.3)] hover:scale-[1.02] active:scale-95 transition-all" type="submit">
-                            SALVAR ALUNO
-                        </button>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
+            <footer class="lg:hidden p-4 bg-background-light dark:bg-background-dark border-t border-primary/10 shrink-0">
+                <button class="w-full bg-primary text-background-dark py-3 rounded-xl font-bold text-base shadow-lg shadow-primary/20">
+                    Salvar Aluno
+                </button>
+            </footer>
         </main>
     </div>
 

@@ -37,51 +37,7 @@
 
 <body class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
     <div class="flex h-screen overflow-hidden">
-        <!-- Sidebar Navigation -->
-        <aside class="w-64 flex flex-col border-r border-primary/10 bg-background-light dark:bg-background-dark">
-            <div class="p-6 flex items-center gap-3">
-                <div class="size-10 rounded-full bg-primary flex items-center justify-center text-background-dark font-bold text-xl overflow-hidden">
-                    <img class="w-full h-full object-cover" data-alt="Logotipo FitAssist" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYOOfIfQF9_J-imv3Uld4pkAM_-p0X1wiLPNnxTeqzth7z0LED_FJzaMdxrLBEOapTVZaSaij43EQcD0KpD63SgA_LOJcGBkIFP9D8KeYf3XcUr5JD6xUp2Lm8JJuI48R75G6bs2y0PhQQho1_Mj1QOmq8rgM9re_fz1xtrYgf-dzWoA5GtGIXGQ2N1yxumtW3HqwDXT6hK5YKNrxWYStdxLpCOvdvko7qI-mRQL16KEru8kxQJyRheYcHY3lYACZxVl4rDfYrmGm7" />
-                </div>
-                <div>
-                    <h1 class="text-base font-bold leading-none">FitAssist</h1>
-                    <p class="text-xs text-primary/70">Premium Trainer</p>
-                </div>
-            </div>
-            <nav class="flex-1 px-4 py-4 space-y-1">
-                <a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors" href="#">
-                    <span class="material-symbols-outlined">dashboard</span>
-                    <span class="text-sm font-medium">Dashboard</span>
-                </a>
-                <a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors" href="#">
-                    <span class="material-symbols-outlined">group</span>
-                    <span class="text-sm font-medium">Alunos</span>
-                </a>
-                <a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors" href="#">
-                    <span class="material-symbols-outlined">fitness_center</span>
-                    <span class="text-sm font-medium">Treinos</span>
-                </a>
-                <a class="flex items-center gap-3 px-3 py-2 bg-primary/10 text-primary rounded-lg" href="#">
-                    <span class="material-symbols-outlined">menu_book</span>
-                    <span class="text-sm font-medium">Biblioteca</span>
-                </a>
-                <a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors mt-auto" href="#">
-                    <span class="material-symbols-outlined">settings</span>
-                    <span class="text-sm font-medium">Configurações</span>
-                </a>
-            </nav>
-            <div class="p-4 border-t border-primary/10">
-                <div class="flex items-center gap-3 p-2">
-                    <div class="size-8 rounded-full bg-primary/20 flex items-center justify-center">
-                        <span class="material-symbols-outlined text-primary text-sm">person</span>
-                    </div>
-                    <div class="flex-1 overflow-hidden">
-                        <p class="text-xs font-bold truncate">Ricardo Silva</p>
-                        <p class="text-[10px] text-slate-500 truncate">Sair da conta</p>
-                    </div>
-                </div>
-            </div>
-        </aside>
+        @include('components.sidebar')
         <!-- Main Content Area -->
         <main class="flex-1 flex flex-col overflow-y-auto">
             <!-- Header Section -->

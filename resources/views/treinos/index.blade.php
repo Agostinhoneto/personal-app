@@ -46,51 +46,7 @@
 
 <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100">
     <div class="flex min-h-screen">
-        <!-- Sidebar -->
-        <aside class="w-64 border-r border-primary/10 bg-background-light dark:bg-background-dark flex flex-col shrink-0">
-            <div class="p-6 flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-background-dark">
-                    <span class="material-symbols-outlined font-bold">fitness_center</span>
-                </div>
-                <div>
-                    <h1 class="text-lg font-bold leading-tight">FitAssist</h1>
-                    <p class="text-xs text-primary/70">Personal Trainer</p>
-                </div>
-            </div>
-            <nav class="flex-1 px-4 py-4 space-y-2">
-                <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary transition-colors" href="#">
-                    <span class="material-symbols-outlined">dashboard</span>
-                    <span class="text-sm font-medium">Dashboard</span>
-                </a>
-                <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary transition-colors" href="#">
-                    <span class="material-symbols-outlined">group</span>
-                    <span class="text-sm font-medium">Alunos</span>
-                </a>
-                <a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/20 text-primary border border-primary/20" href="#">
-                    <span class="material-symbols-outlined">exercise</span>
-                    <span class="text-sm font-medium">Meus Treinos</span>
-                </a>
-                <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary transition-colors" href="#">
-                    <span class="material-symbols-outlined">menu_book</span>
-                    <span class="text-sm font-medium">Biblioteca</span>
-                </a>
-                <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary transition-colors" href="#">
-                    <span class="material-symbols-outlined">settings</span>
-                    <span class="text-sm font-medium">Configurações</span>
-                </a>
-            </nav>
-            <div class="p-4 mt-auto border-t border-primary/10">
-                <div class="flex items-center gap-3 px-2">
-                    <div class="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center">
-                        <span class="material-symbols-outlined text-sm">person</span>
-                    </div>
-                    <div class="flex-1 overflow-hidden">
-                        <p class="text-sm font-medium truncate">Prof. Ricardo</p>
-                        <p class="text-xs text-slate-500 truncate">Sair da conta</p>
-                    </div>
-                </div>
-            </div>
-        </aside>
+        @include('components.sidebar')
         <!-- Main Content -->
         <main class="flex-1 flex flex-col overflow-y-auto">
             <!-- Header -->

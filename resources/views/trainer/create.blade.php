@@ -45,44 +45,7 @@
 
 <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 antialiased min-h-screen">
     <div class="flex h-screen overflow-hidden">
-        <!-- Sidebar Navigation -->
-        <aside class="w-64 border-r border-primary/10 bg-background-light dark:bg-background-dark flex flex-col hidden lg:flex">
-            <div class="p-6 flex items-center gap-3">
-                <div class="size-8 bg-primary rounded flex items-center justify-center text-background-dark">
-                    <span class="material-symbols-outlined font-bold">exercise</span>
-                </div>
-                <h2 class="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100">FitAssist</h2>
-            </div>
-            <nav class="flex-1 px-4 space-y-2 mt-4">
-                <a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors" href="#">
-                    <span class="material-symbols-outlined">grid_view</span>
-                    <span class="font-medium text-sm">Dashboard</span>
-                </a>
-                <a class="flex items-center gap-3 px-3 py-2 bg-primary/20 text-primary rounded-lg transition-colors" href="#">
-                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">fitness_center</span>
-                    <span class="font-medium text-sm">Treinos</span>
-                </a>
-                <a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors" href="#">
-                    <span class="material-symbols-outlined">menu_book</span>
-                    <span class="font-medium text-sm">Biblioteca</span>
-                </a>
-                <a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors" href="#">
-                    <span class="material-symbols-outlined">group</span>
-                    <span class="font-medium text-sm">Alunos</span>
-                </a>
-            </nav>
-            <div class="p-4 border-t border-primary/10">
-                <div class="flex items-center gap-3 p-2">
-                    <div class="size-10 rounded-full bg-primary/30 flex items-center justify-center overflow-hidden border border-primary/50">
-                        <img class="w-full h-full object-cover" data-alt="Profile photo of a professional gym trainer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTerw4bBXGYk7KIxnKBtfcgc8RGhdu7r1bzX2RQGHGUNRqPlVQFFGOGh0jwy2jNCRLDoJJ3lu0rb0EKXfPM40q2Oauz80tyxAjMwZ7XYs_oAbOkCltDcA3X_MpSUuP5CwT4egofPShZyOXaolUGdyyUK08r47oZd987fsDLrOnsmeeQSAGjXVY1UuASVvC9T3KYOnPAvs0R5j5QlKkt3wMTZzjcRWknGuUo_akXXQmv35jAiXImLKM9Yq8Xoxk4MhtvP7FZjUfn-C7" />
-                    </div>
-                    <div>
-                        <p class="text-xs font-bold">Marcos Silva</p>
-                        <p class="text-[10px] opacity-60">Personal Trainer</p>
-                    </div>
-                </div>
-            </div>
-        </aside>
+        @include('components.sidebar')
         <!-- Main Content -->
         <main class="flex-1 flex flex-col overflow-hidden">
             <!-- Top Header -->

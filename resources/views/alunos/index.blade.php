@@ -37,39 +37,7 @@
 
 <body class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
     <div class="flex min-h-screen">
-        <!-- Sidebar -->
-        <aside class="w-64 border-r border-primary/10 bg-background-light dark:bg-background-dark hidden md:block">
-            <div class="p-6">
-                <div class="flex items-center gap-2 mb-10">
-                    <div class="w-8 h-8 bg-primary rounded flex items-center justify-center">
-                        <span class="material-icons text-background-dark font-bold">bolt</span>
-                    </div>
-                    <span class="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100">Fit<span class="text-primary">Assist</span></span>
-                </div>
-                <nav class="space-y-2">
-                    <a class="flex items-center gap-3 px-4 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary transition-colors" href="#">
-                        <span class="material-icons text-sm">dashboard</span>
-                        <span>Dashboard</span>
-                    </a>
-                    <a class="flex items-center gap-3 px-4 py-2 rounded-lg bg-primary/20 text-primary font-medium" href="#">
-                        <span class="material-icons text-sm">groups</span>
-                        <span>Students</span>
-                    </a>
-                    <a class="flex items-center gap-3 px-4 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary transition-colors" href="#">
-                        <span class="material-icons text-sm">event_note</span>
-                        <span>Schedule</span>
-                    </a>
-                    <a class="flex items-center gap-3 px-4 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary transition-colors" href="#">
-                        <span class="material-icons text-sm">fitness_center</span>
-                        <span>Workouts</span>
-                    </a>
-                    <a class="flex items-center gap-3 px-4 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary transition-colors" href="#">
-                        <span class="material-icons text-sm">payments</span>
-                        <span>Finances</span>
-                    </a>
-                </nav>
-            </div>
-        </aside>
+        @include('components.sidebar')
         <!-- Main Content -->
         <main class="flex-1 flex flex-col">
             <!-- Header -->

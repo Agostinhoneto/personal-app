@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>FitAssist - Student Management</title>
+    <title>FitAssist - Configuração de Alunos</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
@@ -42,7 +42,7 @@
         <main class="flex-1 flex flex-col">
             <!-- Header -->
             <header class="h-16 border-b border-primary/10 flex items-center justify-between px-8 bg-background-light/50 dark:bg-background-dark/50 backdrop-blur-md sticky top-0 z-10">
-                <h1 class="text-lg font-semibold">Student Management</h1>
+                <h1 class="text-lg font-semibold">Configuração de Alunos</h1>
                 <div class="flex items-center gap-4">
                     <button class="p-2 rounded-full hover:bg-primary/10 text-slate-600 dark:text-slate-400">
                         <span class="material-icons">notifications</span>
@@ -70,10 +70,12 @@
                             <button class="px-4 py-1.5 rounded-md text-slate-600 dark:text-slate-400 text-sm font-medium hover:text-primary transition-colors">Inactive</button>
                             <button class="px-4 py-1.5 rounded-md text-slate-600 dark:text-slate-400 text-sm font-medium hover:text-primary transition-colors">All</button>
                         </div>
-                        <button class="flex items-center gap-2 bg-primary px-4 py-2 rounded-lg text-background-dark font-bold hover:brightness-110 transition-all">
-                            <span class="material-icons text-sm">person_add</span>
-                            <span>Add Student</span>
-                        </button>
+                        <a href="{{ route('alunos.create') }}">
+                            <button class="flex items-center gap-2 bg-primary px-4 py-2 rounded-lg text-background-dark font-bold hover:brightness-110 transition-all">
+                                <span class="material-icons text-sm">person_add</span>
+                                <span>Criar Aluno</span>
+                            </button>
+                        </a>
                     </div>
                 </div>
                 <!-- Table Card -->

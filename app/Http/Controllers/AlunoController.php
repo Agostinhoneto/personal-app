@@ -27,6 +27,12 @@ class AlunoController extends Controller
         return response()->json($aluno, 201);
     }
 
+    public function create ()
+    {
+        // Retorna a view para criar um novo aluno
+        return view('alunos.create');
+    }
+    
     public function show(Aluno $aluno)
     {
         $aluno->load([

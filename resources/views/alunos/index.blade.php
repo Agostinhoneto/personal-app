@@ -92,187 +92,162 @@
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-primary/5">
-                                <!-- Row 1 -->
+                                @forelse($alunos as $aluno)
+                                @php
+                                    // Buscar treino ativo do aluno
+                                    $treinoAtivo = $aluno->treinos->first();
+                                    $status = $treinoAtivo ? 'Ativo' : 'Inativo';
+                                    $statusClass = $treinoAtivo ? 'bg-primary/20 text-primary' : 'bg-slate-800 text-slate-500';
+                                    $statusDotClass = $treinoAtivo ? 'bg-primary' : 'bg-slate-600';
+                                    
+                                    // Calcular progresso
+                                    $progresso = 0;
+                                    $diasRestantes = 0;
+                                    $programaNome = 'Sem programa';
+                                    $programaStatus = '';
+                                    
+                                    if ($treinoAtivo && $treinoAtivo->data_inicio && $treinoAtivo->data_fim) {
+                                        $programaNome = $treinoAtivo->nome;
+                                        $dataInicio = \Carbon\Carbon::parse($treinoAtivo->data_inicio);
+                                        $dataFim = \Carbon\Carbon::parse($treinoAtivo->data_fim);
+                                        $hoje = \Carbon\Carbon::now();
+                                        
+                                        $totalDias = $dataInicio->diffInDays($dataFim);
+                                        $diasPassados = $dataInicio->diffInDays($hoje);
+                                        $diasRestantes = $hoje->diffInDays($dataFim, false);
+                                        
+                                        if ($totalDias > 0) {
+                                            $progresso = min(100, round(($diasPassados / $totalDias) * 100));
+                                        }
+                                        
+                                        if ($diasRestantes > 0) {
+                                            $programaStatus = "Termina em {$diasRestantes} dias";
+                                        } elseif ($diasRestantes === 0) {
+                                            $programaStatus = "Termina hoje";
+                                        } else {
+                                            $programaStatus = "Expirado";
+                                            $status = 'Inativo';
+                                            $statusClass = 'bg-slate-800 text-slate-500';
+                                            $statusDotClass = 'bg-slate-600';
+                                        }
+                                    }
+                                    
+                                    // Avatar ou iniciais
+                                    $avatar = $aluno->usuario->foto ?? null;
+                                    $iniciais = strtoupper(substr($aluno->usuario->nome, 0, 1));
+                                    if (str_word_count($aluno->usuario->nome) > 1) {
+                                        $palavras = explode(' ', $aluno->usuario->nome);
+                                        $iniciais = strtoupper(substr($palavras[0], 0, 1) . substr(end($palavras), 0, 1));
+                                    }
+                                @endphp
                                 <tr class="hover:bg-primary/5 transition-colors group">
                                     <td class="px-6 py-4">
                                         <div class="flex items-center gap-3">
-                                            <img class="w-10 h-10 rounded-full object-cover border border-primary/30" data-alt="Portrait of a male fitness student" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDULnkcM4OLBMW6l30YpaUdcjI2ZjKXzQOibjl7y4PniCBttrU_EYmpKvuuaYTo-ge3Akkt_C02EOvQo8JFPt6q5C5vNrl8K-_AbQKJ3xaY1_r0VxN1lGn2LKiBn_VEwXcwsCPt3DP7HqaVsde9T9azYckNEe4Oil3tRq_bUpTC5-qgEnvyFoa2PgCaz09K_74dqzh1K_UJztGoPt1h31fq9jQOieu95E9fZ_1ljMPqAr3FivtVNje8xc3Qj7A3DJNapeTC_oPgZLzN" />
+                                            @if($avatar)
+                                                <img class="w-10 h-10 rounded-full object-cover border border-primary/30" alt="{{ $aluno->usuario->nome }}" src="{{ $avatar }}" />
+                                            @else
+                                                <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold border border-primary/30">
+                                                    {{ $iniciais }}
+                                                </div>
+                                            @endif
                                             <div>
-                                                <div class="font-medium text-slate-900 dark:text-slate-100">Marcus Thorne</div>
-                                                <div class="text-xs text-slate-500">marcus.t@email.com</div>
+                                                <div class="font-medium text-slate-900 dark:text-slate-100">{{ $aluno->usuario->nome }}</div>
+                                                <div class="text-xs text-slate-500">{{ $aluno->usuario->email }}</div>
                                             </div>
                                         </div>
                                     </td>
                                     <td class="px-6 py-4">
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/20 text-primary">
-                                            <span class="w-1.5 h-1.5 rounded-full bg-primary mr-2"></span>
-                                            Active
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $statusClass }}">
+                                            <span class="w-1.5 h-1.5 rounded-full {{ $statusDotClass }} mr-2"></span>
+                                            {{ $status }}
                                         </span>
                                     </td>
                                     <td class="px-6 py-4">
-                                        <div class="text-sm text-slate-300">Hypertrophy Max</div>
-                                        <div class="text-xs text-slate-500">Ends in 12 days</div>
+                                        <div class="text-sm text-slate-300">{{ $programaNome }}</div>
+                                        <div class="text-xs text-slate-500 {{ $diasRestantes < 0 ? 'text-red-400' : '' }}">
+                                            {{ $programaStatus }}
+                                        </div>
                                     </td>
                                     <td class="px-6 py-4">
                                         <div class="w-full max-w-xs bg-slate-800 rounded-full h-1.5">
-                                            <div class="bg-primary h-1.5 rounded-full" style="width: 75%"></div>
+                                            <div class="h-1.5 rounded-full {{ $progresso > 0 ? 'bg-primary' : 'bg-slate-600' }}" style="width: {{ $progresso }}%"></div>
                                         </div>
-                                        <span class="text-[10px] text-slate-500 mt-1 block">75% Completion</span>
+                                        <span class="text-[10px] text-slate-500 mt-1 block">{{ $progresso }}% Concluído</span>
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        <button class="text-slate-400 hover:text-primary transition-colors">
+                                        <a href="{{ route('alunos.show', $aluno->id) }}" class="text-slate-400 hover:text-primary transition-colors">
                                             <span class="material-icons">chevron_right</span>
-                                        </button>
+                                        </a>
                                     </td>
                                 </tr>
-                                <!-- Row 2 -->
-                                <tr class="hover:bg-primary/5 transition-colors group">
-                                    <td class="px-6 py-4">
-                                        <div class="flex items-center gap-3">
-                                            <img class="w-10 h-10 rounded-full object-cover border border-primary/30" data-alt="Portrait of a female fitness student" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvwkOsoOb6d9Dfnpgh3CNPCscDgpAf1QJB3PEN0UdGQQX3A4TGRn78rlS1IEWbqGsQH_IX0HTuiatrsKL5xzaxEsJD_KkSOKnyfSwS0ovpzBR6tI1rFk8YRKsAva2-WTdf9MxqxF3OjqxfCMsZ6ofbBkL1CdubjWNw0OmqbdHTheT1k9xSX3yt5ILmYpYK6GafB3zy7cxhQDpwHK736cYobc9oXMb_KsozDjJN0dpvdGyXCeC0E2FcErd3JXl1cQ9Un-V9jIw2H7nR" />
-                                            <div>
-                                                <div class="font-medium text-slate-900 dark:text-slate-100">Sarah Jenkins</div>
-                                                <div class="text-xs text-slate-500">s.jenkins@email.com</div>
-                                            </div>
+                                @empty
+                                <tr>
+                                    <td colspan="5" class="px-6 py-8 text-center text-slate-500">
+                                        <div class="flex flex-col items-center gap-2">
+                                            <span class="material-icons text-4xl text-slate-600">person_off</span>
+                                            <p>Nenhum aluno cadastrado ainda</p>
+                                            <a href="{{ route('alunos.create') }}" class="mt-2 text-primary hover:underline text-sm">
+                                                Criar primeiro aluno
+                                            </a>
                                         </div>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/20 text-primary">
-                                            <span class="w-1.5 h-1.5 rounded-full bg-primary mr-2"></span>
-                                            Active
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <div class="text-sm text-slate-300">Weight Loss Core</div>
-                                        <div class="text-xs text-slate-500">Ends in 45 days</div>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <div class="w-full max-w-xs bg-slate-800 rounded-full h-1.5">
-                                            <div class="bg-primary h-1.5 rounded-full" style="width: 40%"></div>
-                                        </div>
-                                        <span class="text-[10px] text-slate-500 mt-1 block">40% Completion</span>
-                                    </td>
-                                    <td class="px-6 py-4 text-right">
-                                        <button class="text-slate-400 hover:text-primary transition-colors">
-                                            <span class="material-icons">chevron_right</span>
-                                        </button>
                                     </td>
                                 </tr>
-                                <!-- Row 3 -->
-                                <tr class="hover:bg-primary/5 transition-colors group">
-                                    <td class="px-6 py-4">
-                                        <div class="flex items-center gap-3">
-                                            <img class="w-10 h-10 rounded-full object-cover border border-primary/30" data-alt="Portrait of a young male athlete" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDB8g0sFkR29brIiw5jEN1gcFGmVPLz3p4oKpGMjHcIKuTPO-gAPdWRlsksA8VEzc_UJqjC5Yh-7V9HX2yC9__9ka0N_hzqFoBdFPRCwYFRDXwv3zFH6cJO8Y2dHFz_931k1aT2UYlIrDyTrdlFjbf0xtQia2HOSRIYx1K0MTT_0SWjxEg_4Y4H0etn5EGntvTFGbR5xi0rKEtv8OMvYPhIwYgiuGYDpbbCexgH1H5TKC7leIy13ncMs-gGZCAYNS8CU-SlvXp3qQwU" />
-                                            <div>
-                                                <div class="font-medium text-slate-900 dark:text-slate-100">Leo Castelo</div>
-                                                <div class="text-xs text-slate-500">leo_gym@email.com</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-800 text-slate-500">
-                                            <span class="w-1.5 h-1.5 rounded-full bg-slate-600 mr-2"></span>
-                                            Inativos
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <div class="text-sm text-slate-300">Basic Strength</div>
-                                        <div class="text-xs text-slate-500 text-red-400">Subscription expired</div>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <div class="w-full max-w-xs bg-slate-800 rounded-full h-1.5">
-                                            <div class="bg-slate-600 h-1.5 rounded-full" style="width: 100%"></div>
-                                        </div>
-                                        <span class="text-[10px] text-slate-500 mt-1 block">100% Completion</span>
-                                    </td>
-                                    <td class="px-6 py-4 text-right">
-                                        <button class="text-slate-400 hover:text-primary transition-colors">
-                                            <span class="material-icons">chevron_right</span>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <!-- Row 4 -->
-                                <tr class="hover:bg-primary/5 transition-colors group">
-                                    <td class="px-6 py-4">
-                                        <div class="flex items-center gap-3">
-                                            <img class="w-10 h-10 rounded-full object-cover border border-primary/30" data-alt="Portrait of a focused female trainee" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfpPm5Ia7kogyTRvOzy6PbdbHgJYLfph--noOGqJ17B2plcsgaDtdawoeJwIA5GBbpu1mPmDHd62VnkISxYg5wTiS52Ftkzb3KMkhTdQO165sLYqXHiPC6OkkrohO6BcpzM_Zl3mRf7SPcEKsqxl4vLmdh94kBvDYsFn7MzIO3YfVBNsZsDxOB5mfQLG3k-MoT6--tVv2AnwOjtdL8NUdYTcE8B1KKaM29TrDvPBVCeGVP8cnBDUSlfE6f8UnyLn4bJKPf4Fg5NEK3" />
-                                            <div>
-                                                <div class="font-medium text-slate-900 dark:text-slate-100">Elena Vance</div>
-                                                <div class="text-xs text-slate-500">evance@email.com</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/20 text-primary">
-                                            <span class="w-1.5 h-1.5 rounded-full bg-primary mr-2"></span>
-                                            Ativos
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <div class="text-sm text-slate-300">Mobility Pro</div>
-                                        <div class="text-xs text-slate-500">Termina em 22 dias</div>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <div class="w-full max-w-xs bg-slate-800 rounded-full h-1.5">
-                                            <div class="bg-primary h-1.5 rounded-full" style="width: 15%"></div>
-                                        </div>
-                                        <span class="text-[10px] text-slate-500 mt-1 block">15% Concluído</span>
-                                    </td>
-                                    <td class="px-6 py-4 text-right">
-                                        <button class="text-slate-400 hover:text-primary transition-colors">
-                                            <span class="material-icons">chevron_right</span>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <!-- Row 5 -->
-                                <tr class="hover:bg-primary/5 transition-colors group">
-                                    <td class="px-6 py-4">
-                                        <div class="flex items-center gap-3">
-                                            <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold border border-primary/30">DM</div>
-                                            <div>
-                                                <div class="font-medium text-slate-900 dark:text-slate-100">David Miller</div>
-                                                <div class="text-xs text-slate-500">d.miller@email.com</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/20 text-primary">
-                                            <span class="w-1.5 h-1.5 rounded-full bg-primary mr-2"></span>
-                                            Ativo
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <div class="text-sm text-slate-300">Powerlifting Intro</div>
-                                        <div class="text-xs text-slate-500">Termina em 3 dias</div>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <div class="w-full max-w-xs bg-slate-800 rounded-full h-1.5">
-                                            <div class="bg-primary h-1.5 rounded-full" style="width: 90%"></div>
-                                        </div>
-                                        <span class="text-[10px] text-slate-500 mt-1 block">90% Concluído</span>
-                                    </td>
-                                    <td class="px-6 py-4 text-right">
-                                        <button class="text-slate-400 hover:text-primary transition-colors">
-                                            <span class="material-icons">chevron_right</span>
-                                        </button>
-                                    </td>
-                                </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
                     <!-- Pagination -->
                     <div class="px-6 py-4 border-t border-primary/10 flex items-center justify-between">
-                        <p class="text-sm text-slate-500">Mostrando 1 a 5 de 42 alunos</p>
+                        <p class="text-sm text-slate-500">
+                            Mostrando {{ $alunos->firstItem() ?? 0 }} a {{ $alunos->lastItem() ?? 0 }} de {{ $alunos->total() }} alunos
+                        </p>
                         <div class="flex gap-2">
-                            <button class="p-2 rounded border border-primary/20 hover:bg-primary/10 disabled:opacity-50" disabled="">
-                                <span class="material-icons text-sm">keyboard_arrow_left</span>
-                            </button>
-                            <button class="w-8 h-8 rounded bg-primary text-background-dark font-bold text-sm">1</button>
-                            <button class="w-8 h-8 rounded hover:bg-primary/10 text-slate-400 text-sm">2</button>
-                            <button class="w-8 h-8 rounded hover:bg-primary/10 text-slate-400 text-sm">3</button>
-                            <button class="p-2 rounded border border-primary/20 hover:bg-primary/10">
-                                <span class="material-icons text-sm">keyboard_arrow_right</span>
-                            </button>
+                            @if ($alunos->onFirstPage())
+                                <button class="p-2 rounded border border-primary/20 opacity-50 cursor-not-allowed" disabled>
+                                    <span class="material-icons text-sm">keyboard_arrow_left</span>
+                                </button>
+                            @else
+                                <a href="{{ $alunos->previousPageUrl() }}" class="p-2 rounded border border-primary/20 hover:bg-primary/10">
+                                    <span class="material-icons text-sm">keyboard_arrow_left</span>
+                                </a>
+                            @endif
+
+                            @php
+                                $start = max(1, $alunos->currentPage() - 1);
+                                $end = min($alunos->lastPage(), $alunos->currentPage() + 1);
+                            @endphp
+
+                            @if($start > 1)
+                                <a href="{{ $alunos->url(1) }}" class="w-8 h-8 rounded hover:bg-primary/10 text-slate-400 text-sm flex items-center justify-center">1</a>
+                                @if($start > 2)
+                                    <span class="w-8 h-8 flex items-center justify-center text-slate-500">...</span>
+                                @endif
+                            @endif
+
+                            @for($page = $start; $page <= $end; $page++)
+                                @if ($page == $alunos->currentPage())
+                                    <button class="w-8 h-8 rounded bg-primary text-background-dark font-bold text-sm">{{ $page }}</button>
+                                @else
+                                    <a href="{{ $alunos->url($page) }}" class="w-8 h-8 rounded hover:bg-primary/10 text-slate-400 text-sm flex items-center justify-center">{{ $page }}</a>
+                                @endif
+                            @endfor
+
+                            @if($end < $alunos->lastPage())
+                                @if($end < $alunos->lastPage() - 1)
+                                    <span class="w-8 h-8 flex items-center justify-center text-slate-500">...</span>
+                                @endif
+                                <a href="{{ $alunos->url($alunos->lastPage()) }}" class="w-8 h-8 rounded hover:bg-primary/10 text-slate-400 text-sm flex items-center justify-center">{{ $alunos->lastPage() }}</a>
+                            @endif
+
+                            @if ($alunos->hasMorePages())
+                                <a href="{{ $alunos->nextPageUrl() }}" class="p-2 rounded border border-primary/20 hover:bg-primary/10">
+                                    <span class="material-icons text-sm">keyboard_arrow_right</span>
+                                </a>
+                            @else
+                                <button class="p-2 rounded border border-primary/20 opacity-50 cursor-not-allowed" disabled>
+                                    <span class="material-icons text-sm">keyboard_arrow_right</span>
+                                </button>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -281,30 +256,30 @@
                     <div class="p-4 bg-background-light dark:bg-slate-900 rounded-xl border border-primary/10">
                         <p class="text-xs text-slate-500 uppercase tracking-wider mb-1">Total de Alunos</p>
                         <div class="flex items-end justify-between">
-                            <h3 class="text-2xl font-bold">42</h3>
-                            <span class="text-xs text-primary">+3 este mês</span>
+                            <h3 class="text-2xl font-bold">{{ $totalAlunos }}</h3>
+                            <span class="text-xs text-primary">+{{ $novosAlunosMes }} este mês</span>
                         </div>
                     </div>
                     <div class="p-4 bg-background-light dark:bg-slate-900 rounded-xl border border-primary/10">
                         <p class="text-xs text-slate-500 uppercase tracking-wider mb-1">Progresso Médio</p>
                         <div class="flex items-end justify-between">
-                            <h3 class="text-2xl font-bold">64%</h3>
+                            <h3 class="text-2xl font-bold">{{ $progressoMedio }}%</h3>
                             <div class="w-16 h-1 bg-slate-800 rounded-full mb-2 overflow-hidden">
-                                <div class="bg-primary h-full" style="width: 64%"></div>
+                                <div class="bg-primary h-full" style="width: {{ $progressoMedio }}%"></div>
                             </div>
                         </div>
                     </div>
                     <div class="p-4 bg-background-light dark:bg-slate-900 rounded-xl border border-primary/10">
                         <p class="text-xs text-slate-500 uppercase tracking-wider mb-1">Renovações Pendentes</p>
                         <div class="flex items-end justify-between">
-                            <h3 class="text-2xl font-bold">8</h3>
-                            <span class="text-xs text-yellow-400">Ação necessária</span>
+                            <h3 class="text-2xl font-bold">-</h3>
+                            <span class="text-xs text-slate-500">Em breve</span>
                         </div>
                     </div>
                     <div class="p-4 bg-background-light dark:bg-slate-900 rounded-xl border border-primary/10">
                         <p class="text-xs text-slate-500 uppercase tracking-wider mb-1">Planos Ativos</p>
                         <div class="flex items-end justify-between">
-                            <h3 class="text-2xl font-bold">35</h3>
+                            <h3 class="text-2xl font-bold">{{ $planosAtivos }}</h3>
                             <span class="material-icons text-primary">trending_up</span>
                         </div>
                     </div>

@@ -245,7 +245,7 @@ Este projeto está licenciado sob a MIT License - veja o arquivo LICENSE para ma
 
 ## ✨ Desenvolvedor
 
-Criado com ❤️ por [Seu Nome]
+Criado com ❤️ por Agostinho Neto
 
 ---
 

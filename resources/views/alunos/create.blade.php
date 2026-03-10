@@ -53,27 +53,7 @@
 
 <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 antialiased min-h-screen">
     <div class="flex h-screen overflow-hidden">
-        <aside class="w-64 border-r border-primary/10 bg-background-light dark:bg-background-dark flex flex-col hidden lg:flex">
-            <div class="p-6 flex items-center gap-3">
-                <div class="size-8 bg-primary rounded flex items-center justify-center text-background-dark">
-                    <span class="material-symbols-outlined font-bold">exercise</span>
-                </div>
-                <h2 class="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100">FitAssist</h2>
-            </div>
-                   @include('components.sidebar')
-
-            <div class="p-4 border-t border-primary/10">
-                <div class="flex items-center gap-3 p-2">
-                    <div class="size-10 rounded-full bg-primary/30 flex items-center justify-center overflow-hidden border border-primary/50">
-                        <img class="w-full h-full object-cover" data-alt="Profile photo of a professional gym trainer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTerw4bBXGYk7KIxnKBtfcgc8RGhdu7r1bzX2RQGHGUNRqPlVQFFGOGh0jwy2jNCRLDoJJ3lu0rb0EKXfPM40q2Oauz80tyxAjMwZ7XYs_oAbOkCltDcA3X_MpSUuP5CwT4egofPShZyOXaolUGdyyUK08r47oZd987fsDLrOnsmeeQSAGjXVY1UuASVvC9T3KYOnPAvs0R5j5QlKkt3wMTZzjcRWknGuUo_akXXQmv35jAiXImLKM9Yq8Xoxk4MhtvP7FZjUfn-C7" />
-                    </div>
-                    <div>
-                        <p class="text-xs font-bold text-slate-900 dark:text-slate-100">Marcos Silva</p>
-                        <p class="text-[10px] opacity-60 text-slate-600 dark:text-slate-400">Personal Trainer</p>
-                    </div>
-                </div>
-            </div>
-        </aside>
+        @include('components.sidebar')
         <main class="flex-1 flex flex-col overflow-hidden">
             <header class="h-16 border-b border-primary/10 flex items-center justify-between px-8 bg-background-light dark:bg-background-dark shrink-0">
                 <div class="flex items-center gap-4">
@@ -89,7 +69,7 @@
                     <a href="{{ route('alunos.index') }}" class="hidden md:block text-slate-600 dark:text-slate-400 hover:text-primary px-4 py-2 rounded-lg text-sm font-medium transition-colors">
                         Cancelar
                     </a>
-                    <button type="submit" class="bg-primary hover:bg-primary/90 text-background-dark px-6 py-2 rounded-lg font-bold text-sm transition-all shadow-lg shadow-primary/10">
+                    <button type="submit" form="formCriarAluno" class="bg-primary hover:bg-primary/90 text-background-dark px-6 py-2 rounded-lg font-bold text-sm transition-all shadow-lg shadow-primary/10">
                         Salvar Aluno
                     </button>
                 </div>
@@ -97,34 +77,34 @@
             <div class="flex-1 overflow-y-auto bg-slate-50 dark:bg-[#0a150a] p-4 lg:p-8">
                 <div class="max-w-5xl mx-auto">
                     @if(session('success'))
-                        <div class="mb-6 bg-primary/10 border border-primary/20 rounded-lg p-4 flex items-center gap-3">
-                            <span class="material-symbols-outlined text-primary">check_circle</span>
-                            <p class="text-sm">{{ session('success') }}</p>
-                        </div>
+                    <div class="mb-6 bg-primary/10 border border-primary/20 rounded-lg p-4 flex items-center gap-3">
+                        <span class="material-symbols-outlined text-primary">check_circle</span>
+                        <p class="text-sm">{{ session('success') }}</p>
+                    </div>
                     @endif
-                    
+
                     @if(session('error'))
-                        <div class="mb-6 bg-red-500/10 border border-red-500/20 rounded-lg p-4 flex items-center gap-3">
-                            <span class="material-symbols-outlined text-red-500">error</span>
-                            <p class="text-sm text-red-500">{{ session('error') }}</p>
-                        </div>
+                    <div class="mb-6 bg-red-500/10 border border-red-500/20 rounded-lg p-4 flex items-center gap-3">
+                        <span class="material-symbols-outlined text-red-500">error</span>
+                        <p class="text-sm text-red-500">{{ session('error') }}</p>
+                    </div>
                     @endif
 
                     @if($errors->any())
-                        <div class="mb-6 bg-red-500/10 border border-red-500/20 rounded-lg p-4">
-                            <div class="flex items-center gap-3 mb-2">
-                                <span class="material-symbols-outlined text-red-500">error</span>
-                                <p class="text-sm font-bold text-red-500">Erros de validação:</p>
-                            </div>
-                            <ul class="list-disc list-inside text-sm text-red-400 space-y-1">
-                                @foreach($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
+                    <div class="mb-6 bg-red-500/10 border border-red-500/20 rounded-lg p-4">
+                        <div class="flex items-center gap-3 mb-2">
+                            <span class="material-symbols-outlined text-red-500">error</span>
+                            <p class="text-sm font-bold text-red-500">Erros de validação:</p>
                         </div>
+                        <ul class="list-disc list-inside text-sm text-red-400 space-y-1">
+                            @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
                     @endif
 
-                    <form action="{{ route('alunos.store') }}" method="POST" class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <form id="formCriarAluno" action="{{ route('alunos.store') }}" method="POST" class="grid grid-cols-1 lg:grid-cols-12 gap-8">
                         @csrf
                         <div class="lg:col-span-8 space-y-6">
                             <div class="bg-background-light dark:bg-background-dark border border-primary/10 rounded-xl p-6 shadow-sm flex flex-col md:flex-row items-center gap-6">
@@ -237,7 +217,7 @@
                 </div>
             </div>
             <footer class="lg:hidden p-4 bg-background-light dark:bg-background-dark border-t border-primary/10 shrink-0">
-                <button type="submit" class="w-full bg-primary text-background-dark py-3 rounded-xl font-bold text-base shadow-lg shadow-primary/20">
+                <button type="submit" form="formCriarAluno" class="w-full bg-primary text-background-dark py-3 rounded-xl font-bold text-base shadow-lg shadow-primary/20">
                     Salvar Aluno
                 </button>
             </footer>

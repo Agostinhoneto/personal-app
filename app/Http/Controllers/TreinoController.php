@@ -38,7 +38,7 @@ class TreinoController extends Controller
             'personais' => $personais,
             'exercicios' => $exercicios,
         ];
-        return view('trainer.create', $data);
+        return view('treinos.create', $data);
     }
     
     public function store(Request $request)

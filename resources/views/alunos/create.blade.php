@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Criar Novo Aluno - FitAssist</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
@@ -82,17 +83,49 @@
                     <h1 class="text-lg font-semibold tracking-tight">Criar Novo Aluno</h1>
                 </div>
                 <div class="flex items-center gap-4">
-                    <button class="size-10 flex items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 hover:text-primary transition-colors">
+                    <button type="button" class="size-10 flex items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 hover:text-primary transition-colors">
                         <span class="material-symbols-outlined">notifications</span>
                     </button>
-                    <button class="bg-primary hover:bg-primary/90 text-background-dark px-6 py-2 rounded-lg font-bold text-sm transition-all shadow-lg shadow-primary/10">
+                    <a href="{{ route('alunos.index') }}" class="hidden md:block text-slate-600 dark:text-slate-400 hover:text-primary px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                        Cancelar
+                    </a>
+                    <button type="submit" class="bg-primary hover:bg-primary/90 text-background-dark px-6 py-2 rounded-lg font-bold text-sm transition-all shadow-lg shadow-primary/10">
                         Salvar Aluno
                     </button>
                 </div>
             </header>
             <div class="flex-1 overflow-y-auto bg-slate-50 dark:bg-[#0a150a] p-4 lg:p-8">
                 <div class="max-w-5xl mx-auto">
-                    <form class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    @if(session('success'))
+                        <div class="mb-6 bg-primary/10 border border-primary/20 rounded-lg p-4 flex items-center gap-3">
+                            <span class="material-symbols-outlined text-primary">check_circle</span>
+                            <p class="text-sm">{{ session('success') }}</p>
+                        </div>
+                    @endif
+                    
+                    @if(session('error'))
+                        <div class="mb-6 bg-red-500/10 border border-red-500/20 rounded-lg p-4 flex items-center gap-3">
+                            <span class="material-symbols-outlined text-red-500">error</span>
+                            <p class="text-sm text-red-500">{{ session('error') }}</p>
+                        </div>
+                    @endif
+
+                    @if($errors->any())
+                        <div class="mb-6 bg-red-500/10 border border-red-500/20 rounded-lg p-4">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="material-symbols-outlined text-red-500">error</span>
+                                <p class="text-sm font-bold text-red-500">Erros de validação:</p>
+                            </div>
+                            <ul class="list-disc list-inside text-sm text-red-400 space-y-1">
+                                @foreach($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
+                    <form action="{{ route('alunos.store') }}" method="POST" class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                        @csrf
                         <div class="lg:col-span-8 space-y-6">
                             <div class="bg-background-light dark:bg-background-dark border border-primary/10 rounded-xl p-6 shadow-sm flex flex-col md:flex-row items-center gap-6">
                                 <div class="relative group">
@@ -114,29 +147,28 @@
                                 </h2>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div class="col-span-1 md:col-span-2">
-                                        <label class="block text-xs font-medium mb-2 opacity-70 uppercase tracking-tight">Nome Completo</label>
-                                        <input class="w-full bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-primary/10 rounded-lg px-4 py-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none text-sm transition-all" placeholder="Digite o nome do aluno" type="text" />
+                                        <label class="block text-xs font-medium mb-2 opacity-70 uppercase tracking-tight">Nome Completo *</label>
+                                        <input name="nome" value="{{ old('nome') }}" class="w-full bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-primary/10 rounded-lg px-4 py-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none text-sm transition-all" placeholder="Digite o nome do aluno" type="text" required />
                                     </div>
                                     <div>
-                                        <label class="block text-xs font-medium mb-2 opacity-70 uppercase tracking-tight">E-mail</label>
-                                        <input class="w-full bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-primary/10 rounded-lg px-4 py-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none text-sm transition-all" placeholder="exemplo@email.com" type="email" />
+                                        <label class="block text-xs font-medium mb-2 opacity-70 uppercase tracking-tight">E-mail *</label>
+                                        <input name="email" value="{{ old('email') }}" class="w-full bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-primary/10 rounded-lg px-4 py-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none text-sm transition-all" placeholder="exemplo@email.com" type="email" required />
                                     </div>
                                     <div>
-                                        <label class="block text-xs font-medium mb-2 opacity-70 uppercase tracking-tight">CPF</label>
-                                        <input class="w-full bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-primary/10 rounded-lg px-4 py-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none text-sm transition-all" placeholder="000.000.000-00" type="text" />
+                                        <label class="block text-xs font-medium mb-2 opacity-70 uppercase tracking-tight">Telefone</label>
+                                        <input name="telefone" value="{{ old('telefone') }}" class="w-full bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-primary/10 rounded-lg px-4 py-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none text-sm transition-all" placeholder="(00) 00000-0000" type="text" />
                                     </div>
                                     <div>
-                                        <label class="block text-xs font-medium mb-2 opacity-70 uppercase tracking-tight">Gênero</label>
-                                        <select class="w-full bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-primary/10 rounded-lg px-4 py-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none text-sm appearance-none transition-all">
-                                            <option disabled="" selected="" value="">Selecione</option>
-                                            <option>Masculino</option>
-                                            <option>Feminino</option>
-                                            <option>Prefiro não dizer</option>
+                                        <label class="block text-xs font-medium mb-2 opacity-70 uppercase tracking-tight">Gênero *</label>
+                                        <select name="sexo" class="w-full bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-primary/10 rounded-lg px-4 py-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none text-sm appearance-none transition-all" required>
+                                            <option disabled="" {{ old('sexo') ? '' : 'selected' }} value="">Selecione</option>
+                                            <option value="M" {{ old('sexo') == 'M' ? 'selected' : '' }}>Masculino</option>
+                                            <option value="F" {{ old('sexo') == 'F' ? 'selected' : '' }}>Feminino</option>
                                         </select>
                                     </div>
                                     <div>
-                                        <label class="block text-xs font-medium mb-2 opacity-70 uppercase tracking-tight">Data de Nascimento</label>
-                                        <input class="w-full bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-primary/10 rounded-lg px-4 py-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none text-sm transition-all" type="date" />
+                                        <label class="block text-xs font-medium mb-2 opacity-70 uppercase tracking-tight">Data de Nascimento *</label>
+                                        <input name="data_nascimento" value="{{ old('data_nascimento') }}" class="w-full bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-primary/10 rounded-lg px-4 py-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none text-sm transition-all" type="date" required />
                                     </div>
                                 </div>
                             </section>
@@ -147,15 +179,15 @@
                                 <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
                                     <div>
                                         <label class="block text-xs font-medium mb-2 opacity-70 uppercase tracking-tight">Peso (kg)</label>
-                                        <input class="w-full bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-primary/10 rounded-lg px-4 py-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none text-sm transition-all" placeholder="0.0" step="0.1" type="number" />
+                                        <input name="peso" value="{{ old('peso') }}" class="w-full bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-primary/10 rounded-lg px-4 py-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none text-sm transition-all" placeholder="0.0" step="0.1" type="number" min="0" />
                                     </div>
                                     <div>
                                         <label class="block text-xs font-medium mb-2 opacity-70 uppercase tracking-tight">Altura (cm)</label>
-                                        <input class="w-full bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-primary/10 rounded-lg px-4 py-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none text-sm transition-all" placeholder="0" type="number" />
+                                        <input name="altura" value="{{ old('altura') }}" class="w-full bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-primary/10 rounded-lg px-4 py-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none text-sm transition-all" placeholder="170" type="number" min="0" />
                                     </div>
                                     <div class="col-span-2 md:col-span-1">
                                         <label class="block text-xs font-medium mb-2 opacity-70 uppercase tracking-tight">Gordura Corporal (%)</label>
-                                        <input class="w-full bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-primary/10 rounded-lg px-4 py-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none text-sm transition-all" placeholder="0.0" step="0.1" type="number" />
+                                        <input name="gordura_corporal" value="{{ old('gordura_corporal') }}" class="w-full bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-primary/10 rounded-lg px-4 py-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none text-sm transition-all" placeholder="0.0" step="0.1" type="number" min="0" max="100" />
                                     </div>
                                 </div>
                             </section>
@@ -163,33 +195,32 @@
                         <div class="lg:col-span-4 space-y-6">
                             <section class="bg-background-light dark:bg-background-dark border border-primary/10 rounded-xl p-6 shadow-sm sticky top-8">
                                 <h2 class="text-sm font-bold uppercase tracking-wider text-primary mb-6 flex items-center gap-2">
-                                    <span class="material-symbols-outlined text-sm">payments</span> PLANO E ASSINATURA
+                                    <span class="material-symbols-outlined text-sm">target</span> OBJETIVO E INFORMAÇÕES
                                 </h2>
                                 <div class="space-y-6">
                                     <div>
-                                        <label class="block text-xs font-medium mb-2 opacity-70 uppercase tracking-tight">Tipo de Plano</label>
-                                        <select class="w-full bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-primary/10 rounded-lg px-4 py-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none text-sm appearance-none transition-all">
-                                            <option>Mensal Individual</option>
-                                            <option>Trimestral Silver</option>
-                                            <option>Semestral Gold</option>
-                                            <option>Anual Black VIP</option>
-                                        </select>
+                                        <label class="block text-xs font-medium mb-2 opacity-70 uppercase tracking-tight">Objetivo do Aluno</label>
+                                        <textarea name="objetivo" class="w-full bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-primary/10 rounded-lg px-4 py-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none text-xs transition-all h-24 resize-none" placeholder="Ex: Ganho de massa muscular, Perda de peso, Condicionamento físico...">{{ old('objetivo') }}</textarea>
                                     </div>
                                     <div class="p-4 bg-primary/5 rounded-lg border border-primary/10">
                                         <div class="flex justify-between items-center mb-2">
-                                            <span class="text-xs font-medium opacity-60">Status do Pagamento</span>
-                                            <span class="text-[10px] font-bold px-2 py-0.5 bg-yellow-500/20 text-yellow-500 rounded uppercase">Pendente</span>
+                                            <span class="text-xs font-medium opacity-60">Acesso do Aluno</span>
+                                            <span class="text-[10px] font-bold px-2 py-0.5 bg-primary/20 text-primary rounded uppercase">Será Criado</span>
                                         </div>
-                                        <p class="text-sm font-bold">R$ 149,90 / mês</p>
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs font-medium mb-2 opacity-70 uppercase tracking-tight">Observações Administrativas</label>
-                                        <textarea class="w-full bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-primary/10 rounded-lg px-4 py-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none text-xs transition-all h-24 resize-none" placeholder="Notas sobre restrições médicas, convênios ou condições especiais..."></textarea>
+                                        <p class="text-xs text-slate-500">Senha padrão: <span class="font-mono font-bold">senha123</span></p>
+                                        <p class="text-[10px] text-slate-400 mt-1">O aluno poderá alterar a senha no primeiro acesso</p>
                                     </div>
                                     <div class="space-y-2">
-                                        <div class="flex items-center gap-2">
-                                            <input class="rounded bg-slate-900 border-primary/20 text-primary focus:ring-primary/50" id="terms" type="checkbox" />
-                                            <label class="text-[10px] text-slate-500" for="terms">Enviar convite de acesso por e-mail automaticamente</label>
+                                        <div class="flex items-start gap-2">
+                                            <span class="material-symbols-outlined text-primary text-sm mt-0.5">info</span>
+                                            <div>
+                                                <p class="text-[10px] text-slate-500">Após criar o aluno, você poderá:</p>
+                                                <ul class="text-[10px] text-slate-400 mt-1 space-y-0.5 ml-3 list-disc">
+                                                    <li>Criar treinos personalizados</li>
+                                                    <li>Fazer avaliações físicas</li>
+                                                    <li>Montar planos alimentares</li>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -206,7 +237,7 @@
                 </div>
             </div>
             <footer class="lg:hidden p-4 bg-background-light dark:bg-background-dark border-t border-primary/10 shrink-0">
-                <button class="w-full bg-primary text-background-dark py-3 rounded-xl font-bold text-base shadow-lg shadow-primary/20">
+                <button type="submit" class="w-full bg-primary text-background-dark py-3 rounded-xl font-bold text-base shadow-lg shadow-primary/20">
                     Salvar Aluno
                 </button>
             </footer>

@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Aluno;
 use App\Models\Personal;
 use App\Models\Treino;
+use App\Models\Usuario;
+use App\Models\Avaliacao;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 
 class AlunoController extends Controller
@@ -81,15 +84,65 @@ class AlunoController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'usuario_id' => 'required|exists:usuarios,id',
-            'personal_id' => 'required|exists:personais,id',
-            'data_nascimento' => 'nullable|date',
-            'sexo' => 'nullable|in:M,F',
-            'objetivo' => 'nullable|string',
+            'nome' => 'required|string|max:255',
+            'email' => 'required|email|unique:usuarios,email',
+            'telefone' => 'nullable|string|max:20',
+            'data_nascimento' => 'required|date',
+            'sexo' => 'required|in:M,F',
+            'objetivo' => 'nullable|string|max:500',
+            'peso' => 'nullable|numeric|min:0',
+            'altura' => 'nullable|numeric|min:0',
+            'gordura_corporal' => 'nullable|numeric|min:0|max:100',
         ]);
 
-        $aluno = Aluno::create($validated);
-        return response()->json($aluno, 201);
+        $user = Auth::user();
+        $personal = Personal::where('usuario_id', $user->id)->first();
+        
+        if (!$personal) {
+            return redirect()->route('dashboard')->with('error', 'Personal não encontrado');
+        }
+
+        try {
+            // Criar usuário
+            $usuario = Usuario::create([
+                'nome' => $validated['nome'],
+                'email' => $validated['email'],
+                'password' => Hash::make('senha123'), // Senha padrão temporária
+                'tipo' => 'aluno',
+                'telefone' => $validated['telefone'] ?? null,
+                'status' => true,
+            ]);
+
+            // Criar perfil do aluno
+            $aluno = Aluno::create([
+                'usuario_id' => $usuario->id,
+                'personal_id' => $personal->id,
+                'data_nascimento' => $validated['data_nascimento'],
+                'sexo' => $validated['sexo'],
+                'objetivo' => $validated['objetivo'] ?? null,
+            ]);
+
+            // Se houver dados de avaliação inicial, criar avaliação
+            if ($validated['peso'] || $validated['altura'] || $validated['gordura_corporal']) {
+                $peso = $validated['peso'] ?? 0;
+                $altura = $validated['altura'] ? $validated['altura'] / 100 : 0; // Converter cm para m
+                $imc = ($altura > 0) ? round($peso / ($altura * $altura), 2) : null;
+
+                Avaliacao::create([
+                    'aluno_id' => $aluno->id,
+                    'personal_id' => $personal->id,
+                    'data_avaliacao' => Carbon::now(),
+                    'peso' => $peso,
+                    'altura' => $validated['altura'] ? $validated['altura'] / 100 : null,
+                    'imc' => $imc,
+                    'gordura_corporal' => $validated['gordura_corporal'] ?? null,
+                ]);
+            }
+
+            return redirect()->route('alunos.index')->with('success', 'Aluno criado com sucesso!');
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', 'Erro ao criar aluno: ' . $e->getMessage());
+        }
     }
 
     public function create ()

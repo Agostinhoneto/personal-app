@@ -62,7 +62,7 @@
                 <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
                     <div class="relative flex-1 max-w-md">
                         <span class="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
-                        <input class="w-full pl-10 pr-4 py-2 bg-background-light dark:bg-slate-900 border border-primary/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 text-slate-100" placeholder="Search by name, email or plan..." type="text" />
+                        <input class="w-full pl-10 pr-4 py-2 bg-background-light dark:bg-slate-900 border border-primary/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 text-slate-100" placeholder="Pesquisar por nome, email ou plano..." type="text" />
                     </div>
                     <div class="flex items-center gap-3">
                         <div class="flex bg-primary/10 p-1 rounded-lg">

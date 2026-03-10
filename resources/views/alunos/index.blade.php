@@ -66,9 +66,9 @@
                     </div>
                     <div class="flex items-center gap-3">
                         <div class="flex bg-primary/10 p-1 rounded-lg">
-                            <button class="px-4 py-1.5 rounded-md bg-primary text-background-dark text-sm font-semibold">Active</button>
-                            <button class="px-4 py-1.5 rounded-md text-slate-600 dark:text-slate-400 text-sm font-medium hover:text-primary transition-colors">Inactive</button>
-                            <button class="px-4 py-1.5 rounded-md text-slate-600 dark:text-slate-400 text-sm font-medium hover:text-primary transition-colors">All</button>
+                            <button class="px-4 py-1.5 rounded-md bg-primary text-background-dark text-sm font-semibold">Ativos</button>
+                            <button class="px-4 py-1.5 rounded-md text-slate-600 dark:text-slate-400 text-sm font-medium hover:text-primary transition-colors">Inativos</button>
+                            <button class="px-4 py-1.5 rounded-md text-slate-600 dark:text-slate-400 text-sm font-medium hover:text-primary transition-colors">Todos</button>
                         </div>
                         <a href="{{ route('alunos.create') }}">
                             <button class="flex items-center gap-2 bg-primary px-4 py-2 rounded-lg text-background-dark font-bold hover:brightness-110 transition-all">
@@ -84,11 +84,11 @@
                         <table class="w-full text-left">
                             <thead>
                                 <tr class="border-b border-primary/10 bg-primary/5">
-                                    <th class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500">Student</th>
+                                    <th class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500">Alunos</th>
                                     <th class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500">Status</th>
-                                    <th class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500">Program</th>
-                                    <th class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500">Progress</th>
-                                    <th class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500 text-right">Action</th>
+                                    <th class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500">Programa</th>
+                                    <th class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500">Progresso</th>
+                                    <th class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500 text-right">Ação</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-primary/5">
@@ -172,7 +172,7 @@
                                     <td class="px-6 py-4">
                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-800 text-slate-500">
                                             <span class="w-1.5 h-1.5 rounded-full bg-slate-600 mr-2"></span>
-                                            Inactive
+                                            Inativos
                                         </span>
                                     </td>
                                     <td class="px-6 py-4">
@@ -205,18 +205,18 @@
                                     <td class="px-6 py-4">
                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/20 text-primary">
                                             <span class="w-1.5 h-1.5 rounded-full bg-primary mr-2"></span>
-                                            Active
+                                            Ativos
                                         </span>
                                     </td>
                                     <td class="px-6 py-4">
                                         <div class="text-sm text-slate-300">Mobility Pro</div>
-                                        <div class="text-xs text-slate-500">Ends in 22 days</div>
+                                        <div class="text-xs text-slate-500">Termina em 22 dias</div>
                                     </td>
                                     <td class="px-6 py-4">
                                         <div class="w-full max-w-xs bg-slate-800 rounded-full h-1.5">
                                             <div class="bg-primary h-1.5 rounded-full" style="width: 15%"></div>
                                         </div>
-                                        <span class="text-[10px] text-slate-500 mt-1 block">15% Completion</span>
+                                        <span class="text-[10px] text-slate-500 mt-1 block">15% Concluído</span>
                                     </td>
                                     <td class="px-6 py-4 text-right">
                                         <button class="text-slate-400 hover:text-primary transition-colors">
@@ -238,18 +238,18 @@
                                     <td class="px-6 py-4">
                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/20 text-primary">
                                             <span class="w-1.5 h-1.5 rounded-full bg-primary mr-2"></span>
-                                            Active
+                                            Ativo
                                         </span>
                                     </td>
                                     <td class="px-6 py-4">
                                         <div class="text-sm text-slate-300">Powerlifting Intro</div>
-                                        <div class="text-xs text-slate-500">Ends in 3 days</div>
+                                        <div class="text-xs text-slate-500">Termina em 3 dias</div>
                                     </td>
                                     <td class="px-6 py-4">
                                         <div class="w-full max-w-xs bg-slate-800 rounded-full h-1.5">
                                             <div class="bg-primary h-1.5 rounded-full" style="width: 90%"></div>
                                         </div>
-                                        <span class="text-[10px] text-slate-500 mt-1 block">90% Completion</span>
+                                        <span class="text-[10px] text-slate-500 mt-1 block">90% Concluído</span>
                                     </td>
                                     <td class="px-6 py-4 text-right">
                                         <button class="text-slate-400 hover:text-primary transition-colors">
@@ -262,7 +262,7 @@
                     </div>
                     <!-- Pagination -->
                     <div class="px-6 py-4 border-t border-primary/10 flex items-center justify-between">
-                        <p class="text-sm text-slate-500">Showing 1 to 5 of 42 students</p>
+                        <p class="text-sm text-slate-500">Mostrando 1 a 5 de 42 alunos</p>
                         <div class="flex gap-2">
                             <button class="p-2 rounded border border-primary/20 hover:bg-primary/10 disabled:opacity-50" disabled="">
                                 <span class="material-icons text-sm">keyboard_arrow_left</span>
@@ -279,14 +279,14 @@
                 <!-- Stats Footer -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
                     <div class="p-4 bg-background-light dark:bg-slate-900 rounded-xl border border-primary/10">
-                        <p class="text-xs text-slate-500 uppercase tracking-wider mb-1">Total Students</p>
+                        <p class="text-xs text-slate-500 uppercase tracking-wider mb-1">Total de Alunos</p>
                         <div class="flex items-end justify-between">
                             <h3 class="text-2xl font-bold">42</h3>
-                            <span class="text-xs text-primary">+3 this month</span>
+                            <span class="text-xs text-primary">+3 este mês</span>
                         </div>
                     </div>
                     <div class="p-4 bg-background-light dark:bg-slate-900 rounded-xl border border-primary/10">
-                        <p class="text-xs text-slate-500 uppercase tracking-wider mb-1">Average Progress</p>
+                        <p class="text-xs text-slate-500 uppercase tracking-wider mb-1">Progresso Médio</p>
                         <div class="flex items-end justify-between">
                             <h3 class="text-2xl font-bold">64%</h3>
                             <div class="w-16 h-1 bg-slate-800 rounded-full mb-2 overflow-hidden">
@@ -295,14 +295,14 @@
                         </div>
                     </div>
                     <div class="p-4 bg-background-light dark:bg-slate-900 rounded-xl border border-primary/10">
-                        <p class="text-xs text-slate-500 uppercase tracking-wider mb-1">Upcoming Renewals</p>
+                        <p class="text-xs text-slate-500 uppercase tracking-wider mb-1">Renovações Pendentes</p>
                         <div class="flex items-end justify-between">
                             <h3 class="text-2xl font-bold">8</h3>
-                            <span class="text-xs text-yellow-400">Action required</span>
+                            <span class="text-xs text-yellow-400">Ação necessária</span>
                         </div>
                     </div>
                     <div class="p-4 bg-background-light dark:bg-slate-900 rounded-xl border border-primary/10">
-                        <p class="text-xs text-slate-500 uppercase tracking-wider mb-1">Active Plans</p>
+                        <p class="text-xs text-slate-500 uppercase tracking-wider mb-1">Planos Ativos</p>
                         <div class="flex items-end justify-between">
                             <h3 class="text-2xl font-bold">35</h3>
                             <span class="material-icons text-primary">trending_up</span>

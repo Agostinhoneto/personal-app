@@ -165,7 +165,7 @@
                     </div>
                     <div class="lg:col-span-4 flex flex-col gap-6">
                         <div class="bg-white dark:bg-primary/5 border border-slate-200 dark:border-primary/10 rounded-xl p-6">
-                            <h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold mb-4">New Client Alerts</h2>
+                            <h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold mb-4">Novos Clientes</h2>
                             <div class="flex flex-col gap-4">
                                 @forelse($newClients as $client)
                                 <div class="flex items-center gap-3 p-3 rounded-lg bg-slate-50 dark:bg-primary/10 border-l-4 border-primary">
@@ -190,7 +190,7 @@
                             </div>
                         </div>
                         <div class="bg-white dark:bg-primary/5 border border-slate-200 dark:border-primary/10 rounded-xl p-6">
-                            <h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold mb-4">Client Activity</h2>
+                            <h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold mb-4">Clientes Ativos</h2>
                             <div class="space-y-4">
                                 @forelse($activities as $activity)
                                 <div class="flex items-start gap-3">
@@ -204,7 +204,7 @@
                                 <p class="text-center text-slate-500 dark:text-primary/60">Nenhuma atividade recente</p>
                                 @endforelse
                             </div>
-                            <a href="{{ route('alunos.index') }}" class="w-full mt-6 py-2 border border-primary/20 rounded-lg text-primary text-sm font-bold hover:bg-primary/5 transition-colors block text-center">View All Activity</a>
+                            <a href="{{ route('alunos.index') }}" class="w-full mt-6 py-2 border border-primary/20 rounded-lg text-primary text-sm font-bold hover:bg-primary/5 transition-colors block text-center">Ver Todas as Atividades</a>
                         </div>
                     </div>
                 </div>

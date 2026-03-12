@@ -78,9 +78,26 @@ services:  # THIS IS THE REQUIRED ROOT KEY
       interval: 30s
       timeout: 10s
       retries: 5
-
+ 
+  n8n:
+    image: n8nio/n8n
+    container_name: n8n
+    restart: unless-stopped
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_HOST=n8n
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - WEBHOOK_URL=http://n8n:5678/
+    volumes:
+      - n8n_data:/home/node/.n8n
+    depends_on:
+      - rabbitmq
 volumes:
   rabbitmq_data:
+    driver: local
+  n8n_data:
     driver: local
 
 networks:

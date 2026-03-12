@@ -10,6 +10,8 @@ use App\Models\Avaliacao;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 
 class AlunoController extends Controller
@@ -23,7 +25,6 @@ class AlunoController extends Controller
             return redirect()->route('dashboard')->with('error', 'Personal não encontrado');
         }
 
-        // Buscar alunos do personal com relacionamentos necessários
         $alunos = Aluno::where('personal_id', $personal->id)
             ->with([
                 'usuario',
@@ -35,7 +36,6 @@ class AlunoController extends Controller
             ])
             ->paginate(10);
 
-        // Calcular estatísticas
         $totalAlunos = Aluno::where('personal_id', $personal->id)->count();
         
         $novosAlunosMes = Aluno::where('personal_id', $personal->id)
@@ -43,7 +43,6 @@ class AlunoController extends Controller
             ->whereYear('created_at', Carbon::now()->year)
             ->count();
         
-        // Calcular progresso médio baseado nos treinos
         $alunosComTreino = Aluno::where('personal_id', $personal->id)
             ->whereHas('treinos', function($query) {
                 $query->where('status', 'ativo');
@@ -103,17 +102,16 @@ class AlunoController extends Controller
         }
 
         try {
-            // Criar usuário
+
             $usuario = Usuario::create([
                 'nome' => $validated['nome'],
                 'email' => $validated['email'],
-                'password' => Hash::make('senha123'), // Senha padrão temporária
+                'password' => Hash::make('senha123'),
                 'tipo' => 'aluno',
                 'telefone' => $validated['telefone'] ?? null,
                 'status' => true,
             ]);
 
-            // Criar perfil do aluno
             $aluno = Aluno::create([
                 'usuario_id' => $usuario->id,
                 'personal_id' => $personal->id,
@@ -122,10 +120,39 @@ class AlunoController extends Controller
                 'objetivo' => $validated['objetivo'] ?? null,
             ]);
 
-            // Se houver dados de avaliação inicial, criar avaliação
+            // ===============================
+            // ENVIO PARA N8N (Com proteção)
+            // ===============================
+            try {
+                $response = Http::timeout(10)
+                    ->post('http://n8n:5678/webhook/9b965150-ec4e-4c4e-a545-b484d2b3bfce', [
+                        'aluno_id' => $aluno->id,
+                        'nome' => $usuario->nome,
+                        'email' => $usuario->email,
+                        'telefone' => $usuario->telefone,
+                        'personal_id' => $personal->id,
+                        'data_criacao' => now()->toIso8601String()
+                    ]);
+
+                if ($response->failed()) {
+                    Log::warning('N8N webhook retornou erro', [
+                        'status' => $response->status(),
+                        'aluno_id' => $aluno->id,
+                        'response' => $response->body()
+                    ]);
+                }
+            } catch (\Exception $e) {
+                // Não quebra o fluxo, só loga o erro
+                Log::error('Falha ao enviar dados para N8N', [
+                    'aluno_id' => $aluno->id,
+                    'error' => $e->getMessage()
+                ]);
+            }
+            // ===============================
+
             if ($validated['peso'] || $validated['altura'] || $validated['gordura_corporal']) {
                 $peso = $validated['peso'] ?? 0;
-                $altura = $validated['altura'] ? $validated['altura'] / 100 : 0; // Converter cm para m
+                $altura = $validated['altura'] ? $validated['altura'] / 100 : 0;
                 $imc = ($altura > 0) ? round($peso / ($altura * $altura), 2) : null;
 
                 Avaliacao::create([
@@ -147,7 +174,6 @@ class AlunoController extends Controller
 
     public function create ()
     {
-        // Retorna a view para criar um novo aluno
         return view('alunos.create');
     }
     

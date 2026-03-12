@@ -94,102 +94,86 @@
             </section>
             <!-- Workout Grid -->
             <section class="px-8 py-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                <!-- Card 1 -->
+                @php
+                    $images = [
+                        'https://lh3.googleusercontent.com/aida-public/AB6AXuAtfBS09ttZdN79lw_iZY655RIDcIVs_FSg3rPiQ5nZeKAEMizE2Zh2pDRaXu7so8QCw3Yh55zUa_lGa-1rgvERw1P99Bxn9xXyO3pWTLFRecWET6eF81EJy6N7pEytEdmVPEQFbc_VEos7cIB1eqzZ59JpkYTQMw8ssiGLWBEgyYqhS6qiR1XIh7Yc0qULxHza8tidC7ujVA2rdkjJLYWTQHpV2DGHbZHngo7WUFCdX_-Wk5fbDrSR2ChKkfZgW-5zQJB55DHh3-qv',
+                        'https://lh3.googleusercontent.com/aida-public/AB6AXuCvlJEkAWf3d2NDVZ4T7wy5jh_cx9xtHpQ6N25vTzi3vXwSH7VX3hpfO3evNrw9mdx5msJ38QB__YzxA1j4Qn9ryB-m7Cl-5ytjM1BxWnmv7mLF7d5xv8L0veDseOP-R2UaWgtZN77cLlxMKIszWtqZsTJoRsbLE1SfBdnCZzfFPJADIliIFRF-ZMDTM6dhcMixIDUGbSXAFGxhPbuGE1zYGUfKYM-HEakq7xDttdytAWYzzieilxfAKLXfZJY0m71DDbQY1RCD9UKq',
+                        'https://lh3.googleusercontent.com/aida-public/AB6AXuDfLc3LQQvOXckki5-owJkfq2EevhUci8hqVKjBGz75tzU3nKvdLQH-ZRCRVYaRdm75kV8NggbxTp4fV8HlQYpDIgsTzWK0lSbH6Cm_8gDlgWcxNbyNHXEp4AgRRc-V0K-qewwBwd9N1wmcF33P7To8JVa9rzGGjZlF7mvJ1dVe-X1m9lF5v1poNP7pNXLR7yE2O0OuE9p_B3zusqlUlFh1ILsft2z_AK5neTdcDA4fq2gegPOL2MX2AwMyOCGQGA6ig9EPKRT1fiOD'
+                    ];
+                    $niveisMap = ['ativo' => 'Ativo', 'concluido' => 'Concluído', 'pausado' => 'Pausado'];
+                @endphp
+
+                @forelse($treinos as $index => $treino)
+                <!-- Card Treino -->
                 <div class="bg-slate-50 dark:bg-[#162a16] border border-slate-200 dark:border-primary/10 rounded-xl overflow-hidden flex flex-col group hover:shadow-2xl hover:shadow-primary/5 transition-all">
                     <div class="h-48 bg-slate-200 dark:bg-slate-800 relative overflow-hidden">
-                        <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 opacity-80" data-alt="Strong athlete performing a heavy chest press" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtfBS09ttZdN79lw_iZY655RIDcIVs_FSg3rPiQ5nZeKAEMizE2Zh2pDRaXu7so8QCw3Yh55zUa_lGa-1rgvERw1P99Bxn9xXyO3pWTLFRecWET6eF81EJy6N7pEytEdmVPEQFbc_VEos7cIB1eqzZ59JpkYTQMw8ssiGLWBEgyYqhS6qiR1XIh7Yc0qULxHza8tidC7ujVA2rdkjJLYWTQHpV2DGHbZHngo7WUFCdX_-Wk5fbDrSR2ChKkfZgW-5zQJB55DHh3-qv" />
+                        <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 opacity-80" alt="{{ $treino->nome }}" src="{{ $images[$index % 3] }}" />
                         <div class="absolute inset-0 bg-gradient-to-t from-background-dark/80 to-transparent"></div>
                         <div class="absolute bottom-4 left-4 right-4 flex justify-between items-center">
-                            <span class="bg-primary/90 text-background-dark text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded">Intermediário</span>
+                            <span class="bg-primary/90 text-background-dark text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded">
+                                {{ $niveisMap[$treino->status] ?? $treino->status }}
+                            </span>
                             <span class="text-white text-xs font-medium flex items-center gap-1">
-                                <span class="material-symbols-outlined text-[16px]">format_list_bulleted</span> 8 Exercícios
+                                <span class="material-symbols-outlined text-[16px]">format_list_bulleted</span> 
+                                {{ $treino->exercicios->count() }} Exercícios
                             </span>
                         </div>
                     </div>
                     <div class="p-5 flex-1 flex flex-col">
-                        <h3 class="text-lg font-bold mb-2 group-hover:text-primary transition-colors">Hipertrofia - Peito e Tríceps</h3>
-                        <div class="flex flex-wrap gap-1.5 mb-6">
-                            <span class="px-2 py-0.5 bg-slate-200 dark:bg-slate-800 rounded text-[10px] font-medium uppercase text-slate-600 dark:text-slate-400">Peitoral</span>
-                            <span class="px-2 py-0.5 bg-slate-200 dark:bg-slate-800 rounded text-[10px] font-medium uppercase text-slate-600 dark:text-slate-400">Tríceps</span>
-                            <span class="px-2 py-0.5 bg-slate-200 dark:bg-slate-800 rounded text-[10px] font-medium uppercase text-slate-600 dark:text-slate-400">Deltoides</span>
-                        </div>
-                        <div class="mt-auto grid grid-cols-2 gap-2">
-                            <button class="flex-1 bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 text-xs font-bold py-2 rounded-lg transition-colors">
-                                EDITAR
-                            </button>
-                            <button class="flex-1 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-bold py-2 rounded-lg transition-colors">
-                                DETALHES
-                            </button>
-                            <button class="col-span-2 border border-red-500/30 text-red-500 hover:bg-red-500/10 text-[10px] font-bold py-1.5 rounded-lg transition-colors mt-2 flex items-center justify-center gap-1">
-                                <span class="material-symbols-outlined text-[14px]">delete</span> EXCLUIR TREINO
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <!-- Card 2 -->
-                <div class="bg-slate-50 dark:bg-[#162a16] border border-slate-200 dark:border-primary/10 rounded-xl overflow-hidden flex flex-col group hover:shadow-2xl hover:shadow-primary/5 transition-all">
-                    <div class="h-48 bg-slate-200 dark:bg-slate-800 relative overflow-hidden">
-                        <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 opacity-80" data-alt="Person doing a barbell squat in a gym" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvlJEkAWf3d2NDVZ4T7wy5jh_cx9xtHpQ6N25vTzi3vXwSH7VX3hpfO3evNrw9mdx5msJ38QB__YzxA1j4Qn9ryB-m7Cl-5ytjM1BxWnmv7mLF7d5xv8L0veDseOP-R2UaWgtZN77cLlxMKIszWtqZsTJoRsbLE1SfBdnCZzfFPJADIliIFRF-ZMDTM6dhcMixIDUGbSXAFGxhPbuGE1zYGUfKYM-HEakq7xDttdytAWYzzieilxfAKLXfZJY0m71DDbQY1RCD9UKq" />
-                        <div class="absolute inset-0 bg-gradient-to-t from-background-dark/80 to-transparent"></div>
-                        <div class="absolute bottom-4 left-4 right-4 flex justify-between items-center">
-                            <span class="bg-primary/90 text-background-dark text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded">Avançado</span>
-                            <span class="text-white text-xs font-medium flex items-center gap-1">
-                                <span class="material-symbols-outlined text-[16px]">format_list_bulleted</span> 10 Exercícios
+                        <h3 class="text-lg font-bold mb-2 group-hover:text-primary transition-colors">{{ $treino->nome }}</h3>
+                        <div class="flex flex-wrap gap-1.5 mb-4">
+                            <span class="px-2 py-0.5 bg-slate-200 dark:bg-slate-800 rounded text-[10px] font-medium uppercase text-slate-600 dark:text-slate-400">
+                                {{ $treino->aluno->usuario->nome }}
                             </span>
+                            @if($treino->objetivo)
+                                <span class="px-2 py-0.5 bg-slate-200 dark:bg-slate-800 rounded text-[10px] font-medium uppercase text-slate-600 dark:text-slate-400">
+                                    {{ Str::limit($treino->objetivo, 15) }}
+                                </span>
+                            @endif
                         </div>
-                    </div>
-                    <div class="p-5 flex-1 flex flex-col">
-                        <h3 class="text-lg font-bold mb-2 group-hover:text-primary transition-colors">Pernas - Foco em Quadríceps</h3>
-                        <div class="flex flex-wrap gap-1.5 mb-6">
-                            <span class="px-2 py-0.5 bg-slate-200 dark:bg-slate-800 rounded text-[10px] font-medium uppercase text-slate-600 dark:text-slate-400">Quadríceps</span>
-                            <span class="px-2 py-0.5 bg-slate-200 dark:bg-slate-800 rounded text-[10px] font-medium uppercase text-slate-600 dark:text-slate-400">Glúteos</span>
-                        </div>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">
+                            Início: {{ $treino->data_inicio->format('d/m/Y') }}
+                            @if($treino->data_fim)
+                                | Fim: {{ $treino->data_fim->format('d/m/Y') }}
+                            @endif
+                        </p>
                         <div class="mt-auto grid grid-cols-2 gap-2">
-                            <button class="flex-1 bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 text-xs font-bold py-2 rounded-lg transition-colors">
+                            <a href="{{ route('treinos.edit', $treino->id) }}" class="flex-1 bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 text-xs font-bold py-2 rounded-lg transition-colors text-center">
                                 EDITAR
-                            </button>
-                            <button class="flex-1 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-bold py-2 rounded-lg transition-colors">
+                            </a>
+                            <a href="{{ route('treinos.show', $treino->id) }}" class="flex-1 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-bold py-2 rounded-lg transition-colors text-center">
                                 DETALHES
-                            </button>
-                            <button class="col-span-2 border border-red-500/30 text-red-500 hover:bg-red-500/10 text-[10px] font-bold py-1.5 rounded-lg transition-colors mt-2 flex items-center justify-center gap-1">
-                                <span class="material-symbols-outlined text-[14px]">delete</span> EXCLUIR TREINO
-                            </button>
+                            </a>
+                            <form action="{{ route('treinos.destroy', $treino->id) }}" method="POST" class="col-span-2" onsubmit="return confirm('Tem certeza que deseja excluir este treino?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="w-full border border-red-500/30 text-red-500 hover:bg-red-500/10 text-[10px] font-bold py-1.5 rounded-lg transition-colors mt-2 flex items-center justify-center gap-1">
+                                    <span class="material-symbols-outlined text-[14px]">delete</span> EXCLUIR TREINO
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
-                <!-- Card 3 -->
-                <div class="bg-slate-50 dark:bg-[#162a16] border border-slate-200 dark:border-primary/10 rounded-xl overflow-hidden flex flex-col group hover:shadow-2xl hover:shadow-primary/5 transition-all">
-                    <div class="h-48 bg-slate-200 dark:bg-slate-800 relative overflow-hidden">
-                        <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 opacity-80" data-alt="Muscular back during a pull up exercise" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfLc3LQQvOXckki5-owJkfq2EevhUci8hqVKjBGz75tzU3nKvdLQH-ZRCRVYaRdm75kV8NggbxTp4fV8HlQYpDIgsTzWK0lSbH6Cm_8gDlgWcxNbyNHXEp4AgRRc-V0K-qewwBwd9N1wmcF33P7To8JVa9rzGGjZlF7mvJ1dVe-X1m9lF5v1poNP7pNXLR7yE2O0OuE9p_B3zusqlUlFh1ILsft2z_AK5neTdcDA4fq2gegPOL2MX2AwMyOCGQGA6ig9EPKRT1fiOD" />
-                        <div class="absolute inset-0 bg-gradient-to-t from-background-dark/80 to-transparent"></div>
-                        <div class="absolute bottom-4 left-4 right-4 flex justify-between items-center">
-                            <span class="bg-primary/90 text-background-dark text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded">Iniciante</span>
-                            <span class="text-white text-xs font-medium flex items-center gap-1">
-                                <span class="material-symbols-outlined text-[16px]">format_list_bulleted</span> 6 Exercícios
-                            </span>
-                        </div>
+                @empty
+                <!-- Empty State -->
+                <div class="col-span-full flex flex-col items-center justify-center py-16 gap-4">
+                    <div class="w-20 h-20 rounded-full bg-slate-200 dark:bg-primary/10 flex items-center justify-center text-slate-400 dark:text-primary/40">
+                        <span class="material-symbols-outlined text-5xl">fitness_center</span>
                     </div>
-                    <div class="p-5 flex-1 flex flex-col">
-                        <h3 class="text-lg font-bold mb-2 group-hover:text-primary transition-colors">Dorsais e Bíceps</h3>
-                        <div class="flex flex-wrap gap-1.5 mb-6">
-                            <span class="px-2 py-0.5 bg-slate-200 dark:bg-slate-800 rounded text-[10px] font-medium uppercase text-slate-600 dark:text-slate-400">Costas</span>
-                            <span class="px-2 py-0.5 bg-slate-200 dark:bg-slate-800 rounded text-[10px] font-medium uppercase text-slate-600 dark:text-slate-400">Bíceps</span>
-                        </div>
-                        <div class="mt-auto grid grid-cols-2 gap-2">
-                            <button class="flex-1 bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 text-xs font-bold py-2 rounded-lg transition-colors">
-                                EDITAR
-                            </button>
-                            <button class="flex-1 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-bold py-2 rounded-lg transition-colors">
-                                DETALHES
-                            </button>
-                            <button class="col-span-2 border border-red-500/30 text-red-500 hover:bg-red-500/10 text-[10px] font-bold py-1.5 rounded-lg transition-colors mt-2 flex items-center justify-center gap-1">
-                                <span class="material-symbols-outlined text-[14px]">delete</span> EXCLUIR TREINO
-                            </button>
-                        </div>
+                    <div class="text-center">
+                        <p class="font-bold text-lg mb-2">Nenhum treino encontrado</p>
+                        <p class="text-sm text-slate-500 dark:text-slate-400">Comece criando um novo plano de treino para seus alunos</p>
                     </div>
+                    <a href="{{ route('treinos.create') }}" class="bg-primary hover:bg-primary/90 text-background-dark font-bold px-6 py-2.5 rounded-lg flex items-center gap-2 transition-transform active:scale-95 shadow-lg shadow-primary/20 mt-4">
+                        <span class="material-symbols-outlined">add</span>
+                        <span>Criar Primeiro Treino</span>
+                    </a>
                 </div>
+                @endforelse
+
                 <!-- Add New Placeholder Card -->
-                <div class="border-2 border-dashed border-primary/20 rounded-xl flex flex-col items-center justify-center p-8 gap-4 hover:border-primary/40 hover:bg-primary/5 transition-all cursor-pointer">
+                @if($treinos->count() > 0)
+                <a href="{{ route('treinos.create') }}" class="border-2 border-dashed border-primary/20 rounded-xl flex flex-col items-center justify-center p-8 gap-4 hover:border-primary/40 hover:bg-primary/5 transition-all cursor-pointer">
                     <div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary">
                         <span class="material-symbols-outlined text-3xl">add</span>
                     </div>
@@ -197,8 +181,16 @@
                         <p class="font-bold">Criar Nova Rotina</p>
                         <p class="text-xs text-slate-500">Adicione um novo plano de treino para seus alunos</p>
                     </div>
-                </div>
+                </a>
+                @endif
             </section>
+
+            <!-- Pagination -->
+            @if($treinos->hasPages())
+            <div class="px-8 pb-8">
+                {{ $treinos->links() }}
+            </div>
+            @endif
         </main>
     </div>
 </body>

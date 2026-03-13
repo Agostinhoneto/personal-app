@@ -20,7 +20,7 @@ class AlunoController extends Controller
     {
         $user = Auth::user();
         $personal = Personal::where('usuario_id', $user->id)->first();
-        
+
         if (!$personal) {
             return redirect()->route('dashboard')->with('error', 'Personal não encontrado');
         }
@@ -28,7 +28,7 @@ class AlunoController extends Controller
         $alunos = Aluno::where('personal_id', $personal->id)
             ->with([
                 'usuario',
-                'treinos' => function($query) {
+                'treinos' => function ($query) {
                     $query->where('status', 'ativo')
                         ->with('exercicios')
                         ->latest();
@@ -37,21 +37,21 @@ class AlunoController extends Controller
             ->paginate(10);
 
         $totalAlunos = Aluno::where('personal_id', $personal->id)->count();
-        
+
         $novosAlunosMes = Aluno::where('personal_id', $personal->id)
             ->whereMonth('created_at', Carbon::now()->month)
             ->whereYear('created_at', Carbon::now()->year)
             ->count();
-        
+
         $alunosComTreino = Aluno::where('personal_id', $personal->id)
-            ->whereHas('treinos', function($query) {
+            ->whereHas('treinos', function ($query) {
                 $query->where('status', 'ativo');
             })
-            ->with(['treinos' => function($query) {
+            ->with(['treinos' => function ($query) {
                 $query->where('status', 'ativo');
             }])
             ->get();
-        
+
         $progressoMedio = 0;
         if ($alunosComTreino->count() > 0) {
             $somaProgresso = 0;
@@ -66,7 +66,7 @@ class AlunoController extends Controller
             }
             $progressoMedio = round($somaProgresso / $alunosComTreino->count());
         }
-        
+
         $planosAtivos = Treino::where('personal_id', $personal->id)
             ->where('status', 'ativo')
             ->count();
@@ -77,7 +77,7 @@ class AlunoController extends Controller
             'novosAlunosMes',
             'progressoMedio',
             'planosAtivos'
-        ));      
+        ));
     }
 
     public function store(Request $request)
@@ -96,7 +96,7 @@ class AlunoController extends Controller
 
         $user = Auth::user();
         $personal = Personal::where('usuario_id', $user->id)->first();
-        
+
         if (!$personal) {
             return redirect()->route('dashboard')->with('error', 'Personal não encontrado');
         }
@@ -172,11 +172,11 @@ class AlunoController extends Controller
         }
     }
 
-    public function create ()
+    public function create()
     {
         return view('alunos.create');
     }
-    
+
     public function show(Aluno $aluno)
     {
         $aluno->load([
@@ -187,7 +187,9 @@ class AlunoController extends Controller
             'planosAlimentares',
             'assinaturas'
         ]);
-        return response()->json($aluno);
+        return view('alunos.show', compact(
+            'aluno'
+        )); 
     }
 
     public function update(Request $request, Aluno $aluno)

@@ -30,6 +30,7 @@ class UserSeeder extends Seeder
             'tipo' => 'personal',
             'telefone' => '(11) 98765-4321',
             'status' => true,
+            'email_verified_at' => now(),
         ]);
 
         // Criar perfil de Personal
@@ -48,6 +49,7 @@ class UserSeeder extends Seeder
             'tipo' => 'aluno',
             'telefone' => '(11) 91234-5678',
             'status' => true,
+            'email_verified_at' => now(),
         ]);
 
         $alunoProfile1 = Aluno::create([
@@ -65,6 +67,7 @@ class UserSeeder extends Seeder
             'tipo' => 'aluno',
             'telefone' => '(11) 92345-6789',
             'status' => true,
+            'email_verified_at' => now(),
         ]);
 
         $alunoProfile2 = Aluno::create([
@@ -82,6 +85,7 @@ class UserSeeder extends Seeder
             'tipo' => 'aluno',
             'telefone' => '(11) 93456-7890',
             'status' => true,
+            'email_verified_at' => now(),
         ]);
 
         $alunoProfile3 = Aluno::create([
@@ -181,4 +185,3 @@ class UserSeeder extends Seeder
         $this->command->info('📧 Aluno 3: pedro@example.com | password: password');
     }
 }
-

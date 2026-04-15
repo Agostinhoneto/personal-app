@@ -19,6 +19,7 @@ class Usuario extends Model
         'telefone',
         'foto',
         'status',
+        'email_verified_at',
     ];
 
     protected $hidden = [
@@ -27,6 +28,7 @@ class Usuario extends Model
 
     protected $casts = [
         'status' => 'boolean',
+        'email_verified_at' => 'datetime',
     ];
 
     public function personal(): HasOne

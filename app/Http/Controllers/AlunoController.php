@@ -9,6 +9,7 @@ use App\Models\Usuario;
 use App\Models\Avaliacao;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -18,12 +19,7 @@ class AlunoController extends Controller
 {
     public function index()
     {
-        $user = Auth::user();
-        $personal = Personal::where('usuario_id', $user->id)->first();
-
-        if (!$personal) {
-            return redirect()->route('dashboard')->with('error', 'Personal não encontrado');
-        }
+        $personal = $this->getAuthenticatedPersonal();
 
         $alunos = Aluno::where('personal_id', $personal->id)
             ->with([
@@ -94,31 +90,47 @@ class AlunoController extends Controller
             'gordura_corporal' => 'nullable|numeric|min:0|max:100',
         ]);
 
-        $user = Auth::user();
-        $personal = Personal::where('usuario_id', $user->id)->first();
-
-        if (!$personal) {
-            return redirect()->route('dashboard')->with('error', 'Personal não encontrado');
-        }
+        $personal = $this->getAuthenticatedPersonal();
 
         try {
+            $aluno = DB::transaction(function () use ($validated, $personal) {
+                $usuario = Usuario::create([
+                    'nome' => $validated['nome'],
+                    'email' => $validated['email'],
+                    'password' => Hash::make('senha123'),
+                    'tipo' => 'aluno',
+                    'telefone' => $validated['telefone'] ?? null,
+                    'status' => true,
+                ]);
 
-            $usuario = Usuario::create([
-                'nome' => $validated['nome'],
-                'email' => $validated['email'],
-                'password' => Hash::make('senha123'),
-                'tipo' => 'aluno',
-                'telefone' => $validated['telefone'] ?? null,
-                'status' => true,
-            ]);
+                $aluno = Aluno::create([
+                    'usuario_id' => $usuario->id,
+                    'personal_id' => $personal->id,
+                    'data_nascimento' => $validated['data_nascimento'],
+                    'sexo' => $validated['sexo'],
+                    'objetivo' => $validated['objetivo'] ?? null,
+                ]);
 
-            $aluno = Aluno::create([
-                'usuario_id' => $usuario->id,
-                'personal_id' => $personal->id,
-                'data_nascimento' => $validated['data_nascimento'],
-                'sexo' => $validated['sexo'],
-                'objetivo' => $validated['objetivo'] ?? null,
-            ]);
+                if ($this->hasInitialEvaluationData($validated)) {
+                    $peso = $validated['peso'] ?? null;
+                    $alturaEmMetros = isset($validated['altura']) ? $validated['altura'] / 100 : null;
+                    $imc = ($peso !== null && $alturaEmMetros && $alturaEmMetros > 0)
+                        ? round($peso / ($alturaEmMetros * $alturaEmMetros), 2)
+                        : null;
+
+                    Avaliacao::create([
+                        'aluno_id' => $aluno->id,
+                        'personal_id' => $personal->id,
+                        'data_avaliacao' => Carbon::now(),
+                        'peso' => $peso,
+                        'altura' => $alturaEmMetros,
+                        'imc' => $imc,
+                        'gordura_corporal' => $validated['gordura_corporal'] ?? null,
+                    ]);
+                }
+
+                return $aluno->load('usuario');
+            });
 
             // ===============================
             // ENVIO PARA N8N (Com proteção)
@@ -142,7 +154,6 @@ class AlunoController extends Controller
                     ]);
                 }
             } catch (\Exception $e) {
-                // Não quebra o fluxo, só loga o erro
                 Log::error('Falha ao enviar dados para N8N', [
                     'aluno_id' => $aluno->id,
                     'error' => $e->getMessage()
@@ -150,24 +161,13 @@ class AlunoController extends Controller
             }
             // ===============================
 
-            if ($validated['peso'] || $validated['altura'] || $validated['gordura_corporal']) {
-                $peso = $validated['peso'] ?? 0;
-                $altura = $validated['altura'] ? $validated['altura'] / 100 : 0;
-                $imc = ($altura > 0) ? round($peso / ($altura * $altura), 2) : null;
-
-                Avaliacao::create([
-                    'aluno_id' => $aluno->id,
-                    'personal_id' => $personal->id,
-                    'data_avaliacao' => Carbon::now(),
-                    'peso' => $peso,
-                    'altura' => $validated['altura'] ? $validated['altura'] / 100 : null,
-                    'imc' => $imc,
-                    'gordura_corporal' => $validated['gordura_corporal'] ?? null,
-                ]);
-            }
-
             return redirect()->route('alunos.index')->with('success', 'Aluno criado com sucesso!');
         } catch (\Exception $e) {
+            Log::error('Erro ao criar aluno', [
+                'error' => $e->getMessage(),
+                'user_id' => Auth::id(),
+            ]);
+
             return redirect()->back()->withInput()->with('error', 'Erro ao criar aluno: ' . $e->getMessage());
         }
     }
@@ -179,14 +179,17 @@ class AlunoController extends Controller
 
     public function show(Aluno $aluno)
     {
+        $this->ensureAlunoBelongsToAuthenticatedPersonal($aluno);
+
         $aluno->load([
             'usuario',
             'personal.usuario',
-            'avaliacoes',
-            'treinos',
+            'avaliacoes' => fn ($query) => $query->latest('data_avaliacao'),
+            'treinos' => fn ($query) => $query->latest('data_inicio')->with('exercicios.exercicio'),
             'planosAlimentares',
             'assinaturas'
         ]);
+
         return view('alunos.show', compact(
             'aluno'
         )); 
@@ -194,8 +197,9 @@ class AlunoController extends Controller
 
     public function update(Request $request, Aluno $aluno)
     {
+        $this->ensureAlunoBelongsToAuthenticatedPersonal($aluno);
+
         $validated = $request->validate([
-            'personal_id' => 'sometimes|exists:personais,id',
             'data_nascimento' => 'nullable|date',
             'sexo' => 'nullable|in:M,F',
             'objetivo' => 'nullable|string',
@@ -207,7 +211,30 @@ class AlunoController extends Controller
 
     public function destroy(Aluno $aluno)
     {
+        $this->ensureAlunoBelongsToAuthenticatedPersonal($aluno);
+
         $aluno->delete();
-        return response()->json(['message' => 'Aluno deletado com sucesso']);
+
+        return redirect()->route('alunos.index')->with('success', 'Aluno deletado com sucesso');
+    }
+
+    private function getAuthenticatedPersonal(): Personal
+    {
+        $personal = Personal::where('usuario_id', Auth::id())->first();
+
+        abort_if(!$personal, 404, 'Personal não encontrado');
+
+        return $personal;
+    }
+
+    private function ensureAlunoBelongsToAuthenticatedPersonal(Aluno $aluno): void
+    {
+        abort_if($aluno->personal_id !== $this->getAuthenticatedPersonal()->id, 403);
+    }
+
+    private function hasInitialEvaluationData(array $validated): bool
+    {
+        return collect(['peso', 'altura', 'gordura_corporal'])
+            ->contains(fn ($field) => isset($validated[$field]) && $validated[$field] !== '');
     }
 }

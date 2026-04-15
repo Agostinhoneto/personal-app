@@ -138,16 +138,11 @@
                     <span class="text-slate-600">/</span>
 
                     <span class="font-medium text-slate-900 dark:text-slate-100">
-                        {{ $aluno->nome }}
+                        {{ $aluno->usuario->nome }}
                     </span>
                 </div>
 
                 <div class="flex items-center gap-4">
-
-                    <button onclick="window.location.href='{{ route('alunos.edit',$aluno->id) }}'"
-                        class="p-2 rounded-lg bg-slate-100 dark:bg-white/5 text-slate-500 hover:text-primary transition-colors">
-                        <span class="material-symbols-outlined">edit</span>
-                    </button>
 
                     <button onclick="if(confirm('Deseja excluir este aluno?')){document.getElementById('delete-aluno').submit();}"
                         class="p-2 rounded-lg bg-slate-100 dark:bg-white/5 text-slate-500 hover:text-red-500 transition-colors">
@@ -179,11 +174,11 @@
 
                         <div>
                             <h2 class="text-3xl font-bold text-slate-900 dark:text-slate-100">
-                                {{ $aluno->nome }}
+                                {{ $aluno->usuario->nome }}
                             </h2>
 
                             <p class="text-slate-500 dark:text-slate-400">
-                                {{ $aluno->email }}
+                                {{ $aluno->usuario->email }}
                             </p>
                         </div>
 
@@ -228,19 +223,74 @@
                                 Novo Treino
                             </a>
                         </div>
-                        <div class="flex flex-col items-center justify-center py-20 bg-white/5 rounded-2xl border-2 border-dashed border-white/5">
-                            <div class="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-4">
-                                <span class="material-symbols-outlined text-slate-500 text-3xl">
-                                    fitness_center
-                                </span>
+                        @forelse($aluno->treinos as $treino)
+                            <div class="rounded-2xl border border-white/10 bg-white/5 p-5">
+                                <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+                                    <div>
+                                        <div class="flex items-center gap-3">
+                                            <h4 class="text-lg font-bold">{{ $treino->nome }}</h4>
+                                            <span class="rounded-full px-2.5 py-1 text-xs font-semibold uppercase {{ $treino->status === 'ativo' ? 'bg-primary/20 text-primary' : 'bg-slate-800 text-slate-400' }}">
+                                                {{ $treino->status }}
+                                            </span>
+                                        </div>
+                                        <p class="mt-1 text-sm text-slate-400">
+                                            Início: {{ optional($treino->data_inicio)->format('d/m/Y') ?? 'Não informado' }}
+                                            @if($treino->data_fim)
+                                                | Fim: {{ $treino->data_fim->format('d/m/Y') }}
+                                            @endif
+                                        </p>
+                                        @if($treino->objetivo)
+                                            <p class="mt-3 text-sm text-slate-300">{{ $treino->objetivo }}</p>
+                                        @endif
+                                    </div>
+
+                                    <a href="{{ route('treinos.index', ['aluno_id' => $aluno->id]) }}"
+                                        class="inline-flex items-center gap-2 rounded-lg border border-primary/20 px-4 py-2 text-sm font-bold text-primary hover:bg-primary/10 transition-colors">
+                                        <span class="material-symbols-outlined text-lg">visibility</span>
+                                        Ver treinos
+                                    </a>
+                                </div>
+
+                                <div class="mt-4 grid gap-2">
+                                    @forelse($treino->exercicios as $treinoExercicio)
+                                        <div class="flex items-center justify-between rounded-xl bg-black/10 px-4 py-3 text-sm">
+                                            <div>
+                                                <p class="font-semibold text-slate-100">
+                                                    {{ $treinoExercicio->exercicio->nome ?? 'Exercício sem nome' }}
+                                                </p>
+                                                <p class="text-xs text-slate-400">
+                                                    {{ $treinoExercicio->series }}x{{ $treinoExercicio->repeticoes }}
+                                                    @if($treinoExercicio->carga)
+                                                        | {{ $treinoExercicio->carga }}
+                                                    @endif
+                                                </p>
+                                            </div>
+                                            @if($treinoExercicio->tempo_descanso)
+                                                <span class="text-xs text-slate-500">{{ $treinoExercicio->tempo_descanso }}s descanso</span>
+                                            @endif
+                                        </div>
+                                    @empty
+                                        <p class="rounded-xl bg-black/10 px-4 py-3 text-sm text-slate-400">
+                                            Este treino ainda não possui exercícios vinculados.
+                                        </p>
+                                    @endforelse
+                                </div>
                             </div>
-                            <p class="text-lg font-medium text-slate-400">
-                                Nenhum treino cadastrado
-                            </p>
-                            <p class="text-sm text-slate-500 mt-1 text-center max-w-xs">
-                                Comece criando um novo plano de exercícios personalizado para o {{ $aluno->nome }}.
-                            </p>
-                        </div>
+                        @empty
+                            <div class="flex flex-col items-center justify-center py-20 bg-white/5 rounded-2xl border-2 border-dashed border-white/5">
+                                <div class="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-4">
+                                    <span class="material-symbols-outlined text-slate-500 text-3xl">
+                                        fitness_center
+                                    </span>
+                                </div>
+                                <p class="text-lg font-medium text-slate-400">
+                                    Nenhum treino cadastrado
+                                </p>
+                                <p class="text-sm text-slate-500 mt-1 text-center max-w-xs">
+                                    Comece criando um novo plano de exercícios personalizado para o {{ $aluno->usuario->nome }}.
+                                </p>
+                            </div>
+                        @endforelse
                     </div>
                 </div>
             </div>

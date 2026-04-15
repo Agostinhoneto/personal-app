@@ -46,11 +46,9 @@
 <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 antialiased min-h-screen">
     <div class="flex h-screen overflow-hidden">
         @include('components.sidebar')
-        <!-- Main Content -->
         <main class="flex-1 flex flex-col overflow-hidden">
             <form id="treinoForm" method="POST" action="{{ route('treinos.store') }}" class="flex-1 flex flex-col overflow-hidden">
                 @csrf
-                <!-- Top Header -->
                 <header class="h-16 border-b border-primary/10 flex items-center justify-between px-8 bg-background-light dark:bg-background-dark">
                     <div class="flex items-center gap-4">
                         <button type="button" class="lg:hidden text-slate-100">
@@ -59,416 +57,252 @@
                         <h1 class="text-lg font-semibold tracking-tight">Criar Novo Treino</h1>
                     </div>
                     <div class="flex items-center gap-4">
-                        <button type="button" class="size-10 flex items-center justify-center rounded-lg bg-slate-800/50 text-slate-400 hover:text-primary transition-colors">
-                            <span class="material-symbols-outlined">notifications</span>
-                        </button>
+                        <a href="{{ route('treinos.index') }}" class="hidden md:block text-slate-600 dark:text-slate-400 hover:text-primary px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                            Cancelar
+                        </a>
                         <button type="submit" class="bg-primary hover:bg-primary/90 text-background-dark px-4 py-2 rounded-lg font-bold text-sm transition-all shadow-lg shadow-primary/10">
                             Salvar Treino
                         </button>
                     </div>
                 </header>
-            <!-- Scrollable Editor Area -->
-            <div class="flex-1 overflow-y-auto bg-slate-50 dark:bg-[#0a150a] p-4 lg:p-8">
-                <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
-                    <!-- Left: Workout Details & Exercises -->
-                    <div class="lg:col-span-8 space-y-6">
-                        <!-- Basic Info Card -->
-                        <section class="bg-background-light dark:bg-background-dark border border-primary/10 rounded-xl p-6 shadow-sm">
-                            <h2 class="text-sm font-bold uppercase tracking-wider text-primary mb-6 flex items-center gap-2">
-                                <span class="material-symbols-outlined text-sm">info</span> Informações Básicas
-                            </h2>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div class="col-span-1 md:col-span-2">
-                                    <label class="block text-xs font-medium mb-2 opacity-70 uppercase tracking-tight">Nome do Treino</label>
-                                    <input name="nome" required class="w-full bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-primary/10 rounded-lg px-4 py-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none text-sm transition-all" placeholder="Ex: Treino A - Hipertrofia de Peitoral" type="text" value="{{ old('nome') }}" />
+
+                <div class="flex-1 overflow-y-auto bg-slate-50 dark:bg-[#0a150a] p-4 lg:p-8">
+                    <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
+                        <div class="lg:col-span-8 space-y-6">
+                            @if(session('error'))
+                                <div class="rounded-xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+                                    {{ session('error') }}
                                 </div>
-                                <div>
-                                    <label class="block text-xs font-medium mb-2 opacity-70 uppercase tracking-tight">Grupo Muscular Alvo</label>
-                                    <select name="grupo_muscular" class="w-full bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-primary/10 rounded-lg px-4 py-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none text-sm appearance-none transition-all">
-                                        <option value="Peitoral e Tríceps">Peitoral e Tríceps</option>
-                                        <option value="Costas e Bíceps">Costas e Bíceps</option>
-                                        <option value="Membros Inferiores">Membros Inferiores</option>
-                                        <option value="Ombros e Trapézio">Ombros e Trapézio</option>
-                                        <option value="Full Body">Full Body</option>
-                                    </select>
+                            @endif
+
+                            @if($errors->any())
+                                <div class="rounded-xl border border-red-500/20 bg-red-500/10 px-4 py-3">
+                                    <p class="mb-2 text-sm font-bold text-red-400">Corrija os erros abaixo:</p>
+                                    <ul class="list-disc pl-5 text-sm text-red-300">
+                                        @foreach($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
                                 </div>
-                                <div>
-                                    <label class="block text-xs font-medium mb-2 opacity-70 uppercase tracking-tight">Nível de Dificuldade</label>
-                                    <input type="hidden" name="nivel" id="nivelInput" value="intermediario">
-                                    <div class="flex gap-2">
-                                        <button type="button" onclick="setNivel('iniciante')" class="nivel-btn flex-1 py-2 text-xs font-bold border border-primary/20 rounded-lg hover:bg-primary/10 transition-colors">Iniciante</button>
-                                        <button type="button" onclick="setNivel('intermediario')" class="nivel-btn flex-1 py-2 text-xs font-bold bg-primary/20 border border-primary/40 text-primary rounded-lg">Intermédio</button>
-                                        <button type="button" onclick="setNivel('avancado')" class="nivel-btn flex-1 py-2 text-xs font-bold border border-primary/20 rounded-lg hover:bg-primary/10 transition-colors">Avançado</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                        <!-- Exercise List -->
-                        <section class="space-y-4">
-                            <div class="flex items-center justify-between mb-2">
-                                <h2 class="text-lg font-bold">Plano de Exercícios</h2>
-                                <span id="exercicioCount" class="text-xs text-slate-400 bg-slate-800 px-2 py-1 rounded">0 exercícios adicionados</span>
-                            </div>
-                            <div id="exerciciosList">
-                            <!-- Exercise Card 1 -->
-                            <div class="bg-background-light dark:bg-background-dark border border-primary/10 rounded-xl p-4 md:p-6 shadow-sm group">
-                                <div class="flex flex-col md:flex-row gap-6">
-                                    <div class="w-full md:w-32 h-24 rounded-lg bg-slate-100 dark:bg-slate-800 overflow-hidden relative border border-primary/5">
-                                        <img class="w-full h-full object-cover" data-alt="Man performing chest press on a bench" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCs3M00d2nypQZwJLnT-A9VnqUO7qpA2WIJ3feTxJYXfxkJK2mCyfGyZdNOAU4S55dQY7T0n_AGRqbVlQoXK2EpszBxrFXS9Nf6abYTKd0zm9331z8GRjsdQ3ya6ABrL0YtbrXzqQ7S0hCUoDPfIkuG75aTx6Qi1U4OOPuSe1mGoqlar2c-7JOBCCo_dB_h1xcRad8_WhA1Gt9cS0S45-h3JTrDykeOqEMFeVNkM_rS4FZlYa7FdhsX0qGSW5sduzexWDlTjUsMX2Fs" />
-                                        <div class="absolute inset-0 bg-primary/10"></div>
-                                    </div>
-                                    <div class="flex-1 space-y-4">
-                                        <div class="flex items-start justify-between">
-                                            <div>
-                                                <h3 class="font-bold text-lg">Supino Reto com Barra</h3>
-                                                <p class="text-xs text-primary font-medium">Peitoral Maior</p>
-                                            </div>
-                                            <button class="text-slate-500 hover:text-red-500 transition-colors">
-                                                <span class="material-symbols-outlined">delete</span>
-                                            </button>
-                                        </div>
-                                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                            <div class="space-y-1">
-                                                <label class="text-[10px] uppercase font-bold opacity-50">Séries</label>
-                                                <input class="w-full bg-slate-100 dark:bg-slate-900 border border-primary/10 rounded px-3 py-2 text-sm focus:ring-1 focus:ring-primary outline-none" type="number" value="4" />
-                                            </div>
-                                            <div class="space-y-1">
-                                                <label class="text-[10px] uppercase font-bold opacity-50">Repetições</label>
-                                                <input class="w-full bg-slate-100 dark:bg-slate-900 border border-primary/10 rounded px-3 py-2 text-sm focus:ring-1 focus:ring-primary outline-none" type="text" value="10-12" />
-                                            </div>
-                                            <div class="space-y-1">
-                                                <label class="text-[10px] uppercase font-bold opacity-50">Carga (kg)</label>
-                                                <input class="w-full bg-slate-100 dark:bg-slate-900 border border-primary/10 rounded px-3 py-2 text-sm focus:ring-1 focus:ring-primary outline-none" type="number" value="60" />
-                                            </div>
-                                            <div class="space-y-1">
-                                                <label class="text-[10px] uppercase font-bold opacity-50">Descanso</label>
-                                                <input class="w-full bg-slate-100 dark:bg-slate-900 border border-primary/10 rounded px-3 py-2 text-sm focus:ring-1 focus:ring-primary outline-none" type="text" value="60s" />
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <label class="text-[10px] uppercase font-bold opacity-50 mb-1 block">Observações para o aluno</label>
-                                            <textarea class="w-full bg-slate-100 dark:bg-slate-900 border border-primary/10 rounded px-3 py-2 text-xs focus:ring-1 focus:ring-primary outline-none h-16 resize-none" placeholder="Ex: Focar na cadência e não encostar a barra no peito"></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Exercise Card 2 -->
-                            <div class="bg-background-light dark:bg-background-dark border border-primary/10 rounded-xl p-4 md:p-6 shadow-sm group">
-                                <div class="flex flex-col md:flex-row gap-6">
-                                    <div class="w-full md:w-32 h-24 rounded-lg bg-slate-100 dark:bg-slate-800 overflow-hidden relative border border-primary/5">
-                                        <img class="w-full h-full object-cover" data-alt="Woman doing pushups in gym" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmN4RMeDhlxe1N3xeirpQQFpTE7oGd6EisPeBsG6qipaNMTV0fUG_VDA8ao83kDuapsCQttgEZlCk_jx1ZExWA5MxPigV7G-k3fDmBUphPPDA3qFvvFPjSs_5K-OUICha6EdRkGsiFAK6VOG7jOt4Kcsbobla4UO-abkS2dRisn0NbWe380Ea-fvlyWEzt1pplI2aIhloA7F6QglGbxavEuBBPMFFYkBJD84Cb5nB_Ean1R0eIH2qurvZvV5AyE6H2tkIgimKFet8i" />
-                                        <div class="absolute inset-0 bg-primary/10"></div>
-                                    </div>
-                                    <div class="flex-1 space-y-4">
-                                        <div class="flex items-start justify-between">
-                                            <div>
-                                                <h3 class="font-bold text-lg">Flexão de Braços</h3>
-                                                <p class="text-xs text-primary font-medium">Peitoral / Tríceps</p>
-                                            </div>
-                                            <button class="text-slate-500 hover:text-red-500 transition-colors">
-                                                <span class="material-symbols-outlined">delete</span>
-                                            </button>
-                                        </div>
-                                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                            <div class="space-y-1">
-                                                <label class="text-[10px] uppercase font-bold opacity-50">Séries</label>
-                                                <input class="w-full bg-slate-100 dark:bg-slate-900 border border-primary/10 rounded px-3 py-2 text-sm focus:ring-1 focus:ring-primary outline-none" type="number" value="3" />
-                                            </div>
-                                            <div class="space-y-1">
-                                                <label class="text-[10px] uppercase font-bold opacity-50">Repetições</label>
-                                                <input class="w-full bg-slate-100 dark:bg-slate-900 border border-primary/10 rounded px-3 py-2 text-sm focus:ring-1 focus:ring-primary outline-none" type="text" value="Até a falha" />
-                                            </div>
-                                            <div class="space-y-1">
-                                                <label class="text-[10px] uppercase font-bold opacity-50">Carga (kg)</label>
-                                                <input class="w-full bg-slate-100 dark:bg-slate-900 border border-primary/10 rounded px-3 py-2 text-sm focus:ring-1 focus:ring-primary outline-none" disabled="" type="text" value="Peso do corpo" />
-                                            </div>
-                                            <div class="space-y-1">
-                                                <label class="text-[10px] uppercase font-bold opacity-50">Descanso</label>
-                                                <input class="w-full bg-slate-100 dark:bg-slate-900 border border-primary/10 rounded px-3 py-2 text-sm focus:ring-1 focus:ring-primary outline-none" type="text" value="45s" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            </div>
-                            <button type="button" onclick="adicionarExercicioManual()" class="w-full py-4 border-2 border-dashed border-primary/20 rounded-xl text-primary font-bold hover:bg-primary/5 transition-all flex items-center justify-center gap-2 group">
-                                <span class="material-symbols-outlined group-hover:scale-110 transition-transform">add_circle</span>
-                                Adicionar Manualmente
-                            </button>
-                        </section>
-                    </div>
-                    <!-- Right Sidebar: Exercise Library -->
-                    <div class="lg:col-span-4 space-y-6">
-                        <section class="bg-background-light dark:bg-background-dark border border-primary/10 rounded-xl overflow-hidden flex flex-col h-[calc(100vh-12rem)] shadow-lg sticky top-0">
-                            <div class="p-4 border-b border-primary/10 bg-primary/5">
-                                <h2 class="font-bold flex items-center gap-2 mb-4">
-                                    <span class="material-symbols-outlined text-primary">search</span>
-                                    Biblioteca de Exercícios
+                            @endif
+
+                            <section class="bg-background-light dark:bg-background-dark border border-primary/10 rounded-xl p-6 shadow-sm">
+                                <h2 class="text-sm font-bold uppercase tracking-wider text-primary mb-6 flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-sm">info</span> Informações Básicas
                                 </h2>
-                                <div class="relative">
-                                    <input class="w-full bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-primary/10 rounded-lg pl-10 pr-4 py-2 text-xs outline-none focus:ring-1 focus:ring-primary transition-all" placeholder="Buscar exercício..." type="text" />
-                                    <span class="material-symbols-outlined absolute left-3 top-2 text-sm opacity-50">search</span>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="col-span-1 md:col-span-2">
+                                        <label class="block text-xs font-medium mb-2 opacity-70 uppercase tracking-tight">Nome do Treino</label>
+                                        <input name="nome" required class="w-full bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-primary/10 rounded-lg px-4 py-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none text-sm transition-all" placeholder="Ex: Treino A - Hipertrofia de Peitoral" type="text" value="{{ old('nome') }}" />
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-medium mb-2 opacity-70 uppercase tracking-tight">Aluno</label>
+                                        <select name="aluno_id" class="w-full bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-primary/10 rounded-lg px-4 py-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none text-sm appearance-none transition-all" required>
+                                            <option value="">Selecione o aluno</option>
+                                            @foreach($alunos as $aluno)
+                                                <option value="{{ $aluno->id }}" {{ (string) old('aluno_id', $selectedAlunoId) === (string) $aluno->id ? 'selected' : '' }}>
+                                                    {{ $aluno->usuario->nome }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-medium mb-2 opacity-70 uppercase tracking-tight">Status</label>
+                                        <select name="status" class="w-full bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-primary/10 rounded-lg px-4 py-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none text-sm appearance-none transition-all" required>
+                                            @foreach(['ativo' => 'Ativo', 'inativo' => 'Inativo', 'concluido' => 'Concluído'] as $value => $label)
+                                                <option value="{{ $value }}" {{ old('status', 'ativo') === $value ? 'selected' : '' }}>{{ $label }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-medium mb-2 opacity-70 uppercase tracking-tight">Data de Início</label>
+                                        <input name="data_inicio" class="w-full bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-primary/10 rounded-lg px-4 py-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none text-sm transition-all" type="date" value="{{ old('data_inicio', now()->format('Y-m-d')) }}" required />
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-medium mb-2 opacity-70 uppercase tracking-tight">Data de Fim</label>
+                                        <input name="data_fim" class="w-full bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-primary/10 rounded-lg px-4 py-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none text-sm transition-all" type="date" value="{{ old('data_fim') }}" />
+                                    </div>
+                                    <div class="col-span-1 md:col-span-2">
+                                        <label class="block text-xs font-medium mb-2 opacity-70 uppercase tracking-tight">Objetivo</label>
+                                        <textarea name="objetivo" class="w-full bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-primary/10 rounded-lg px-4 py-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none text-xs transition-all h-24 resize-none" placeholder="Ex: Ganho de massa muscular, condicionamento ou reabilitação.">{{ old('objetivo') }}</textarea>
+                                    </div>
                                 </div>
-                                <div class="flex gap-2 mt-4 overflow-x-auto pb-1 no-scrollbar">
-                                    <button class="text-[10px] font-bold px-3 py-1 bg-primary text-background-dark rounded-full whitespace-nowrap">Tudo</button>
-                                    <button class="text-[10px] font-bold px-3 py-1 bg-slate-800 text-slate-300 rounded-full whitespace-nowrap border border-white/5">Peito</button>
-                                    <button class="text-[10px] font-bold px-3 py-1 bg-slate-800 text-slate-300 rounded-full whitespace-nowrap border border-white/5">Costas</button>
-                                    <button class="text-[10px] font-bold px-3 py-1 bg-slate-800 text-slate-300 rounded-full whitespace-nowrap border border-white/5">Pernas</button>
+                            </section>
+
+                            <section class="space-y-4">
+                                <div class="flex items-center justify-between mb-2">
+                                    <h2 class="text-lg font-bold">Plano de Exercícios</h2>
+                                    <span id="exercicioCount" class="text-xs text-slate-400 bg-slate-800 px-2 py-1 rounded">0 exercícios adicionados</span>
                                 </div>
-                            </div>
-                            <div class="flex-1 overflow-y-auto p-4 space-y-3">
-                                <!-- Library Item 1 -->
-                                <div onclick="adicionarExercicioDaBiblioteca('Supino com Halteres', 'Peito', 'https://lh3.googleusercontent.com/aida-public/AB6AXuDJ-_SPCu9C9ebEUXQtR3qIYqF1ISjzooPMdd4UEoukey7b_B08sLBUpOoYULMmb_nKwvE1GXmOHxoxdhNLeud4CVqHf6AaKrg_j2tfFdSR1b9Uoe0ESSAKsOPtLVf3DmkPR7lrE4UkEldCX-zET6f8b1I4yABtTHMewcv0ZuABCUdxU2ZOeU9oeMJO311RKiSVDt5jIDWl0ty5-xNKa6zsebMOY7H_tPXdaKauoWj7C1jKFVBISjkNeL9kGguXhRifZtImA3a_uW7B')" class="group flex items-center gap-3 p-2 rounded-lg hover:bg-primary/10 border border-transparent hover:border-primary/20 cursor-pointer transition-all">
-                                    <div class="size-12 rounded bg-slate-800 flex-shrink-0 overflow-hidden">
-                                        <img class="w-full h-full object-cover" data-alt="Dumbbell press exercise demonstration" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJ-_SPCu9C9ebEUXQtR3qIYqF1ISjzooPMdd4UEoukey7b_B08sLBUpOoYULMmb_nKwvE1GXmOHxoxdhNLeud4CVqHf6AaKrg_j2tfFdSR1b9Uoe0ESSAKsOPtLVf3DmkPR7lrE4UkEldCX-zET6f8b1I4yABtTHMewcv0ZuABCUdxU2ZOeU9oeMJO311RKiSVDt5jIDWl0ty5-xNKa6zsebMOY7H_tPXdaKauoWj7C1jKFVBISjkNeL9kGguXhRifZtImA3a_uW7B" />
-                                    </div>
-                                    <div class="flex-1 min-w-0">
-                                        <p class="text-xs font-bold truncate">Supino com Halteres</p>
-                                        <p class="text-[10px] text-primary opacity-80 uppercase">Peito</p>
-                                    </div>
-                                    <span class="material-symbols-outlined text-slate-500 group-hover:text-primary transition-colors">add</span>
+                                <div id="exerciciosList" class="space-y-4"></div>
+                                <button type="button" id="addExercise" class="w-full py-4 border-2 border-dashed border-primary/20 rounded-xl text-primary font-bold hover:bg-primary/5 transition-all flex items-center justify-center gap-2 group">
+                                    <span class="material-symbols-outlined group-hover:scale-110 transition-transform">add_circle</span>
+                                    Adicionar Manualmente
+                                </button>
+                            </section>
+                        </div>
+
+                        <div class="lg:col-span-4 space-y-6">
+                            <section class="bg-background-light dark:bg-background-dark border border-primary/10 rounded-xl overflow-hidden flex flex-col h-[calc(100vh-12rem)] shadow-lg sticky top-0">
+                                <div class="p-4 border-b border-primary/10 bg-primary/5">
+                                    <h2 class="font-bold flex items-center gap-2 mb-4">
+                                        <span class="material-symbols-outlined text-primary">search</span>
+                                        Biblioteca de Exercícios
+                                    </h2>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400">Clique em um exercício para adicioná-lo ao treino.</p>
                                 </div>
-                                <!-- Library Item 2 -->
-                                <div onclick="adicionarExercicioDaBiblioteca('Crossover Polia Alta', 'Peito', 'https://lh3.googleusercontent.com/aida-public/AB6AXuCZ3_QpswzkH7nAf94lVpRrDsMTlOg_12lAHRHRlXJPcCNavJ_Bt5PdY2kecsBnAepF8usIHcW3k52whDibUUq5EWcrX5EO4UqPT69hD1uDeUyW-FzcyqSpTAZX1zX08gAKLR9s13qi2muuKkHSEAbLM9SEQz_BoZ1xerF4NGT5zIDzYnA4QVvdX-yPwwHISdSt3tP2aFKkL0HFq57l4_G0J8YdKQ-s21QNBOSodUI-AeJo1_j995NorAWusnSEL79y0GnGMYDupzOZ')" class="group flex items-center gap-3 p-2 rounded-lg hover:bg-primary/10 border border-transparent hover:border-primary/20 cursor-pointer transition-all">
-                                    <div class="size-12 rounded bg-slate-800 flex-shrink-0 overflow-hidden">
-                                        <img class="w-full h-full object-cover" data-alt="Cable crossover machine in gym" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZ3_QpswzkH7nAf94lVpRrDsMTlOg_12lAHRHRlXJPcCNavJ_Bt5PdY2kecsBnAepF8usIHcW3k52whDibUUq5EWcrX5EO4UqPT69hD1uDeUyW-FzcyqSpTAZX1zX08gAKLR9s13qi2muuKkHSEAbLM9SEQz_BoZ1xerF4NGT5zIDzYnA4QVvdX-yPwwHISdSt3tP2aFKkL0HFq57l4_G0J8YdKQ-s21QNBOSodUI-AeJo1_j995NorAWusnSEL79y0GnGMYDupzOZ" />
-                                    </div>
-                                    <div class="flex-1 min-w-0">
-                                        <p class="text-xs font-bold truncate">Crossover Polia Alta</p>
-                                        <p class="text-[10px] text-primary opacity-80 uppercase">Peito</p>
-                                    </div>
-                                    <span class="material-symbols-outlined text-slate-500 group-hover:text-primary transition-colors">add</span>
+                                <div class="flex-1 overflow-y-auto p-4 space-y-3">
+                                    @forelse($exercicios as $exercicio)
+                                        <div
+                                            onclick="adicionarExercicioDaBiblioteca('{{ addslashes($exercicio->nome) }}', '{{ addslashes($exercicio->categoria->nome ?? 'Sem categoria') }}', '{{ $exercicio->id }}')"
+                                            class="group flex items-center gap-3 p-3 rounded-lg hover:bg-primary/10 border border-transparent hover:border-primary/20 cursor-pointer transition-all"
+                                        >
+                                            <div class="size-12 rounded bg-slate-800 flex-shrink-0 overflow-hidden flex items-center justify-center">
+                                                <span class="material-symbols-outlined text-primary">fitness_center</span>
+                                            </div>
+                                            <div class="flex-1 min-w-0">
+                                                <p class="text-xs font-bold truncate">{{ $exercicio->nome }}</p>
+                                                <p class="text-[10px] text-primary opacity-80 uppercase">{{ $exercicio->categoria->nome ?? 'Sem categoria' }}</p>
+                                            </div>
+                                            <span class="material-symbols-outlined text-slate-500 group-hover:text-primary transition-colors">add</span>
+                                        </div>
+                                    @empty
+                                        <p class="text-sm text-slate-500 dark:text-slate-400">Nenhum exercício cadastrado para este personal.</p>
+                                    @endforelse
                                 </div>
-                                <!-- Library Item 3 -->
-                                <div onclick="adicionarExercicioDaBiblioteca('Desenvolvimento Barra', 'Ombros', 'https://lh3.googleusercontent.com/aida-public/AB6AXuBCwCBELPguzNsplkzUBStkiIPBHVNaCRHQC0zLCBg8ySf-lA-TEQPumKLheaE0sbXqHpBuWy8H_9mNZqlvC5EaQyPSiKQJqHJg9d8gkynR0IvPXcffiTAGNGx146_A1sUcLdsG0NtJvBizj02EHN_SKfTZb6FZCJxYz5gnC0OfQn80uqasHbz0hy_wcqkH5eSRHaJTz3ZaL1_FJrhW2iivStqD9l4GQ0K1ex3IAySmT7FV7CPkNNu50bwzs6zgQlylpTgNVitl3mec')" class="group flex items-center gap-3 p-2 rounded-lg hover:bg-primary/10 border border-transparent hover:border-primary/20 cursor-pointer transition-all">
-                                    <div class="size-12 rounded bg-slate-800 flex-shrink-0 overflow-hidden">
-                                        <img class="w-full h-full object-cover" data-alt="Barbell shoulder press technique" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCwCBELPguzNsplkzUBStkiIPBHVNaCRHQC0zLCBg8ySf-lA-TEQPumKLheaE0sbXqHpBuWy8H_9mNZqlvC5EaQyPSiKQJqHJg9d8gkynR0IvPXcffiTAGNGx146_A1sUcLdsG0NtJvBizj02EHN_SKfTZb6FZCJxYz5gnC0OfQn80uqasHbz0hy_wcqkH5eSRHaJTz3ZaL1_FJrhW2iivStqD9l4GQ0K1ex3IAySmT7FV7CPkNNu50bwzs6zgQlylpTgNVitl3mec" />
-                                    </div>
-                                    <div class="flex-1 min-w-0">
-                                        <p class="text-xs font-bold truncate">Desenvolvimento Barra</p>
-                                        <p class="text-[10px] text-primary opacity-80 uppercase">Ombros</p>
-                                    </div>
-                                    <span class="material-symbols-outlined text-slate-500 group-hover:text-primary transition-colors">add</span>
-                                </div>
-                                <!-- Library Item 4 -->
-                                <div onclick="adicionarExercicioDaBiblioteca('Leg Press 45º', 'Pernas', 'https://lh3.googleusercontent.com/aida-public/AB6AXuDlhrsBZpphvmt2Ze_LKgucRTRAdFqOVfdqSZARlMI_6c87wR-bAbwWUlGKODL_4kxnsH2Cd0aEwZLb0fcI-R2LEoHkSJYB_YpFE6NBXiXfm6Zleu_nh7v0RAjRQ9fW1FIgYqAp_jNSKpCtMQAg0v5wOPQgdre2vGNV1DyGizJZHNn6fimGuHBIHgU_qS8mnJU6q7gKEmsdroG5rf_qCKaORIaMpdrgDdhaHev-xjI-yJkSqXgxNyBXxcP3-Db6zEOijKh1pMgYA6-R')" class="group flex items-center gap-3 p-2 rounded-lg hover:bg-primary/10 border border-transparent hover:border-primary/20 cursor-pointer transition-all">
-                                    <div class="size-12 rounded bg-slate-800 flex-shrink-0 overflow-hidden">
-                                        <img class="w-full h-full object-cover" data-alt="Leg press gym equipment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDlhrsBZpphvmt2Ze_LKgucRTRAdFqOVfdqSZARlMI_6c87wR-bAbwWUlGKODL_4kxnsH2Cd0aEwZLb0fcI-R2LEoHkSJYB_YpFE6NBXiXfm6Zleu_nh7v0RAjRQ9fW1FIgYqAp_jNSKpCtMQAg0v5wOPQgdre2vGNV1DyGizJZHNn6fimGuHBIHgU_qS8mnJU6q7gKEmsdroG5rf_qCKaORIaMpdrgDdhaHev-xjI-yJkSqXgxNyBXxcP3-Db6zEOijKh1pMgYA6-R" />
-                                    </div>
-                                    <div class="flex-1 min-w-0">
-                                        <p class="text-xs font-bold truncate">Leg Press 45º</p>
-                                        <p class="text-[10px] text-primary opacity-80 uppercase">Pernas</p>
-                                    </div>
-                                    <span class="material-symbols-outlined text-slate-500 group-hover:text-primary transition-colors">add</span>
-                                </div>
-                                <!-- Library Item 5 -->
-                                <div onclick="adicionarExercicioDaBiblioteca('Puxada Frontal', 'Costas', 'https://lh3.googleusercontent.com/aida-public/AB6AXuBQhNJFlQ8YJ-A4CzV5F9wYgWroB6gSpQV5ml6d4_JaGAlOX8J_ThL0p016w2E4wex8eKeOLygprm89Vu8uQO8uVX_AIsA7Y-LgSUBUWYfD7hItGPe6Av2V8jQloMDqv8XGq2Kcqeb9r9zL82mqy4yqcJWUHCBAJ650sr9mBq4HJp-qUOMRomKGY9bbuwxMq-cxFP1irr74QhkOzR5-3U-pt93MYEaCa8aAkcPOOFkZuFPxC8LvmhZU5fk61ag-t6xtkY-z3WZPtWk3')" class="group flex items-center gap-3 p-2 rounded-lg hover:bg-primary/10 border border-transparent hover:border-primary/20 cursor-pointer transition-all">
-                                    <div class="size-12 rounded bg-slate-800 flex-shrink-0 overflow-hidden">
-                                        <img class="w-full h-full object-cover" data-alt="Lat pulldown machine exercise" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQhNJFlQ8YJ-A4CzV5F9wYgWroB6gSpQV5ml6d4_JaGAlOX8J_ThL0p016w2E4wex8eKeOLygprm89Vu8uQO8uVX_AIsA7Y-LgSUBUWYfD7hItGPe6Av2V8jQloMDqv8XGq2Kcqeb9r9zL82mqy4yqcJWUHCBAJ650sr9mBq4HJp-qUOMRomKGY9bbuwxMq-cxFP1irr74QhkOzR5-3U-pt93MYEaCa8aAkcPOOFkZuFPxC8LvmhZU5fk61ag-t6xtkY-z3WZPtWk3" />
-                                    </div>
-                                    <div class="flex-1 min-w-0">
-                                        <p class="text-xs font-bold truncate">Puxada Frontal</p>
-                                        <p class="text-[10px] text-primary opacity-80 uppercase">Costas</p>
-                                    </div>
-                                    <span class="material-symbols-outlined text-slate-500 group-hover:text-primary transition-colors">add</span>
-                                </div>
-                            </div>
-                            <div class="p-4 border-t border-primary/10">
-                                <button class="w-full py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-xs font-bold rounded-lg transition-colors">Ver Mais Exercícios</button>
-                            </div>
-                        </section>
+                            </section>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <!-- Mobile Action Bar -->
-            <footer class="lg:hidden p-4 bg-background-light dark:bg-background-dark border-t border-primary/10">
-                <button type="submit" class="w-full bg-primary text-background-dark py-3 rounded-xl font-bold text-base shadow-lg shadow-primary/20">
-                    Salvar Treino
-                </button>
-            </footer>
+
+                <footer class="lg:hidden p-4 bg-background-light dark:bg-background-dark border-t border-primary/10">
+                    <button type="submit" class="w-full bg-primary text-background-dark py-3 rounded-xl font-bold text-base shadow-lg shadow-primary/20">
+                        Salvar Treino
+                    </button>
+                </footer>
             </form>
         </main>
     </div>
 
-    <!-- Modal: Adicionar Exercício -->
-    <div id="modalExercicio" class="fixed inset-0 bg-background-dark/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="relative w-full max-w-[480px] bg-slate-900/90 border border-primary/20 rounded-xl shadow-2xl overflow-hidden">
-            <!-- Modal Header -->
-            <div class="flex items-center justify-between p-6 border-b border-primary/10">
-                <h2 class="text-2xl font-bold tracking-tight text-slate-100">Novo Exercício</h2>
-                <button onclick="fecharModal()" class="text-slate-400 hover:text-primary transition-colors">
-                    <span class="material-symbols-outlined">close</span>
-                </button>
-            </div>
-            <!-- Modal Body -->
-            <div class="p-6 space-y-6">
-                <div class="space-y-4">
-                    <div class="flex flex-col gap-2">
-                        <label class="text-sm font-medium text-slate-300">Nome do Exercício</label>
-                        <div class="relative">
-                            <input id="modalNomeExercicio" class="w-full bg-slate-800 border border-primary/20 rounded-lg py-4 px-4 text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all" placeholder="Ex: Supino Reto com Barra" type="text" />
-                        </div>
-                    </div>
-                    <div class="flex flex-col gap-2">
-                        <label class="text-sm font-medium text-slate-300">Grupo Muscular</label>
-                        <div class="relative">
-                            <input id="modalGrupoMuscular" class="w-full bg-slate-800 border border-primary/20 rounded-lg py-4 px-4 text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all" placeholder="Ex: Peitoral" type="text" />
-                        </div>
-                    </div>
-                    <div class="p-4 rounded-lg bg-primary/5 border border-primary/10 flex items-start gap-3">
-                        <span class="material-symbols-outlined text-primary text-xl">info</span>
-                        <p class="text-xs text-slate-400 leading-relaxed">
-                            Escolha um nome claro para identificar este exercício em seus treinos futuros e acompanhar seu progresso.
-                        </p>
-                    </div>
+    <template id="exerciseRowTemplate">
+        <div class="bg-background-light dark:bg-background-dark border border-primary/10 rounded-xl p-4 md:p-6 shadow-sm group exercise-row">
+            <div class="flex flex-col md:flex-row gap-6">
+                <div class="w-full md:w-32 h-24 rounded-lg bg-slate-100 dark:bg-slate-800 overflow-hidden relative border border-primary/5 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-3xl text-primary/70">fitness_center</span>
                 </div>
-                <!-- Modal Actions -->
-                <div class="flex flex-col gap-3 pt-2">
-                    <button onclick="salvarExercicioModal()" class="w-full bg-primary hover:bg-primary/90 text-background-dark font-bold py-4 rounded-lg transition-all active:scale-[0.98] flex items-center justify-center gap-2">
-                        <span>Criar Exercício</span>
-                        <span class="material-symbols-outlined text-xl">add_circle</span>
-                    </button>
-                    <button onclick="fecharModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-100 font-semibold py-4 rounded-lg transition-all active:scale-[0.98]">
-                        Cancelar
-                    </button>
+                <div class="flex-1 space-y-4">
+                    <div class="flex items-start justify-between">
+                        <div class="min-w-0">
+                            <h3 class="font-bold text-lg exercise-title">Novo Exercício</h3>
+                            <p class="text-xs text-primary font-medium exercise-category">Selecione abaixo</p>
+                        </div>
+                        <button type="button" class="text-slate-500 hover:text-red-500 transition-colors remove-exercise">
+                            <span class="material-symbols-outlined">delete</span>
+                        </button>
+                    </div>
+
+                    <div>
+                        <label class="text-[10px] uppercase font-bold opacity-50 mb-1 block">Exercício da Biblioteca</label>
+                        <select data-field="exercicio_id" class="w-full bg-slate-100 dark:bg-slate-900 border border-primary/10 rounded px-3 py-2 text-sm focus:ring-1 focus:ring-primary outline-none exercise-select" required>
+                            <option value="">Selecione um exercício</option>
+                            @foreach($exercicios as $exercicio)
+                                <option value="{{ $exercicio->id }}" data-nome="{{ $exercicio->nome }}" data-categoria="{{ $exercicio->categoria->nome ?? 'Sem categoria' }}">
+                                    {{ $exercicio->nome }}{{ $exercicio->categoria ? ' - '.$exercicio->categoria->nome : '' }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="space-y-1">
+                            <label class="text-[10px] uppercase font-bold opacity-50">Séries</label>
+                            <input data-field="series" class="w-full bg-slate-100 dark:bg-slate-900 border border-primary/10 rounded px-3 py-2 text-sm focus:ring-1 focus:ring-primary outline-none" type="number" min="1" value="3" />
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[10px] uppercase font-bold opacity-50">Repetições</label>
+                            <input data-field="repeticoes" class="w-full bg-slate-100 dark:bg-slate-900 border border-primary/10 rounded px-3 py-2 text-sm focus:ring-1 focus:ring-primary outline-none" type="text" value="10-12" />
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[10px] uppercase font-bold opacity-50">Carga (kg)</label>
+                            <input data-field="carga" class="w-full bg-slate-100 dark:bg-slate-900 border border-primary/10 rounded px-3 py-2 text-sm focus:ring-1 focus:ring-primary outline-none" type="number" min="0" step="0.01" value="" />
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[10px] uppercase font-bold opacity-50">Descanso</label>
+                            <input data-field="descanso" class="w-full bg-slate-100 dark:bg-slate-900 border border-primary/10 rounded px-3 py-2 text-sm focus:ring-1 focus:ring-primary outline-none" type="text" value="60s" />
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-[10px] uppercase font-bold opacity-50 mb-1 block">Observações para o aluno</label>
+                        <textarea data-field="observacoes" class="w-full bg-slate-100 dark:bg-slate-900 border border-primary/10 rounded px-3 py-2 text-xs focus:ring-1 focus:ring-primary outline-none h-16 resize-none" placeholder="Ex: Focar na cadência e não encostar a barra no peito"></textarea>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </template>
 
     <script>
-        let exercicioIndex = 0;
+        const exerciseRows = document.getElementById('exerciciosList');
+        const template = document.getElementById('exerciseRowTemplate');
+        const oldExercises = @json(array_values(old('exercicios', [])));
 
-        function setNivel(nivel) {
-            document.getElementById('nivelInput').value = nivel;
-            document.querySelectorAll('.nivel-btn').forEach(btn => {
-                btn.classList.remove('bg-primary/20', 'border-primary/40', 'text-primary');
-                btn.classList.add('border-primary/20');
+        function updateRowNames() {
+            [...exerciseRows.querySelectorAll('.exercise-row')].forEach((row, index) => {
+                row.querySelectorAll('[data-field]').forEach((field) => {
+                    field.name = `exercicios[${index}][${field.dataset.field}]`;
+                });
             });
-            event.target.classList.add('bg-primary/20', 'border-primary/40', 'text-primary');
-            event.target.classList.remove('border-primary/20');
-        }
-
-        function adicionarExercicioDaBiblioteca(nome, grupoMuscular, imagemUrl) {
-            const html = criarCardExercicio(nome, grupoMuscular, imagemUrl);
-            document.getElementById('exerciciosList').insertAdjacentHTML('beforeend', html);
             atualizarContador();
         }
 
-        function adicionarExercicioManual() {
-            abrirModal();
+        function updateExerciseHeader(row) {
+            const select = row.querySelector('.exercise-select');
+            const selected = select.options[select.selectedIndex];
+            row.querySelector('.exercise-title').textContent = selected?.dataset?.nome || 'Novo Exercício';
+            row.querySelector('.exercise-category').textContent = selected?.dataset?.categoria || 'Selecione abaixo';
         }
 
-        function abrirModal() {
-            document.getElementById('modalExercicio').classList.remove('hidden');
-            document.getElementById('modalNomeExercicio').value = '';
-            document.getElementById('modalGrupoMuscular').value = '';
-            document.getElementById('modalNomeExercicio').focus();
+        function addExerciseRow(values = {}) {
+            const fragment = template.content.cloneNode(true);
+            const row = fragment.querySelector('.exercise-row');
+            const select = row.querySelector('.exercise-select');
+
+            row.querySelectorAll('[data-field]').forEach((field) => {
+                const key = field.dataset.field;
+                if (values[key] !== undefined && values[key] !== null) {
+                    field.value = values[key];
+                }
+            });
+
+            select.addEventListener('change', () => updateExerciseHeader(row));
+
+            row.querySelector('.remove-exercise').addEventListener('click', () => {
+                row.remove();
+                updateRowNames();
+            });
+
+            exerciseRows.appendChild(row);
+            updateExerciseHeader(row);
+            updateRowNames();
         }
 
-        function fecharModal() {
-            document.getElementById('modalExercicio').classList.add('hidden');
+        function adicionarExercicioDaBiblioteca(nome, categoria, exercicioId) {
+            addExerciseRow({
+                exercicio_id: exercicioId,
+            });
         }
 
-        function salvarExercicioModal() {
-            const nome = document.getElementById('modalNomeExercicio').value.trim();
-            const grupoMuscular = document.getElementById('modalGrupoMuscular').value.trim();
-            
-            if (!nome) {
-                alert('Por favor, insira o nome do exercício');
-                return;
-            }
-            
-            const html = criarCardExercicio(nome, grupoMuscular || 'Geral', '');
-            document.getElementById('exerciciosList').insertAdjacentHTML('beforeend', html);
-            atualizarContador();
-            fecharModal();
-        }
-
-        function criarCardExercicio(nome, grupoMuscular, imagemUrl) {
-            const index = exercicioIndex++;
-            return `
-                <div class="bg-background-light dark:bg-background-dark border border-primary/10 rounded-xl p-4 md:p-6 shadow-sm group" data-exercicio-index="${index}">
-                    <div class="flex flex-col md:flex-row gap-6">
-                        ${imagemUrl ? `
-                        <div class="w-full md:w-32 h-24 rounded-lg bg-slate-100 dark:bg-slate-800 overflow-hidden relative border border-primary/5">
-                            <img class="w-full h-full object-cover" src="${imagemUrl}" />
-                            <div class="absolute inset-0 bg-primary/10"></div>
-                        </div>
-                        ` : ''}
-                        <div class="flex-1 space-y-4">
-                            <div class="flex items-start justify-between">
-                                <div>
-                                    <h3 class="font-bold text-lg">${nome}</h3>
-                                    <p class="text-xs text-primary font-medium">${grupoMuscular}</p>
-                                    <input type="hidden" name="exercicios[${index}][nome]" value="${nome}">
-                                    <input type="hidden" name="exercicios[${index}][grupo_muscular]" value="${grupoMuscular}">
-                                    <input type="hidden" name="exercicios[${index}][imagem_url]" value="${imagemUrl}">
-                                </div>
-                                <button type="button" onclick="removerExercicio(${index})" class="text-slate-500 hover:text-red-500 transition-colors">
-                                    <span class="material-symbols-outlined">delete</span>
-                                </button>
-                            </div>
-                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                <div class="space-y-1">
-                                    <label class="text-[10px] uppercase font-bold opacity-50">Séries</label>
-                                    <input name="exercicios[${index}][series]" class="w-full bg-slate-100 dark:bg-slate-900 border border-primary/10 rounded px-3 py-2 text-sm focus:ring-1 focus:ring-primary outline-none" type="number" value="3" />
-                                </div>
-                                <div class="space-y-1">
-                                    <label class="text-[10px] uppercase font-bold opacity-50">Repetições</label>
-                                    <input name="exercicios[${index}][repeticoes]" class="w-full bg-slate-100 dark:bg-slate-900 border border-primary/10 rounded px-3 py-2 text-sm focus:ring-1 focus:ring-primary outline-none" type="text" value="10-12" />
-                                </div>
-                                <div class="space-y-1">
-                                    <label class="text-[10px] uppercase font-bold opacity-50">Carga (kg)</label>
-                                    <input name="exercicios[${index}][carga]" class="w-full bg-slate-100 dark:bg-slate-900 border border-primary/10 rounded px-3 py-2 text-sm focus:ring-1 focus:ring-primary outline-none" type="text" value="" />
-                                </div>
-                                <div class="space-y-1">
-                                    <label class="text-[10px] uppercase font-bold opacity-50">Descanso</label>
-                                    <input name="exercicios[${index}][descanso]" class="w-full bg-slate-100 dark:bg-slate-900 border border-primary/10 rounded px-3 py-2 text-sm focus:ring-1 focus:ring-primary outline-none" type="text" value="60s" />
-                                </div>
-                            </div>
-                            <div>
-                                <label class="text-[10px] uppercase font-bold opacity-50 mb-1 block">Observações para o aluno</label>
-                                <textarea name="exercicios[${index}][observacoes]" class="w-full bg-slate-100 dark:bg-slate-900 border border-primary/10 rounded px-3 py-2 text-xs focus:ring-1 focus:ring-primary outline-none h-16 resize-none" placeholder="Ex: Focar na cadência e não encostar a barra no peito"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function removerExercicio(index) {
-            const elemento = document.querySelector(`[data-exercicio-index="${index}"]`);
-            if (elemento) {
-                elemento.remove();
-                atualizarContador();
-            }
-        }
+        document.getElementById('addExercise').addEventListener('click', () => addExerciseRow());
 
         function atualizarContador() {
-            const count = document.getElementById('exerciciosList').children.length;
+            const count = exerciseRows.querySelectorAll('.exercise-row').length;
             document.getElementById('exercicioCount').textContent = `${count} exercício${count !== 1 ? 's' : ''} adicionado${count !== 1 ? 's' : ''}`;
         }
 
-        // Inicializar contador
-        document.addEventListener('DOMContentLoaded', function() {
-            atualizarContador();
-        });
-
-        // Fechar modal ao clicar fora
-        document.addEventListener('click', function(event) {
-            const modal = document.getElementById('modalExercicio');
-            if (event.target === modal) {
-                fecharModal();
-            }
-        });
-
-        // Fechar modal com tecla ESC
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') {
-                fecharModal();
-            }
-        });
+        if (oldExercises.length) {
+            oldExercises.forEach(addExerciseRow);
+        } else {
+            addExerciseRow();
+        }
     </script>
 </body>
 

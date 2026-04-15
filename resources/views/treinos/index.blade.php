@@ -62,6 +62,18 @@
                     </button>
                 </a>
             </header>
+
+            @if(session('success'))
+                <div class="mx-8 rounded-xl border border-primary/20 bg-primary/10 px-4 py-3 text-sm text-primary">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="mx-8 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+                    {{ session('error') }}
+                </div>
+            @endif
             <!-- Search and Filters -->
             <section class="px-8 py-4 space-y-4">
                 <div class="flex flex-col lg:flex-row gap-4">

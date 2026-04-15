@@ -4,6 +4,18 @@
 
 @section('content')
 <div class="space-y-6">
+    @if(session('success'))
+        <div class="rounded-xl border border-primary/20 bg-primary/10 px-4 py-3 text-sm text-primary">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+            {{ session('error') }}
+        </div>
+    @endif
+
     <!-- Back Button -->
     <a href="{{ route('treinos.index') }}" class="inline-flex items-center gap-2 text-slate-500 hover:text-primary transition-colors">
         <span class="material-symbols-outlined">arrow_back</span>

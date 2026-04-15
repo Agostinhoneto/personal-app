@@ -143,6 +143,10 @@
                 </div>
 
                 <div class="flex items-center gap-4">
+                    <a href="{{ route('alunos.edit', $aluno->id) }}"
+                        class="p-2 rounded-lg bg-slate-100 dark:bg-white/5 text-slate-500 hover:text-primary transition-colors">
+                        <span class="material-symbols-outlined">edit</span>
+                    </a>
 
                     <button onclick="if(confirm('Deseja excluir este aluno?')){document.getElementById('delete-aluno').submit();}"
                         class="p-2 rounded-lg bg-slate-100 dark:bg-white/5 text-slate-500 hover:text-red-500 transition-colors">

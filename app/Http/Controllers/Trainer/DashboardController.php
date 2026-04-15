@@ -3,14 +3,12 @@
 namespace App\Http\Controllers\Trainer;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Aluno;
 use App\Models\Treino;
 use App\Models\Avaliacao;
 use App\Models\PlanoAlimentar;
 use App\Models\Personal;
-use App\Models\RegistroTreino;
 use Carbon\Carbon;
 
 class DashboardController extends Controller
@@ -18,10 +16,17 @@ class DashboardController extends Controller
     public function index()
     {
         $user = Auth::user();
-        
-        // Buscar perfil do personal
+
+        if ($user->tipo === 'aluno') {
+            return $this->studentDashboard($user);
+        }
+
+        if ($user->tipo !== 'personal') {
+            abort(403);
+        }
+
         $personal = Personal::where('usuario_id', $user->id)->first();
-        
+
         if (!$personal) {
             return redirect()->route('home')->with('error', 'Personal não encontrado');
         }
@@ -139,5 +144,28 @@ class DashboardController extends Controller
         ];
 
         return view('trainer.dashboard', $data);
+    }
+
+    private function studentDashboard($user)
+    {
+        $aluno = Aluno::where('usuario_id', $user->id)
+            ->with([
+                'personal.usuario',
+                'treinos' => fn ($query) => $query->latest('data_inicio'),
+                'avaliacoes' => fn ($query) => $query->latest('data_avaliacao'),
+                'planosAlimentares' => fn ($query) => $query->latest('data_inicio'),
+            ])
+            ->first();
+
+        if (!$aluno) {
+            return redirect()->route('home')->with('error', 'Perfil de aluno não encontrado');
+        }
+
+        return view('dashboard.index', [
+            'meuTreino' => $aluno->treinos->first(),
+            'ultimaAvaliacao' => $aluno->avaliacoes->first(),
+            'planoAtual' => $aluno->planosAlimentares->first(),
+            'meuPersonal' => $aluno->personal,
+        ]);
     }
 }

@@ -78,17 +78,7 @@ class AlunoController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'nome' => 'required|string|max:255',
-            'email' => 'required|email|unique:usuarios,email',
-            'telefone' => 'nullable|string|max:20',
-            'data_nascimento' => 'required|date',
-            'sexo' => 'required|in:M,F',
-            'objetivo' => 'nullable|string|max:500',
-            'peso' => 'nullable|numeric|min:0',
-            'altura' => 'nullable|numeric|min:0',
-            'gordura_corporal' => 'nullable|numeric|min:0|max:100',
-        ]);
+        $validated = $request->validate($this->storeRules());
 
         $personal = $this->getAuthenticatedPersonal();
 
@@ -139,9 +129,9 @@ class AlunoController extends Controller
                 $response = Http::timeout(10)
                     ->post('http://n8n:5678/webhook/9b965150-ec4e-4c4e-a545-b484d2b3bfce', [
                         'aluno_id' => $aluno->id,
-                        'nome' => $usuario->nome,
-                        'email' => $usuario->email,
-                        'telefone' => $usuario->telefone,
+                        'nome' => $aluno->usuario->nome,
+                        'email' => $aluno->usuario->email,
+                        'telefone' => $aluno->usuario->telefone,
                         'personal_id' => $personal->id,
                         'data_criacao' => now()->toIso8601String()
                     ]);
@@ -177,6 +167,15 @@ class AlunoController extends Controller
         return view('alunos.create');
     }
 
+    public function edit(Aluno $aluno)
+    {
+        $this->ensureAlunoBelongsToAuthenticatedPersonal($aluno);
+
+        $aluno->load('usuario');
+
+        return view('alunos.edit', compact('aluno'));
+    }
+
     public function show(Aluno $aluno)
     {
         $this->ensureAlunoBelongsToAuthenticatedPersonal($aluno);
@@ -199,14 +198,38 @@ class AlunoController extends Controller
     {
         $this->ensureAlunoBelongsToAuthenticatedPersonal($aluno);
 
-        $validated = $request->validate([
-            'data_nascimento' => 'nullable|date',
-            'sexo' => 'nullable|in:M,F',
-            'objetivo' => 'nullable|string',
-        ]);
+        $validated = $request->validate($this->updateRules($aluno));
 
-        $aluno->update($validated);
-        return response()->json($aluno);
+        try {
+            DB::transaction(function () use ($validated, $aluno) {
+                $aluno->usuario->update([
+                    'nome' => $validated['nome'],
+                    'email' => $validated['email'],
+                    'telefone' => $validated['telefone'] ?? null,
+                ]);
+
+                $aluno->update([
+                    'data_nascimento' => $validated['data_nascimento'],
+                    'sexo' => $validated['sexo'],
+                    'objetivo' => $validated['objetivo'] ?? null,
+                ]);
+            });
+
+            return redirect()
+                ->route('alunos.show', $aluno)
+                ->with('success', 'Aluno atualizado com sucesso');
+        } catch (\Exception $e) {
+            Log::error('Erro ao atualizar aluno', [
+                'aluno_id' => $aluno->id,
+                'error' => $e->getMessage(),
+                'user_id' => Auth::id(),
+            ]);
+
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Erro ao atualizar aluno: ' . $e->getMessage());
+        }
     }
 
     public function destroy(Aluno $aluno)
@@ -236,5 +259,32 @@ class AlunoController extends Controller
     {
         return collect(['peso', 'altura', 'gordura_corporal'])
             ->contains(fn ($field) => isset($validated[$field]) && $validated[$field] !== '');
+    }
+
+    private function storeRules(): array
+    {
+        return [
+            'nome' => 'required|string|max:255',
+            'email' => 'required|email|unique:usuarios,email',
+            'telefone' => 'nullable|string|max:20',
+            'data_nascimento' => 'required|date',
+            'sexo' => 'required|in:M,F',
+            'objetivo' => 'nullable|string|max:500',
+            'peso' => 'nullable|numeric|min:0',
+            'altura' => 'nullable|numeric|min:0',
+            'gordura_corporal' => 'nullable|numeric|min:0|max:100',
+        ];
+    }
+
+    private function updateRules(Aluno $aluno): array
+    {
+        return [
+            'nome' => 'required|string|max:255',
+            'email' => 'required|email|unique:usuarios,email,' . $aluno->usuario_id,
+            'telefone' => 'nullable|string|max:20',
+            'data_nascimento' => 'required|date',
+            'sexo' => 'required|in:M,F',
+            'objetivo' => 'nullable|string|max:500',
+        ];
     }
 }

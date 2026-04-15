@@ -50,9 +50,6 @@ Route::view('/community', 'community')->name('community');
 */
 
 Route::middleware(['auth', 'verified'])->group(function () {
-
-    Route::resource('treinos', TreinoController::class);
-    
     /*
     |--------------------------------------------------------------------------
     | Dashboard
@@ -61,198 +58,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Gestão de Alunos
-    |--------------------------------------------------------------------------
-    */
-
-    Route::resource('alunos', AlunoController::class);
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Gestão de Personais
-    |--------------------------------------------------------------------------
-    */
-
-    Route::resource('personais', PersonalController::class);
-    Route::get('personais/{personal}/alunos', [PersonalController::class, 'alunos'])
-        ->name('personais.alunos');
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Gestão de Usuários
-    |--------------------------------------------------------------------------
-    */
-
-    Route::resource('usuarios', UsuarioController::class);
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Avaliações Físicas
-    |--------------------------------------------------------------------------
-    */
-
-    Route::resource('avaliacoes', AvaliacaoController::class);
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Treinos
-    |--------------------------------------------------------------------------
-    */
-
-    Route::resource('treinos', TreinoController::class);
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Exercícios
-    |--------------------------------------------------------------------------
-    */
-
-    Route::resource('exercicios', ExercicioController::class);
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Planos Alimentares
-    |--------------------------------------------------------------------------
-    */
-
-    Route::resource('planos-alimentares', PlanoAlimentarController::class);
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Mensagens
-    |--------------------------------------------------------------------------
-    */
-
-    Route::resource('mensagens', MensagemController::class)->only(['index', 'show', 'store', 'destroy']);
-    Route::patch('mensagens/{mensagem}/marcar-lida', [MensagemController::class, 'marcarComoLida'])
-        ->name('mensagens.marcar-lida');
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Funcionalidades do Dashboard (Legacy - Manter por compatibilidade)
-    |--------------------------------------------------------------------------
-    */
-
-    Route::prefix('dashboard')
-        ->name('dashboard.')
-        ->group(function () {
-
-            Route::get('/calendar', function () {
-                return redirect()
-                    ->route('dashboard')
-                    ->with('info', 'Calendar view coming soon');
-            })->name('calendar');
-
-        });
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Workout Plans (Legacy - Redirecionar para nova rota)
-    |--------------------------------------------------------------------------
-    */
-
-    Route::prefix('workout-plans')
-        ->name('workout-plans.')
-        ->group(function () {
-
-            Route::get('/create', function () {
-                return redirect()->route('treinos.create');
-            })->name('create');
-
-        });
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Clients (Legacy - Redirecionar para nova rota)
-    |--------------------------------------------------------------------------
-    */
-
-    Route::prefix('clients')
-        ->name('clients.')
-        ->group(function () {
-
-            Route::get('/', function () {
-                return redirect()->route('alunos.index');
-            })->name('index');
-
-        });
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Reports
-    |--------------------------------------------------------------------------
-    */
-
-    Route::get('/reports/generate', function () {
-        return redirect()
-            ->route('dashboard')
-            ->with('info', 'Report generation coming soon');
-    })->name('reports.generate');
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Notifications
-    |--------------------------------------------------------------------------
-    */
-
-    Route::prefix('notifications')
-        ->name('notifications.')
-        ->group(function () {
-
-            Route::get('/', function () {
-                return redirect()->route('mensagens.index');
-            })->name('index');
-
-        });
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Settings
-    |--------------------------------------------------------------------------
-    */
-
-    Route::prefix('settings')
-        ->name('settings.')
-        ->group(function () {
-
-            Route::get('/', function () {
-                return redirect()
-                    ->route('dashboard')
-                    ->with('info', 'Settings page coming soon');
-            })->name('index');
-
-        });
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Activity
-    |--------------------------------------------------------------------------
-    */
-
-    Route::get('/activity', function () {
-        return redirect()
-            ->route('dashboard')
-            ->with('info', 'Activity log coming soon');
-    })->name('activity.index');
-
 
     /*
     |--------------------------------------------------------------------------
@@ -269,6 +74,173 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])
         ->name('profile.destroy');
 
+    Route::middleware('role:personal')->group(function () {
+        /*
+        |--------------------------------------------------------------------------
+        | Gestão de Alunos
+        |--------------------------------------------------------------------------
+        */
+
+        Route::resource('alunos', AlunoController::class);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Gestão de Personais
+        |--------------------------------------------------------------------------
+        */
+
+        Route::resource('personais', PersonalController::class);
+        Route::get('personais/{personal}/alunos', [PersonalController::class, 'alunos'])
+            ->name('personais.alunos');
+
+        /*
+        |--------------------------------------------------------------------------
+        | Gestão de Usuários
+        |--------------------------------------------------------------------------
+        */
+
+        Route::resource('usuarios', UsuarioController::class);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Avaliações Físicas
+        |--------------------------------------------------------------------------
+        */
+
+        Route::resource('avaliacoes', AvaliacaoController::class);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Treinos
+        |--------------------------------------------------------------------------
+        */
+
+        Route::resource('treinos', TreinoController::class);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Exercícios
+        |--------------------------------------------------------------------------
+        */
+
+        Route::resource('exercicios', ExercicioController::class);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Planos Alimentares
+        |--------------------------------------------------------------------------
+        */
+
+        Route::resource('planos-alimentares', PlanoAlimentarController::class);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Mensagens
+        |--------------------------------------------------------------------------
+        */
+
+        Route::resource('mensagens', MensagemController::class)->only(['index', 'show', 'store', 'destroy']);
+        Route::patch('mensagens/{mensagem}/marcar-lida', [MensagemController::class, 'marcarComoLida'])
+            ->name('mensagens.marcar-lida');
+
+        /*
+        |--------------------------------------------------------------------------
+        | Funcionalidades do Dashboard (Legacy - Manter por compatibilidade)
+        |--------------------------------------------------------------------------
+        */
+
+        Route::prefix('dashboard')
+            ->name('dashboard.')
+            ->group(function () {
+                Route::get('/calendar', function () {
+                    return redirect()
+                        ->route('dashboard')
+                        ->with('info', 'Calendar view coming soon');
+                })->name('calendar');
+            });
+
+        /*
+        |--------------------------------------------------------------------------
+        | Workout Plans (Legacy - Redirecionar para nova rota)
+        |--------------------------------------------------------------------------
+        */
+
+        Route::prefix('workout-plans')
+            ->name('workout-plans.')
+            ->group(function () {
+                Route::get('/create', function () {
+                    return redirect()->route('treinos.create');
+                })->name('create');
+            });
+
+        /*
+        |--------------------------------------------------------------------------
+        | Clients (Legacy - Redirecionar para nova rota)
+        |--------------------------------------------------------------------------
+        */
+
+        Route::prefix('clients')
+            ->name('clients.')
+            ->group(function () {
+                Route::get('/', function () {
+                    return redirect()->route('alunos.index');
+                })->name('index');
+            });
+
+        /*
+        |--------------------------------------------------------------------------
+        | Reports
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/reports/generate', function () {
+            return redirect()
+                ->route('dashboard')
+                ->with('info', 'Report generation coming soon');
+        })->name('reports.generate');
+
+        /*
+        |--------------------------------------------------------------------------
+        | Notifications
+        |--------------------------------------------------------------------------
+        */
+
+        Route::prefix('notifications')
+            ->name('notifications.')
+            ->group(function () {
+                Route::get('/', function () {
+                    return redirect()->route('mensagens.index');
+                })->name('index');
+            });
+
+        /*
+        |--------------------------------------------------------------------------
+        | Settings
+        |--------------------------------------------------------------------------
+        */
+
+        Route::prefix('settings')
+            ->name('settings.')
+            ->group(function () {
+                Route::get('/', function () {
+                    return redirect()
+                        ->route('dashboard')
+                        ->with('info', 'Settings page coming soon');
+                })->name('index');
+            });
+
+        /*
+        |--------------------------------------------------------------------------
+        | Activity
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/activity', function () {
+            return redirect()
+                ->route('dashboard')
+                ->with('info', 'Activity log coming soon');
+        })->name('activity.index');
+    });
 });
 
 

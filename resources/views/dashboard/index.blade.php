@@ -127,9 +127,9 @@
                     </div>
                 </div>
                 @if($meuTreino)
-                    <a href="{{ route('treinos.show', $meuTreino) }}" class="block w-full text-center px-4 py-2 bg-primary text-background-dark font-bold rounded-xl hover:bg-primary/90 transition-colors">
-                        Ver Treino
-                    </a>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">
+                        Seu treino atual foi carregado no dashboard. A visualização detalhada do aluno ainda será liberada.
+                    </p>
                 @endif
             </div>
 
@@ -141,9 +141,9 @@
                         <p class="text-sm text-slate-500 dark:text-slate-400">Última Avaliação</p>
                     </div>
                 </div>
-                <a href="{{ route('avaliacoes.index') }}" class="block w-full text-center px-4 py-2 bg-purple-500 text-white font-bold rounded-xl hover:bg-purple-600 transition-colors">
-                    Ver Histórico
-                </a>
+                <p class="text-sm text-slate-500 dark:text-slate-400">
+                    O histórico completo de avaliações ainda está em construção para a área do aluno.
+                </p>
             </div>
 
             <div class="bg-slate-100 dark:bg-slate-900 rounded-xl p-6">
@@ -155,9 +155,9 @@
                     </div>
                 </div>
                 @if($planoAtual)
-                    <a href="{{ route('planos-alimentares.show', $planoAtual) }}" class="block w-full text-center px-4 py-2 bg-orange-500 text-white font-bold rounded-xl hover:bg-orange-600 transition-colors">
-                        Ver Plano
-                    </a>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">
+                        Seu plano alimentar mais recente já aparece aqui em resumo. A página detalhada do aluno ainda será liberada.
+                    </p>
                 @endif
             </div>
         </div>

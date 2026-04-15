@@ -6,7 +6,7 @@
         </div>
         <div>
             <h1 class="text-lg font-bold leading-tight">FitAssist</h1>
-            <p class="text-xs text-primary/70">Personal Trainer</p>
+            <p class="text-xs text-primary/70">{{ Auth::user()->tipo === 'personal' ? 'Personal Trainer' : 'Aluno' }}</p>
         </div>
     </div>
     <nav class="flex-1 px-4 py-4 space-y-1">
@@ -14,21 +14,23 @@
             <span class="material-symbols-outlined">dashboard</span>
             <span class="text-sm font-medium">Dashboard</span>
         </a>
-        <a class="flex items-center gap-3 px-3 py-2 {{ request()->routeIs('alunos.*') ? 'bg-primary/20 text-primary' : 'text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary' }} rounded-lg transition-colors" href="{{ route('alunos.index') }}">
-            <span class="material-symbols-outlined">group</span>
-            <span class="text-sm font-medium">Alunos</span>
-        </a>
-        <a class="flex items-center gap-3 px-3 py-2 {{ request()->routeIs('treinos.*') ? 'bg-primary/20 text-primary' : 'text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary' }} rounded-lg transition-colors" href="{{ route('treinos.index') }}">
-            <span class="material-symbols-outlined">fitness_center</span>
-            <span class="text-sm font-medium">Treinos</span>
-        </a>
-        <a class="flex items-center gap-3 px-3 py-2 {{ request()->routeIs('exercicios.*') ? 'bg-primary/20 text-primary' : 'text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary' }} rounded-lg transition-colors" href="{{ route('exercicios.index') }}">
-            <span class="material-symbols-outlined">menu_book</span>
-            <span class="text-sm font-medium">Biblioteca</span>
-        </a>
-        <a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors" href="#">
+        @if(Auth::user()->tipo === 'personal')
+            <a class="flex items-center gap-3 px-3 py-2 {{ request()->routeIs('alunos.*') ? 'bg-primary/20 text-primary' : 'text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary' }} rounded-lg transition-colors" href="{{ route('alunos.index') }}">
+                <span class="material-symbols-outlined">group</span>
+                <span class="text-sm font-medium">Alunos</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2 {{ request()->routeIs('treinos.*') ? 'bg-primary/20 text-primary' : 'text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary' }} rounded-lg transition-colors" href="{{ route('treinos.index') }}">
+                <span class="material-symbols-outlined">fitness_center</span>
+                <span class="text-sm font-medium">Treinos</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2 {{ request()->routeIs('exercicios.*') ? 'bg-primary/20 text-primary' : 'text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary' }} rounded-lg transition-colors" href="{{ route('exercicios.index') }}">
+                <span class="material-symbols-outlined">menu_book</span>
+                <span class="text-sm font-medium">Biblioteca</span>
+            </a>
+        @endif
+        <a class="flex items-center gap-3 px-3 py-2 {{ request()->routeIs('profile.*') ? 'bg-primary/20 text-primary' : 'text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary' }} rounded-lg transition-colors" href="{{ route('profile.edit') }}">
             <span class="material-symbols-outlined">settings</span>
-            <span class="text-sm font-medium">Configurações</span>
+            <span class="text-sm font-medium">Perfil</span>
         </a>
     </nav>
     <div class="p-4 border-t border-primary/10">
